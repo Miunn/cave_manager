@@ -1,7 +1,6 @@
 import 'package:cave_manager/providers/bottles_provider.dart';
 import 'package:cave_manager/screens/add_bottle_dialog.dart';
 import 'package:cave_manager/screens/settings.dart';
-import 'package:cave_manager/utils/bottle_db_interface.dart';
 import 'package:cave_manager/widgets/bottle_list_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -72,7 +71,7 @@ class _BottlesState extends State<Bottles> {
                   shrinkWrap: true,
                   itemCount: closedBottles.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return BottleListCard(bottle: closedBottles[index]);
+                    return BottleListCard(bottleId: closedBottles[index].id!);
                   }),
               const SizedBox(
                 height: 20,
@@ -100,7 +99,7 @@ class _BottlesState extends State<Bottles> {
                   shrinkWrap: true,
                   itemCount: openedBottles.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return BottleListCard(bottle: openedBottles[index]);
+                    return BottleListCard(bottleId: openedBottles[index].id!);
                   }),
             ],
           ),

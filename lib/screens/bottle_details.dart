@@ -42,10 +42,52 @@ class _BottleDetailState extends State<BottleDetails> {
     _camera = cameras.first;
   }
 
+  deleteBottleCallback(BuildContext context, Bottle bottle) {
+    Provider.of<BottlesProvider>(context, listen: false).deleteBottle(bottle);
+    Navigator.pop(context);
+    final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      key: scaffoldKey,
+      content: const Text('Bouteille supprimée'),
+      action: SnackBarAction(
+        label: 'Annuler',
+        onPressed: () {
+          scaffoldKey.currentContext?.read<BottlesProvider>().addBottle(bottle);
+          ScaffoldMessenger.of(scaffoldKey.currentContext ?? context).showSnackBar(const SnackBar(
+            content: Text('Suppression annulée'),
+          ));
+        },
+      ),
+    ));
+  }
+
+  openBottle(BuildContext context, Bottle bottle) {
+    final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+    bottle.isOpen = true;
+    bottle.openedAt = DateTime.now();
+    context.read<BottlesProvider>().updateBottle(bottle);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      key: scaffoldKey,
+      content: const Text('Bouteille sortie de cave'),
+      action: SnackBarAction(
+        label: 'Annuler',
+        onPressed: () {
+          bottle.isOpen = false;
+          bottle.tastingNote = null;
+          scaffoldKey.currentContext?.read<BottlesProvider>().updateBottle(bottle);
+          ScaffoldMessenger.of(scaffoldKey.currentContext ?? context).showSnackBar(const SnackBar(
+            content: Text('Bouteille remise en cave'),
+          ));
+        },
+      ),
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     Bottle bottle = context.select<BottlesProvider, Bottle>((provider) => provider.getBottleById(widget.bottleId));
-
+    debugPrint("Bottle: $bottle");
     String? colorText;
     Country? bottleCountry = (bottle.country == null) ? null : Country.tryParse(bottle.country!);
     String cellarPositionFormatted = (bottle.clusterId == null) ? "Non renseigné" : "Ligne ${bottle.clusterY!} Colonne ${bottle.clusterX!}";
@@ -116,25 +158,6 @@ class _BottleDetailState extends State<BottleDetails> {
       context.read<BottlesProvider>().updateBottle(bottle);
     }
 
-    deleteBottleCallback() {
-      context.read<BottlesProvider>().deleteBottle(bottle);
-      Navigator.pop(context);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: const Text('Bouteille supprimée'),
-        action: SnackBarAction(
-          label: 'Annuler',
-          onPressed: () {
-            setState(() {
-              context.read<BottlesProvider>().addBottle(bottle);
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  content: Text('Suppression annulée'),
-              ));
-            });
-          },
-        ),
-      ));
-    }
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -150,17 +173,15 @@ class _BottleDetailState extends State<BottleDetails> {
           ),
           IconButton(
               onPressed: () async {
-                bool? showDelete = await showDialog<bool>(
+                bool? shouldDelete = await showDialog<bool>(
                     context: context,
                     builder: (BuildContext context) {
                       return DeleteBottleDialog(bottle: bottle);
                 });
 
-                if (showDelete == null || !showDelete) {
-                  return;
+                if ((shouldDelete ?? false) && context.mounted) {
+                  deleteBottleCallback(context, bottle);
                 }
-
-                deleteBottleCallback();
               },
               icon: const Icon(Icons.delete_forever),
           ),
@@ -255,15 +276,8 @@ class _BottleDetailState extends State<BottleDetails> {
                             OpenBottleDialog(bottle: bottle),
                       );
 
-                      if (open == null || !open) {
-                        return;
-                      }
-
-                      bottle.isOpen = true;
-                      bottle.openedAt = DateTime.now();
-
-                      if (context.mounted) {
-                        context.read<BottlesProvider>().updateBottle(bottle);
+                      if (open != null && open && context.mounted) {
+                        openBottle(context, bottle);
                       }
                     },
                     child: const Text("Sortir de cave"),
@@ -420,12 +434,10 @@ class _BottleDetailState extends State<BottleDetails> {
                             const Spacer(),
                             Text(
                                 // Test to be able to perform null operator
-                                bottle.isOpen!
+                                ((bottle.isOpen ?? false) && bottle.openedAt != null)
                                     ? DateFormat.yMMMd()
                                         .format(bottle.openedAt!)
-                                    : DateFormat.yMMMd().format(
-                                        DateTime.fromMillisecondsSinceEpoch(
-                                            0))),
+                                    : "Aucune donnée"),
                           ],
                         ),
                       ),

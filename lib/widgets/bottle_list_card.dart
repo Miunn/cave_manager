@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../models/bottle.dart';
+import '../providers/bottles_provider.dart';
 import '../screens/bottle_details.dart';
 
 class BottleListCard extends StatelessWidget {
-  const BottleListCard({super.key, required this.bottle});
+  const BottleListCard({super.key, required this.bottleId});
 
-  final Bottle bottle;
+  final int bottleId;
 
   @override
   Widget build(BuildContext context) {
+    Bottle bottle = context.read<BottlesProvider>().getBottleById(bottleId);
+    debugPrint("Bottle: ${bottle.name} (${bottle.id})");
+
     return Card(
       clipBehavior: Clip.hardEdge,
       child: InkWell(

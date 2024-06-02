@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:cave_manager/models/wine_colors_enum.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../models/bottle.dart';
@@ -11,7 +12,14 @@ class BottlesProvider extends ChangeNotifier {
   UnmodifiableListView<Bottle> get bottles => UnmodifiableListView(_bottles);
   UnmodifiableListView<Bottle> get closedBottles => UnmodifiableListView(_bottles.where((bottle) => !(bottle.isOpen ?? false)));
   UnmodifiableListView<Bottle> get openedBottles => UnmodifiableListView(_bottles.where((bottle) => (bottle.isOpen ?? true)));
-  Bottle getBottleById(int id) => _bottles.firstWhere((bottle) => bottle.id == id);
+  UnmodifiableListView<Bottle> get lastBottles => UnmodifiableListView(closedBottles.take(5));
+
+  int get bottleCount => _bottles.length;
+  int get redCount => closedBottles.where((bottle) => bottle.color == WineColors.red.value).length;
+  int get pinkCount => closedBottles.where((bottle) => bottle.color == WineColors.pink.value).length;
+  int get whiteCount => closedBottles.where((bottle) => bottle.color == WineColors.white.value).length;
+
+  Bottle getBottleById(int id) => _bottles.firstWhere((bottle) => bottle.id == id, orElse: () => Bottle(null, null, null));
 
   BottlesProvider() {
     loadBottles();

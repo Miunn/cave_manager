@@ -2,8 +2,10 @@ import 'package:cave_manager/screens/settings.dart';
 import 'package:cave_manager/utils/bottle_db_interface.dart';
 import 'package:cave_manager/widgets/bottle_card.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../models/bottle.dart';
+import '../providers/bottles_provider.dart';
 import '../widgets/cellar_fillng.dart';
 import 'add_bottle_dialog.dart';
 
@@ -17,56 +19,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  BottleDatabaseInterface bottleDatabase = BottleDatabaseInterface.instance;
-  List<Bottle> _lastBottles = [];
-  int _totalBottles = 0;
-  int _redCount = 0;
-  int _pinkCount = 0;
-  int _whiteCount = 0;
-
-  @override
-  void initState() {
-    debugPrint("Init state home");
-    refreshBottlesState();
-    super.initState();
-  }
-
-  refreshBottlesState() async {
-    _lastBottles = await bottleDatabase.getLastBottles();
-    _totalBottles = await bottleDatabase.getInCellarCount();
-    _redCount = await bottleDatabase.getRedCount();
-    _pinkCount = await bottleDatabase.getPinkCount();
-    _whiteCount = await bottleDatabase.getWhiteCount();
-    setState(() {
-      _lastBottles = _lastBottles;
-      _totalBottles = _totalBottles;
-      _redCount = _redCount;
-      _pinkCount = _pinkCount;
-      _whiteCount = _whiteCount;
-    });
-  }
-
-  openBottle(Bottle bottle) {
-    bottle.isOpen = true;
-    bottleDatabase.update(bottle);
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text('Bouteille sortie de cave'),
-      action: SnackBarAction(
-        label: 'Annuler',
-        onPressed: () {
-          bottle.isOpen = false;
-          bottle.tastingNote = null;
-          bottleDatabase.update(bottle);
-          refreshBottlesState();
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Bouteille remise en cave'),
-          ));
-        },
-      ),
-    ));
-    refreshBottlesState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,11 +33,12 @@ class _HomeState extends State<Home> {
         actions: <Widget>[
           IconButton(
               onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const Settings(title: "Paramètres")),
-              ),
-              icon: const Icon(Icons.settings)
-          )
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            const Settings(title: "Paramètres")),
+                  ),
+              icon: const Icon(Icons.settings))
         ],
       ),
       body: Padding(
@@ -93,53 +46,56 @@ class _HomeState extends State<Home> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            CellarFilling(
-              bottleAmount: _totalBottles,
+            Consumer<BottlesProvider>(
+              builder: (context, bottles, child) {
+                return CellarFilling(bottleAmount: bottles.closedBottles.length);
+              },
             ),
-            const SizedBox(height: 20,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Chip(label: Text("$_redCount Vin rouge")),
-                Chip(label: Text("$_whiteCount Vin blanc")),
-                Chip(label: Text("$_pinkCount Vin rosé")),
-              ],
+            const SizedBox(
+              height: 20,
             ),
-            const SizedBox(height: 20,),
+            Consumer<BottlesProvider>(builder: (context, bottles, child) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Chip(label: Text("${bottles.redCount} Vin rouge")),
+                  Chip(label: Text("${bottles.whiteCount} Vin blanc")),
+                  Chip(label: Text("${bottles.pinkCount} Vin rosé")),
+                ],
+              );
+            }),
+            const SizedBox(
+              height: 20,
+            ),
             const Text(
               "Dernières bouteilles enregistrées",
               style: TextStyle(fontSize: 20),
             ),
-            _lastBottles.isEmpty
-                ? const Center(
-                    child: Text("Aucune bouteille enregistrée récemment"),
-                  )
-                : Expanded(
-                    child: ListView.builder(
-                      itemCount: _lastBottles.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return BottleCard(
-                            bottle: _lastBottles[index],
-                            openBottleCallback: openBottle);
-                      },
-                    ),
-                  ),
+            Consumer<BottlesProvider>(
+              builder: (context, bottles, child) {
+                return bottles.lastBottles.isEmpty
+                    ? const Center(
+                        child: Text("Aucune bouteille enregistrée récemment"),
+                      )
+                    : Expanded(
+                        child: ListView.builder(
+                          itemCount: bottles.lastBottles.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return BottleCard(
+                                bottleId: bottles.lastBottles[index].id!);
+                          },
+                        ),
+                      );
+              },
+            ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          Bottle? newBottle = await Navigator.of(context).push(
-              MaterialPageRoute<Bottle>(
-                  fullscreenDialog: true,
-                  builder: (BuildContext context) => const AddBottleDialog()));
-
-          if (newBottle == null) {
-            return;
-          }
-
-          await bottleDatabase.insert(newBottle);
-          refreshBottlesState();
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute<Bottle>(
+              fullscreenDialog: true,
+              builder: (BuildContext context) => const AddBottleDialog()));
         },
         tooltip: "Insert new bottle",
         child: const Icon(Icons.add),
