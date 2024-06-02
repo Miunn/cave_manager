@@ -9,11 +9,13 @@ import 'package:cave_manager/utils/cellar_db_interface.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/bottle.dart';
 import '../models/cluster.dart';
 import '../models/wine_colors_enum.dart';
+import '../providers/bottles_provider.dart';
 
 class AddBottleDialog extends StatefulWidget {
   const AddBottleDialog({super.key});
@@ -407,9 +409,10 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
                   subArea: subAreaController.text,
                   grapeVariety: grapeVarietyController.text);
               if (!isCellarConfigured()) {
+                context.read<BottlesProvider>().addBottle(bottle);
                 Navigator.of(context).pop(bottle);
               } else {
-                Bottle? bottlePosition = await Navigator.of(context).push(
+                /*Bottle? bottlePosition = await Navigator.of(context).push(
                   MaterialPageRoute<Bottle>(
                     fullscreenDialog: true,
                     builder: (context) => PlaceInCellar(bottle: bottle),
@@ -424,7 +427,7 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
                   Navigator.of(context).pop(bottle);
                 } else {
                   debugPrint("Context not mounted");
-                }
+                }*/
               }
             },
             child: const Text('Placer dans la cave'),

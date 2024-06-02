@@ -18,7 +18,7 @@ class BottleListCard extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => BottleDetails(bottle: bottle)),
+                builder: (context) => BottleDetails(bottleId: bottle.id!)),
           );
         },
         child: ListTile(

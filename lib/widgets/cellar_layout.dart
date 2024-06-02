@@ -97,7 +97,7 @@ class _CellarLayoutState extends State<CellarLayout> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => BottleDetails(
-                    bottle: currentBottle!,
+                    bottleId: currentBottle!.id!,
                   ),
                 ),
               );

@@ -5,12 +5,15 @@ import 'package:flutter/cupertino.dart';
 import '../models/bottle.dart';
 import '../utils/bottle_db_interface.dart';
 
-class BottleProvider extends ChangeNotifier {
+class BottlesProvider extends ChangeNotifier {
   BottleDatabaseInterface bottleDatabase = BottleDatabaseInterface.instance;
   List<Bottle> _bottles = [];
   UnmodifiableListView<Bottle> get bottles => UnmodifiableListView(_bottles);
+  UnmodifiableListView<Bottle> get closedBottles => UnmodifiableListView(_bottles.where((bottle) => !(bottle.isOpen ?? false)));
+  UnmodifiableListView<Bottle> get openedBottles => UnmodifiableListView(_bottles.where((bottle) => (bottle.isOpen ?? true)));
+  Bottle getBottleById(int id) => _bottles.firstWhere((bottle) => bottle.id == id);
 
-  BottleProvider() {
+  BottlesProvider() {
     loadBottles();
   }
 
@@ -36,5 +39,10 @@ class BottleProvider extends ChangeNotifier {
 
     await bottleDatabase.delete(bottle.id!);
     loadBottles();
+  }
+
+  Future<void> openBottle(Bottle bottle) async {
+    bottle.isOpen = true;
+    await updateBottle(bottle);
   }
 }

@@ -44,7 +44,7 @@ class BottleCard extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => BottleDetails(bottle: bottle)),
+            MaterialPageRoute(builder: (context) => BottleDetails(bottleId: bottle.id!)),
           );
         },
         child: Column(

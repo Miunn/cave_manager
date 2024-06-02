@@ -1,12 +1,14 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:cave_manager/providers/bottles_provider.dart';
 import 'package:cave_manager/screens/take_picture.dart';
 import 'package:cave_manager/utils/cellar_db_interface.dart';
 import 'package:cave_manager/widgets/delete_bottle_dialog.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/bottle.dart';
@@ -16,17 +18,17 @@ import '../utils/bottle_db_interface.dart';
 import '../widgets/open_bottle_dialog.dart';
 
 class BottleDetails extends StatefulWidget {
-  const BottleDetails({super.key, required this.bottle});
+  const BottleDetails({super.key, required this.bottleId});
 
-  final Bottle bottle;
+  // Load bottle across the provider instead of passing it as a parameter
+  // So updates are reflected in the UI (and other children)
+  final int bottleId;
 
   @override
   State<BottleDetails> createState() => _BottleDetailState();
 }
 
 class _BottleDetailState extends State<BottleDetails> {
-  CellarDatabaseInterface cellarDatabase = CellarDatabaseInterface.instance;
-  BottleDatabaseInterface bottleDatabase = BottleDatabaseInterface.instance;
   late CameraDescription _camera;
 
   @override
@@ -40,18 +42,16 @@ class _BottleDetailState extends State<BottleDetails> {
     _camera = cameras.first;
   }
 
-  Future<CellarCluster?> bottleCluster() async {
-    return await cellarDatabase.getBottleCluster(widget.bottle);
-  }
-
   @override
   Widget build(BuildContext context) {
+    Bottle bottle = context.select<BottlesProvider, Bottle>((provider) => provider.getBottleById(widget.bottleId));
+
     String? colorText;
-    Country? bottleCountry = (widget.bottle.country == null) ? null : Country.tryParse(widget.bottle.country!);
-    String cellarPositionFormatted = (widget.bottle.clusterId == null) ? "Non renseigné" : "Ligne ${widget.bottle.clusterY!} Colonne ${widget.bottle.clusterX!}";
+    Country? bottleCountry = (bottle.country == null) ? null : Country.tryParse(bottle.country!);
+    String cellarPositionFormatted = (bottle.clusterId == null) ? "Non renseigné" : "Ligne ${bottle.clusterY!} Colonne ${bottle.clusterX!}";
 
     switch (
-        WineColors.values.firstWhere((e) => e.value == widget.bottle.color)) {
+        WineColors.values.firstWhere((e) => e.value == bottle.color)) {
       case WineColors.red:
         colorText = WineColors.red.label;
         break;
@@ -74,7 +74,7 @@ class _BottleDetailState extends State<BottleDetails> {
 
     String inCellarString = "";
     Duration inCellarSince =
-        DateTime.now().difference(widget.bottle.createdAt!);
+        DateTime.now().difference(bottle.createdAt!);
     int years = inCellarSince.inDays ~/ 365;
     int extraDaysInYears = inCellarSince.inDays % 365;
 
@@ -97,6 +97,10 @@ class _BottleDetailState extends State<BottleDetails> {
     }
 
     registerNewPicture() async {
+      if (!context.mounted) {
+        return;
+      }
+
       XFile? capturedImage = await Navigator.push<XFile?>(
         context,
         MaterialPageRoute(
@@ -107,14 +111,13 @@ class _BottleDetailState extends State<BottleDetails> {
         return;
       }
 
-      await widget.bottle.setImage(capturedImage);
-      setState(() {
-        bottleDatabase.update(widget.bottle);
-      });
+      await bottle.setImage(capturedImage);
+
+      context.read<BottlesProvider>().updateBottle(bottle);
     }
 
     deleteBottleCallback() {
-      bottleDatabase.delete(widget.bottle.id!);
+      context.read<BottlesProvider>().deleteBottle(bottle);
       Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: const Text('Bouteille supprimée'),
@@ -122,7 +125,7 @@ class _BottleDetailState extends State<BottleDetails> {
           label: 'Annuler',
           onPressed: () {
             setState(() {
-              bottleDatabase.insert(widget.bottle);
+              context.read<BottlesProvider>().addBottle(bottle);
               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                   content: Text('Suppression annulée'),
               ));
@@ -139,7 +142,7 @@ class _BottleDetailState extends State<BottleDetails> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text('${widget.bottle.name}',),
+        title: Text('${bottle.name}',),
         actions: <Widget>[
           IconButton(
               onPressed: () {},
@@ -150,7 +153,7 @@ class _BottleDetailState extends State<BottleDetails> {
                 bool? showDelete = await showDialog<bool>(
                     context: context,
                     builder: (BuildContext context) {
-                      return DeleteBottleDialog(bottle: widget.bottle);
+                      return DeleteBottleDialog(bottle: bottle);
                 });
 
                 if (showDelete == null || !showDelete) {
@@ -179,7 +182,7 @@ class _BottleDetailState extends State<BottleDetails> {
                     flex: 3,
                     child: SizedBox(
                       height: 160,
-                      child: (widget.bottle.imageUri == null)
+                      child: (bottle.imageUri == null)
                           ? Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: IconButton(
@@ -193,7 +196,7 @@ class _BottleDetailState extends State<BottleDetails> {
                               ),
                             )
                           : IconButton(
-                              icon: Image.file(File(widget.bottle.imageUri!)),
+                              icon: Image.file(File(bottle.imageUri!)),
                               onPressed: registerNewPicture,
                             ),
                     ),
@@ -204,15 +207,15 @@ class _BottleDetailState extends State<BottleDetails> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("${widget.bottle.name}"),
+                        Text("${bottle.name}"),
                         Text(
-                          (widget.bottle.signature == null ||
-                                  widget.bottle.signature!.isEmpty)
+                          (bottle.signature == null ||
+                                  bottle.signature!.isEmpty)
                               ? "Aucun domaine"
-                              : "${widget.bottle.signature}",
+                              : "${bottle.signature}",
                           style: TextStyle(
-                              fontStyle: (widget.bottle.signature == null ||
-                                      widget.bottle.signature!.isEmpty)
+                              fontStyle: (bottle.signature == null ||
+                                      bottle.signature!.isEmpty)
                                   ? FontStyle.italic
                                   : FontStyle.normal),
                         ),
@@ -220,11 +223,11 @@ class _BottleDetailState extends State<BottleDetails> {
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             Text(
-                              (widget.bottle.vintageYear == null)
+                              (bottle.vintageYear == null)
                                   ? "Aucun millésime"
-                                  : "${widget.bottle.vintageYear}",
+                                  : "${bottle.vintageYear}",
                               style: TextStyle(
-                                  fontStyle: (widget.bottle.vintageYear == null)
+                                  fontStyle: (bottle.vintageYear == null)
                                       ? FontStyle.italic
                                       : FontStyle.normal),
                             ),
@@ -241,7 +244,7 @@ class _BottleDetailState extends State<BottleDetails> {
                 height: 15,
               ),
               Offstage(
-                offstage: widget.bottle.isOpen!,
+                offstage: bottle.isOpen!,
                 child: SizedBox(
                   width: double.infinity,
                   child: FilledButton(
@@ -249,25 +252,26 @@ class _BottleDetailState extends State<BottleDetails> {
                       bool? open = await showDialog<bool>(
                         context: context,
                         builder: (BuildContext context) =>
-                            OpenBottleDialog(bottle: widget.bottle),
+                            OpenBottleDialog(bottle: bottle),
                       );
 
                       if (open == null || !open) {
                         return;
                       }
 
-                      widget.bottle.isOpen = true;
-                      widget.bottle.openedAt = DateTime.now();
-                      await bottleDatabase.update(widget.bottle);
+                      bottle.isOpen = true;
+                      bottle.openedAt = DateTime.now();
 
-                      setState(() {});
+                      if (context.mounted) {
+                        context.read<BottlesProvider>().updateBottle(bottle);
+                      }
                     },
                     child: const Text("Sortir de cave"),
                   ),
                 ),
               ),
               Offstage(
-                offstage: widget.bottle.isOpen!,
+                offstage: bottle.isOpen!,
                 child: const SizedBox(
                   height: 15,
                 ),
@@ -303,11 +307,11 @@ class _BottleDetailState extends State<BottleDetails> {
                           const Text("Degré"),
                           const Spacer(),
                           Text(
-                            widget.bottle.alcoholLevel == null
+                            bottle.alcoholLevel == null
                                 ? "Non renseigné"
-                                : "${widget.bottle.alcoholLevel} %",
+                                : "${bottle.alcoholLevel} %",
                             style: TextStyle(
-                                fontStyle: widget.bottle.alcoholLevel == null
+                                fontStyle: bottle.alcoholLevel == null
                                     ? FontStyle.italic
                                     : FontStyle.normal),
                           ),
@@ -326,11 +330,11 @@ class _BottleDetailState extends State<BottleDetails> {
                           const Text("Cépage"),
                           const Spacer(),
                           Text(
-                            (widget.bottle.grapeVariety == null || widget.bottle.grapeVariety!.isEmpty)
+                            (bottle.grapeVariety == null || bottle.grapeVariety!.isEmpty)
                                 ? "Non renseigné"
-                                : "${widget.bottle.grapeVariety}",
+                                : "${bottle.grapeVariety}",
                             style: TextStyle(
-                                fontStyle: (widget.bottle.grapeVariety == null || widget.bottle.grapeVariety!.isEmpty)
+                                fontStyle: (bottle.grapeVariety == null || bottle.grapeVariety!.isEmpty)
                                     ? FontStyle.italic
                                     : FontStyle.normal),
                           ),
@@ -342,7 +346,7 @@ class _BottleDetailState extends State<BottleDetails> {
                       color: Color.fromARGB(255, 220, 220, 220),
                     ),
                     Offstage(
-                      offstage: widget.bottle.isOpen!,
+                      offstage: bottle.isOpen!,
                       child: Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Row(
@@ -356,14 +360,14 @@ class _BottleDetailState extends State<BottleDetails> {
                       ),
                     ),
                     Offstage(
-                      offstage: widget.bottle.isOpen!,
+                      offstage: bottle.isOpen!,
                       child: const Divider(
                         height: 1,
                         color: Color.fromARGB(255, 220, 220, 220),
                       ),
                     ),
                     Offstage(
-                      offstage: widget.bottle.isOpen!,
+                      offstage: bottle.isOpen!,
                       child: Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Row(
@@ -374,7 +378,7 @@ class _BottleDetailState extends State<BottleDetails> {
                             Text(
                                 cellarPositionFormatted,
                               style: TextStyle(
-                                fontStyle: widget.bottle.clusterId == null
+                                fontStyle: bottle.clusterId == null
                                     ? FontStyle.italic
                                     : FontStyle.normal,
                               ),
@@ -384,7 +388,7 @@ class _BottleDetailState extends State<BottleDetails> {
                       )
                     ),
                     Offstage(
-                      offstage: !widget.bottle.isOpen!,
+                      offstage: !bottle.isOpen!,
                       child: Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Row(
@@ -393,20 +397,20 @@ class _BottleDetailState extends State<BottleDetails> {
                             const Text("Mise en cave le"),
                             const Spacer(),
                             Text(DateFormat.yMMMd()
-                                .format(widget.bottle.createdAt!))
+                                .format(bottle.createdAt!))
                           ],
                         ),
                       ),
                     ),
                     Offstage(
-                      offstage: !widget.bottle.isOpen!,
+                      offstage: !bottle.isOpen!,
                       child: const Divider(
                         height: 1,
                         color: Color.fromARGB(255, 220, 220, 220),
                       ),
                     ),
                     Offstage(
-                      offstage: !widget.bottle.isOpen!,
+                      offstage: !bottle.isOpen!,
                       child: Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Row(
@@ -416,9 +420,9 @@ class _BottleDetailState extends State<BottleDetails> {
                             const Spacer(),
                             Text(
                                 // Test to be able to perform null operator
-                                widget.bottle.isOpen!
+                                bottle.isOpen!
                                     ? DateFormat.yMMMd()
-                                        .format(widget.bottle.openedAt!)
+                                        .format(bottle.openedAt!)
                                     : DateFormat.yMMMd().format(
                                         DateTime.fromMillisecondsSinceEpoch(
                                             0))),
@@ -450,11 +454,11 @@ class _BottleDetailState extends State<BottleDetails> {
                           const Text("Pays"),
                           const Spacer(),
                           Text(
-                            widget.bottle.country == null
+                            bottle.country == null
                                 ? "Non renseigné"
                                 : "${bottleCountry?.flagEmoji} ${bottleCountry?.displayNameNoCountryCode}",
                             style: TextStyle(
-                                fontStyle: widget.bottle.country == null
+                                fontStyle: bottle.country == null
                                     ? FontStyle.italic
                                     : FontStyle.normal),
                           ),
@@ -473,11 +477,11 @@ class _BottleDetailState extends State<BottleDetails> {
                           const Text("Région"),
                           const Spacer(),
                           Text(
-                            (widget.bottle.area == null || widget.bottle.area!.isEmpty)
+                            (bottle.area == null || bottle.area!.isEmpty)
                                 ? "Non renseignée"
-                                : "${widget.bottle.area}",
+                                : "${bottle.area}",
                             style: TextStyle(
-                                fontStyle: (widget.bottle.area == null || widget.bottle.area!.isEmpty)
+                                fontStyle: (bottle.area == null || bottle.area!.isEmpty)
                                     ? FontStyle.italic
                                     : FontStyle.normal),
                           ),
@@ -496,11 +500,11 @@ class _BottleDetailState extends State<BottleDetails> {
                           const Text("Sous-région"),
                           const Spacer(),
                           Text(
-                            (widget.bottle.subArea == null || widget.bottle.subArea!.isEmpty)
+                            (bottle.subArea == null || bottle.subArea!.isEmpty)
                                 ? "Non renseignée"
-                                : "${widget.bottle.subArea}",
+                                : "${bottle.subArea}",
                             style: TextStyle(
-                                fontStyle: (widget.bottle.subArea == null || widget.bottle.subArea!.isEmpty)
+                                fontStyle: (bottle.subArea == null || bottle.subArea!.isEmpty)
                                     ? FontStyle.italic
                                     : FontStyle.normal),
                           ),
@@ -514,10 +518,10 @@ class _BottleDetailState extends State<BottleDetails> {
                 height: 20,
               ),
               Visibility(
-                  visible: widget.bottle.isOpen! || (widget.bottle.tastingNote != null && widget.bottle.tastingNote!.isNotEmpty),
+                  visible: bottle.isOpen! || (bottle.tastingNote != null && bottle.tastingNote!.isNotEmpty),
                   child: const Text('DEGUSTATION')),
               Visibility(
-                visible: widget.bottle.isOpen! || (widget.bottle.tastingNote != null && widget.bottle.tastingNote!.isNotEmpty),
+                visible: bottle.isOpen! || (bottle.tastingNote != null && bottle.tastingNote!.isNotEmpty),
                 child: Container(
                   width: double.infinity,
                   height: 200,
@@ -528,13 +532,13 @@ class _BottleDetailState extends State<BottleDetails> {
                   child: Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: Text(
-                      (widget.bottle.tastingNote == null ||
-                              widget.bottle.tastingNote!.isEmpty)
+                      (bottle.tastingNote == null ||
+                              bottle.tastingNote!.isEmpty)
                           ? "Aucune note"
-                          : widget.bottle.tastingNote!,
+                          : bottle.tastingNote!,
                       style: TextStyle(
-                        fontStyle: (widget.bottle.tastingNote == null ||
-                                widget.bottle.tastingNote!.isEmpty)
+                        fontStyle: (bottle.tastingNote == null ||
+                                bottle.tastingNote!.isEmpty)
                             ? FontStyle.italic
                             : FontStyle.normal,
                       ),
