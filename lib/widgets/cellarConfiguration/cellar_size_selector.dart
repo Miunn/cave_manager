@@ -1,19 +1,17 @@
 import 'package:cave_manager/models/cellar_type_enum.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:cave_manager/providers/clusters_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/cluster.dart';
 
 class CellarSizeSelector extends StatefulWidget {
   const CellarSizeSelector(
       {super.key,
-      required this.cellarType,
       required this.clusterStep,
       required this.totalClusterStep,
       required this.clusterConfiguration});
 
-  final CellarType cellarType;
   final int clusterStep;
   final int totalClusterStep;
   final CellarCluster clusterConfiguration;
@@ -39,6 +37,7 @@ class _CellarSizeSelectorState extends State<CellarSizeSelector> {
   @override
   Widget build(BuildContext context) {
     // On back and forth, restore previous values
+    ClustersProvider clusters = context.read<ClustersProvider>();
     nameController.text = widget.clusterConfiguration.name ?? "";
     widthController.text = (widget.clusterConfiguration.width ?? "").toString();
     heightController.text = (widget.clusterConfiguration.height ?? "").toString();
@@ -46,7 +45,7 @@ class _CellarSizeSelectorState extends State<CellarSizeSelector> {
     String widthLabel = 'Nombre de colonnes';
     String heightLabel = 'Nombre de lignes';
 
-    switch (widget.cellarType) {
+    switch (clusters.cellarType) {
       case CellarType.holder:
         widthLabel = 'Nombre de colonnes';
         break;
@@ -64,7 +63,7 @@ class _CellarSizeSelectorState extends State<CellarSizeSelector> {
         break;
     }
 
-    switch (widget.cellarType) {
+    switch (clusters.cellarType) {
       case CellarType.holder:
         heightLabel = 'Nombre de lignes';
         break;
@@ -94,7 +93,7 @@ class _CellarSizeSelectorState extends State<CellarSizeSelector> {
             Visibility(
                 visible: widget.totalClusterStep > 1,
                 child:
-                    Text("${widget.cellarType.label} n°${widget.clusterStep}")),
+                    Text("${clusters.cellarType.label} n°${widget.clusterStep}")),
             Visibility(
                 visible: widget.totalClusterStep > 1,
                 child: const SizedBox(height: 20)),
@@ -102,7 +101,7 @@ class _CellarSizeSelectorState extends State<CellarSizeSelector> {
               controller: nameController,
               autofocus: true,
               decoration: InputDecoration(
-                labelText: 'Nom du ${widget.cellarType.label}',
+                labelText: 'Nom du ${clusters.cellarType.label}',
               ),
               onChanged: (value) {
                 widget.clusterConfiguration.name = value;

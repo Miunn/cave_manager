@@ -6,13 +6,11 @@ import '../../models/cellar_type_enum.dart';
 class CellarSummary extends StatelessWidget {
   const CellarSummary(
       {super.key,
-      required this.cellarType,
-      required this.clusters,
-      required this.cellarConfiguration});
+        required this.cellarType,
+        required this.clustersConfiguration,});
 
   final CellarType cellarType;
-  final int clusters;
-  final List<CellarCluster> cellarConfiguration;
+  final List<CellarCluster> clustersConfiguration;
 
   @override
   Widget build(BuildContext context) {
@@ -76,9 +74,8 @@ class CellarSummary extends StatelessWidget {
     List<Widget> cellarConfigurationWidgets = [];
     int capacity = 0;
 
-    debugPrint(cellarConfiguration.toString());
-    for (int i = 0; i < cellarConfiguration.length; i++) {
-      CellarCluster cluster = cellarConfiguration[i];
+    for (int i = 0; i < clustersConfiguration.length; i++) {
+      CellarCluster cluster = clustersConfiguration[i];
       capacity += (cluster.width ?? 0) * (cluster.height ?? 0);
       cellarConfigurationWidgets.addAll([
         Padding(
@@ -169,7 +166,7 @@ class CellarSummary extends StatelessWidget {
                     children: <Widget>[
                       Text(clusterLabel),
                       const Spacer(),
-                      Text("$clusters"),
+                      Text("${clustersConfiguration.length}"),
                     ],
                   ),
                 ),

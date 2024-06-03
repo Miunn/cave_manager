@@ -1,12 +1,11 @@
+import 'package:cave_manager/providers/clusters_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/cellar_type_enum.dart';
 
 class CellarTypeSelector extends StatefulWidget {
-  const CellarTypeSelector({super.key, required this.selected, required this.onSelectChange});
-
-  final CellarType selected;
-  final void Function(CellarType) onSelectChange;
+  const CellarTypeSelector({super.key});
 
   @override
   State<CellarTypeSelector> createState() => _CellarTypeSelectorState();
@@ -15,6 +14,8 @@ class CellarTypeSelector extends StatefulWidget {
 class _CellarTypeSelectorState extends State<CellarTypeSelector> {
   @override
   Widget build(BuildContext context) {
+    ClustersProvider clusters = context.watch<ClustersProvider>();
+
     return Column(
       children: [
         const Text("Sélectionnez la topologie de votre cave", style: TextStyle(fontSize: 15)),
@@ -29,15 +30,13 @@ class _CellarTypeSelectorState extends State<CellarTypeSelector> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12.0),
                 side: BorderSide(
-                    color: (widget.selected == CellarType.bags)
+                    color: (clusters.cellarType == CellarType.bags)
                         ? Colors.blue
                         : Theme.of(context).colorScheme.outlineVariant),
               ),
               clipBehavior: Clip.hardEdge,
               child: InkWell(
-                onTap: () {
-                  widget.onSelectChange(CellarType.bags);
-                },
+                onTap: () => clusters.setCellarType(CellarType.bags),
                 child: const SizedBox(
                   width: 140,
                   height: 140,
@@ -58,15 +57,13 @@ class _CellarTypeSelectorState extends State<CellarTypeSelector> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12.0),
                 side: BorderSide(
-                    color: (widget.selected == CellarType.fridge)
+                    color: (clusters.cellarType == CellarType.fridge)
                         ? Colors.blue
                         : Theme.of(context).colorScheme.outlineVariant),
               ),
               clipBehavior: Clip.hardEdge,
               child: InkWell(
-                onTap: () {
-                  widget.onSelectChange(CellarType.fridge);
-                },
+                onTap: () => clusters.setCellarType(CellarType.fridge),
                 child: const SizedBox(
                   width: 140,
                   height: 140,
@@ -87,15 +84,13 @@ class _CellarTypeSelectorState extends State<CellarTypeSelector> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12.0),
                 side: BorderSide(
-                    color: (widget.selected == CellarType.holder)
+                    color: (clusters.cellarType == CellarType.holder)
                         ? Colors.blue
                         : Theme.of(context).colorScheme.outlineVariant),
               ),
               clipBehavior: Clip.hardEdge,
               child: InkWell(
-                onTap: () {
-                  widget.onSelectChange(CellarType.holder);
-                },
+                onTap: () => clusters.setCellarType(CellarType.holder),
                 child: const SizedBox(
                   width: 140,
                   height: 140,

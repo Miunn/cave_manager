@@ -1,15 +1,11 @@
-import 'dart:convert';
-
+import 'package:cave_manager/providers/bottles_provider.dart';
 import 'package:cave_manager/screens/settings.dart';
-import 'package:cave_manager/utils/bottle_db_interface.dart';
-import 'package:cave_manager/utils/cellar_db_interface.dart';
 import 'package:cave_manager/widgets/cellar_layout.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
 import '../models/bottle.dart';
-import '../models/cellar_type_enum.dart';
-import '../models/cluster.dart';
+import '../providers/clusters_provider.dart';
 import '../widgets/cellar_configuration.dart';
 import 'add_bottle_dialog.dart';
 
@@ -23,63 +19,11 @@ class Cellar extends StatefulWidget {
 }
 
 class _CellarState extends State<Cellar> {
-  CellarDatabaseInterface cellarDatabase = CellarDatabaseInterface.instance;
-  BottleDatabaseInterface bottleDatabase = BottleDatabaseInterface.instance;
   bool isCellarBeingConfigured = false;
-  CellarType cellarType = CellarType.none;
-  List<CellarCluster> cellarConfiguration = [];
-  Map<int, List<Bottle>> bottles = {};
 
-  @override
-  void initState() {
-    super.initState();
-    loadCellar();
-  }
-
-  Future<void> loadCellar() async {
-    final prefs = await SharedPreferences.getInstance();
-
-    List<CellarCluster> clusters = await cellarDatabase.getClusters();
-    Map<int, List<Bottle>> bottleMap = await bottleDatabase.getByClusters();
-
-    for (int clusterId in bottleMap.keys) {
-      List<Bottle> clusterBottles = bottleMap[clusterId]!;
-      clusterBottles.sort((a, b) {
-        return (a.clusterY! * clusters[clusterId].width! + a.clusterX!)
-            .compareTo(b.clusterY! * clusters[clusterId].width! + b.clusterX!);
-      });
-    }
-
-    debugPrint("Clusters: $clusters");
-    debugPrint("Bottles: $bottleMap");
-    setState(() {
-      cellarType = CellarType.values.firstWhere(
-          (e) => e.value == prefs.getString("cellarType"),
-          orElse: () => CellarType.none);
-      cellarConfiguration = clusters;
-      bottles = bottleMap;
-    });
-  }
-
-  Future<void> setCellarConfiguration(CellarType cellarType, int clusters, List<CellarCluster> cellarConfiguration) async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setString("cellarType", cellarType.value);
-
-    cellarDatabase.insertAll(cellarConfiguration);
-
-    loadCellar();
-  }
-
-  bool isCellarConfigured() {
-    return cellarType != CellarType.none && cellarConfiguration.isNotEmpty;
-  }
-
-  Widget getCellarLayout() {
-    if (isCellarConfigured()) {
+  Widget getCellarLayout(bool cellarConfigured) {
+    if (cellarConfigured) {
       return CellarLayout(
-        cellarType: cellarType,
-        cellarConfiguration: cellarConfiguration,
-        bottles: bottles,
         onTapEmptyCallback: (int clusterId, int row, int col) {},
       );
     }
@@ -87,7 +31,7 @@ class _CellarState extends State<Cellar> {
     return Center(
       child: SingleChildScrollView(
         child: Column(
-            mainAxisAlignment: isCellarConfigured()
+            mainAxisAlignment: cellarConfigured
                 ? MainAxisAlignment.start
                 : MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
@@ -105,19 +49,17 @@ class _CellarState extends State<Cellar> {
               ),
               Visibility(
                 visible: isCellarBeingConfigured,
-                child: CellarConfiguration(
-                  submitCallback: setCellarConfiguration,
-                ),
+                child: const CellarConfiguration(),
               )
             ]),
       ),
     );
   }
 
-  List<Widget> getActionsList() {
+  List<Widget> getActionsList(bool cellarConfigured) {
     List<Widget> actions = <Widget>[];
 
-    if (isCellarConfigured()) {
+    if (cellarConfigured) {
       actions.add(IconButton(
         onPressed: () => {},
         icon: const Icon(Icons.tune),
@@ -136,6 +78,8 @@ class _CellarState extends State<Cellar> {
 
   @override
   Widget build(BuildContext context) {
+    ClustersProvider clusters = context.watch<ClustersProvider>();
+
     return Scaffold(
       appBar: AppBar(
         // TRY THIS: Try changing the color here to a specific color (to
@@ -145,22 +89,14 @@ class _CellarState extends State<Cellar> {
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: const Text("Cave"),
-        actions: getActionsList(),
+        actions: getActionsList(clusters.isCellarConfigured),
       ),
-      body: getCellarLayout(),
+      body: getCellarLayout(clusters.isCellarConfigured),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          Bottle? newBottle = await Navigator.of(context).push(
-              MaterialPageRoute<Bottle>(
-                  fullscreenDialog: true,
-                  builder: (BuildContext context) => const AddBottleDialog()));
-
-          if (newBottle == null) {
-            return;
-          }
-
-          await bottleDatabase.insert(newBottle);
-          loadCellar();
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute<Bottle>(
+              fullscreenDialog: true,
+              builder: (BuildContext context) => const AddBottleDialog()));
         },
         tooltip: "Insert new bottle",
         child: const Icon(Icons.add),
