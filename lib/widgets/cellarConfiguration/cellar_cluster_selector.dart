@@ -1,16 +1,16 @@
+import 'package:cave_manager/providers/clusters_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/cellar_type_enum.dart';
 
 class CellarClusterSelector extends StatefulWidget {
   const CellarClusterSelector(
       {super.key,
-        required this.cellarType,
       required this.clusterSliderCallback,
       required this.clusterValue});
 
-  final CellarType cellarType;
   final void Function(double) clusterSliderCallback;
   final double clusterValue;
 
@@ -21,9 +21,10 @@ class CellarClusterSelector extends StatefulWidget {
 class _CellarClusterSelectorState extends State<CellarClusterSelector> {
   @override
   Widget build(BuildContext context) {
+    ClustersProvider clusters = context.read<ClustersProvider>();
     String clusterLabel = 'Nombre de Porte Bouteilles';
 
-    switch (widget.cellarType) {
+    switch (clusters.cellarType) {
       case CellarType.holder:
         clusterLabel = 'Nombre de Porte Bouteilles';
         break;

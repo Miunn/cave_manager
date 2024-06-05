@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../models/bottle.dart';
+import '../providers/bottles_provider.dart';
 
 class DeleteBottleDialog extends StatelessWidget {
   const DeleteBottleDialog({super.key, required this.bottle});
@@ -18,9 +20,7 @@ class DeleteBottleDialog extends StatelessWidget {
           child: const Text('Annuler'),
         ),
         TextButton(
-          onPressed: () {
-            Navigator.pop(context, true);
-          },
+          onPressed: () => Navigator.pop(context, true),
           child: const Text('Supprimer'),
         ),
       ],

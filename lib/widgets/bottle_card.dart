@@ -3,17 +3,42 @@ import 'package:cave_manager/models/wine_colors_enum.dart';
 import 'package:cave_manager/screens/bottle_details.dart';
 import 'package:cave_manager/widgets/open_bottle_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../providers/bottles_provider.dart';
 
 class BottleCard extends StatelessWidget {
-  const BottleCard(
-      {super.key, required this.bottle, required this.openBottleCallback});
+  const BottleCard({super.key, required this.bottleId});
 
-  final Bottle bottle;
-  final void Function(Bottle) openBottleCallback;
+  final int bottleId;
+
+  openBottle(BuildContext context) {
+    Bottle bottle = context.read<BottlesProvider>().getBottleById(bottleId);
+    final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+    bottle.isOpen = true;
+    bottle.openedAt = DateTime.now();
+    context.read<BottlesProvider>().updateBottle(bottle);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      key: scaffoldKey,
+      content: const Text('Bouteille sortie de cave'),
+      action: SnackBarAction(
+        label: 'Annuler',
+        onPressed: () {
+          bottle.isOpen = false;
+          bottle.tastingNote = null;
+          scaffoldKey.currentContext?.read<BottlesProvider>().updateBottle(bottle);
+          ScaffoldMessenger.of(scaffoldKey.currentContext ?? context).showSnackBar(const SnackBar(
+            content: Text('Bouteille remise en cave'),
+          ));
+        },
+      ),
+    ));
+  }
 
   @override
   Widget build(BuildContext context) {
+    Bottle bottle = context.read<BottlesProvider>().getBottleById(bottleId);
     String? colorText;
 
     switch (WineColors.values.firstWhere((e) => e.value == bottle.color)) {
@@ -44,7 +69,8 @@ class BottleCard extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => BottleDetails(bottle: bottle)),
+            MaterialPageRoute(
+                builder: (context) => BottleDetails(bottleId: bottle.id!)),
           );
         },
         child: Column(
@@ -65,18 +91,17 @@ class BottleCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 TextButton(
-                  child: const Text("Sortir la bouteille"),
-                  onPressed: () async {
-                    bool? open = await showDialog<bool>(
-                      context: context,
-                      builder: (BuildContext context) =>
-                          OpenBottleDialog(bottle: bottle),
-                    );
-                    if (open != null && open) {
-                      openBottleCallback(bottle);
-                    }
-                  }
-                ),
+                    child: const Text("Sortir la bouteille"),
+                    onPressed: () async {
+                      bool? open = await showDialog<bool>(
+                        context: context,
+                        builder: (BuildContext context) =>
+                            OpenBottleDialog(bottle: bottle),
+                      );
+                      if (open != null && open && context.mounted) {
+                        openBottle(context);
+                      }
+                    }),
               ],
             )
           ],

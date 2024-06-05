@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:cave_manager/models/cellar_type_enum.dart';
+import 'package:cave_manager/providers/clusters_provider.dart';
 import 'package:cave_manager/screens/place_in_cellar.dart';
 import 'package:cave_manager/screens/take_picture.dart';
 import 'package:cave_manager/utils/bottle_db_interface.dart';
@@ -9,11 +10,13 @@ import 'package:cave_manager/utils/cellar_db_interface.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/bottle.dart';
 import '../models/cluster.dart';
 import '../models/wine_colors_enum.dart';
+import '../providers/bottles_provider.dart';
 
 class AddBottleDialog extends StatefulWidget {
   const AddBottleDialog({super.key});
@@ -23,15 +26,10 @@ class AddBottleDialog extends StatefulWidget {
 }
 
 class _AddBottleDialogState extends State<AddBottleDialog> {
-  CellarDatabaseInterface cellarDatabase = CellarDatabaseInterface.instance;
-  BottleDatabaseInterface bottleDatabase = BottleDatabaseInterface.instance;
-
   late CameraDescription _camera;
   bool _save = false;
 
   final _formKey = GlobalKey<FormState>();
-  CellarType cellarType = CellarType.none;
-  List<CellarCluster> cellarConfiguration = [];
   String? bottleImageUri;
   final TextEditingController nameController = TextEditingController();
   final TextEditingController signatureController = TextEditingController();
@@ -61,7 +59,6 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
   @override
   void initState() {
     getCam();
-    loadCellar();
     super.initState();
   }
 
@@ -84,23 +81,6 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
     _camera = cameras.first;
   }
 
-  Future<void> loadCellar() async {
-    final prefs = await SharedPreferences.getInstance();
-
-    List<CellarCluster> clusters = await cellarDatabase.getClusters();
-
-    setState(() {
-      cellarType = CellarType.values.firstWhere(
-              (e) => e.value == prefs.getString("cellarType"),
-          orElse: () => CellarType.none);
-      cellarConfiguration = clusters;
-    });
-  }
-
-  isCellarConfigured() {
-    return cellarType != CellarType.none && cellarConfiguration.isNotEmpty;
-  }
-
   @override
   void dispose() {
     // Delete picture if no save
@@ -121,6 +101,7 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
 
   @override
   Widget build(BuildContext context) {
+
     registerNewPicture() async {
       XFile? capturedImage = await Navigator.push<XFile?>(
         context,
@@ -406,7 +387,8 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
                   area: areaController.text,
                   subArea: subAreaController.text,
                   grapeVariety: grapeVarietyController.text);
-              if (!isCellarConfigured()) {
+              if (!context.read<ClustersProvider>().isCellarConfigured) {
+                context.read<BottlesProvider>().addBottle(bottle);
                 Navigator.of(context).pop(bottle);
               } else {
                 Bottle? bottlePosition = await Navigator.of(context).push(
@@ -421,6 +403,7 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
                 }
 
                 if (context.mounted) {
+                  context.read<BottlesProvider>().addBottle(bottle);
                   Navigator.of(context).pop(bottle);
                 } else {
                   debugPrint("Context not mounted");
