@@ -1,5 +1,6 @@
 import 'package:cave_manager/providers/bottles_provider.dart';
 import 'package:cave_manager/screens/add_bottle_dialog.dart';
+import 'package:cave_manager/screens/bottle_details.dart';
 import 'package:cave_manager/screens/settings.dart';
 import 'package:cave_manager/widgets/bottle_list_card.dart';
 import 'package:flutter/material.dart';
@@ -20,8 +21,10 @@ class _BottlesState extends State<Bottles> {
   @override
   Widget build(BuildContext context) {
     // UI needs to change only when a bottle's name, domain or open status changes
-    List<Bottle> openedBottles = context.select<BottlesProvider, List<Bottle>>((provider) => provider.openedBottles);
-    List<Bottle> closedBottles = context.select<BottlesProvider, List<Bottle>>((provider) => provider.closedBottles);
+    List<Bottle> openedBottles = context.select<BottlesProvider, List<Bottle>>(
+        (provider) => provider.openedBottles);
+    List<Bottle> closedBottles = context.select<BottlesProvider, List<Bottle>>(
+        (provider) => provider.closedBottles);
 
     return Scaffold(
       appBar: AppBar(
@@ -35,11 +38,12 @@ class _BottlesState extends State<Bottles> {
         actions: <Widget>[
           IconButton(
               onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const Settings(title: "Paramètres")),
-              ),
-              icon: const Icon(Icons.settings)
-          )
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            const Settings(title: "Paramètres")),
+                  ),
+              icon: const Icon(Icons.settings))
         ],
       ),
       body: SingleChildScrollView(
@@ -48,6 +52,47 @@ class _BottlesState extends State<Bottles> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(bottom: 16.0),
+                child: SearchAnchor(builder:
+                    (BuildContext context, SearchController controller) {
+                  return SearchBar(
+                    controller: controller,
+                    padding: const MaterialStatePropertyAll<EdgeInsets>(
+                        EdgeInsets.all(8.0)),
+                    hintText: "Rechercher une bouteille",
+                    onTap: () {
+                      controller.openView();
+                    },
+                    onChanged: (String value) {
+                      controller.openView();
+                      //context.read<BottlesProvider>().searchBottles(value);
+                    },
+                    leading: const Icon(Icons.search),
+                  );
+                }, suggestionsBuilder:
+                    (BuildContext context, SearchController controller) {
+                  List<Bottle> searchSuggest = context
+                      .read<BottlesProvider>()
+                      .searchBottles(controller.text);
+                  return List.generate(searchSuggest.length, (index) {
+                    Bottle item = searchSuggest[index];
+                    return ListTile(
+                      title: Text(item.name ?? "No name"),
+                      onTap: () {
+                        controller.closeView(item.name ?? "No name");
+                        controller.clear();
+                        Navigator.of(context).push(
+                          MaterialPageRoute<Bottle>(
+                            builder: (BuildContext context) =>
+                                BottleDetails(bottleId: item.id!),
+                          ),
+                        );
+                      },
+                    );
+                  });
+                }),
+              ),
               (closedBottles.length > 1)
                   ? Text(
                       "${closedBottles.length} Bouteilles en cave",
@@ -107,10 +152,9 @@ class _BottlesState extends State<Bottles> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).push(
-              MaterialPageRoute<Bottle>(
-                  fullscreenDialog: true,
-                  builder: (BuildContext context) => const AddBottleDialog()));
+          Navigator.of(context).push(MaterialPageRoute<Bottle>(
+              fullscreenDialog: true,
+              builder: (BuildContext context) => const AddBottleDialog()));
         },
         tooltip: "Insert new bottle",
         child: const Icon(Icons.add),

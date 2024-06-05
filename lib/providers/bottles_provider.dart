@@ -88,4 +88,8 @@ class BottlesProvider extends ChangeNotifier {
     bottle.isOpen = true;
     await updateBottle(bottle);
   }
+
+  List<Bottle> searchBottles(String query) {
+    return _bottles.where((bottle) => bottle.name!.toLowerCase().contains(query.toLowerCase())).toList();
+  }
 }
