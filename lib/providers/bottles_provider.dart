@@ -15,7 +15,7 @@ class BottlesProvider extends ChangeNotifier {
   UnmodifiableListView<Bottle> get bottles => UnmodifiableListView(_bottles);
   UnmodifiableListView<Bottle> get closedBottles => UnmodifiableListView(_bottles.where((bottle) => !(bottle.isOpen ?? false)));
   UnmodifiableListView<Bottle> get openedBottles => UnmodifiableListView(_bottles.where((bottle) => (bottle.isOpen ?? true)));
-  UnmodifiableListView<Bottle> get lastBottles => UnmodifiableListView(closedBottles.take(5));
+  UnmodifiableListView<Bottle> get lastBottles => UnmodifiableListView(closedBottles.take(5).toList().reversed);
   UnmodifiableMapView<int, UnmodifiableListView<Bottle>> get sortedBottlesByCluster {
     Map<int, UnmodifiableListView<Bottle>> unmodifiableBottlesByClusterId = {};
 
@@ -50,6 +50,18 @@ class BottlesProvider extends ChangeNotifier {
 
       bottlesByClusterId[bottle.clusterId!]!.add(bottle);
     }
+
+    // Sorting bottles to displayed all of them correctly
+    for (int clusterId in bottlesByClusterId.keys) {
+      bottlesByClusterId[clusterId]!.sort((bottle1, bottle2) {
+        if (bottle1.clusterY == bottle2.clusterY) {
+          return bottle1.clusterX!.compareTo(bottle2.clusterX!);
+        }
+
+        return bottle1.clusterY!.compareTo(bottle2.clusterY!);
+      });
+    }
+
     notifyListeners();
   }
 

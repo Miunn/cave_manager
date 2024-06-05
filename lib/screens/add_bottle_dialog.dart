@@ -403,6 +403,7 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
                 }
 
                 if (context.mounted) {
+                  context.read<BottlesProvider>().addBottle(bottle);
                   Navigator.of(context).pop(bottle);
                 } else {
                   debugPrint("Context not mounted");

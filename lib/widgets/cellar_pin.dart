@@ -18,6 +18,7 @@ class CellarPin extends StatelessWidget {
       case "red":
         return Colors.red;
       case "pink":
+        debugPrint("Pink wine");
         return Colors.pink;
       case "white":
         return const Color.fromARGB(255, 220, 220, 220);
