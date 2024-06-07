@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:cave_manager/providers/bottles_provider.dart';
+import 'package:cave_manager/providers/clusters_provider.dart';
 import 'package:cave_manager/screens/take_picture.dart';
 import 'package:cave_manager/utils/cellar_db_interface.dart';
 import 'package:cave_manager/widgets/delete_bottle_dialog.dart';
@@ -53,7 +54,8 @@ class _BottleDetailState extends State<BottleDetails> {
         label: 'Annuler',
         onPressed: () {
           scaffoldKey.currentContext?.read<BottlesProvider>().addBottle(bottle);
-          ScaffoldMessenger.of(scaffoldKey.currentContext ?? context).showSnackBar(const SnackBar(
+          ScaffoldMessenger.of(scaffoldKey.currentContext ?? context)
+              .showSnackBar(const SnackBar(
             content: Text('Suppression annulée'),
           ));
         },
@@ -75,8 +77,11 @@ class _BottleDetailState extends State<BottleDetails> {
         onPressed: () {
           bottle.isOpen = false;
           bottle.tastingNote = null;
-          scaffoldKey.currentContext?.read<BottlesProvider>().updateBottle(bottle);
-          ScaffoldMessenger.of(scaffoldKey.currentContext ?? context).showSnackBar(const SnackBar(
+          scaffoldKey.currentContext
+              ?.read<BottlesProvider>()
+              .updateBottle(bottle);
+          ScaffoldMessenger.of(scaffoldKey.currentContext ?? context)
+              .showSnackBar(const SnackBar(
             content: Text('Bouteille remise en cave'),
           ));
         },
@@ -86,14 +91,17 @@ class _BottleDetailState extends State<BottleDetails> {
 
   @override
   Widget build(BuildContext context) {
-    Bottle bottle = context.select<BottlesProvider, Bottle>((provider) => provider.getBottleById(widget.bottleId));
+    Bottle bottle = context.select<BottlesProvider, Bottle>(
+            (provider) => provider.getBottleById(widget.bottleId));
     debugPrint("Bottle: $bottle");
     String? colorText;
-    Country? bottleCountry = (bottle.country == null) ? null : Country.tryParse(bottle.country!);
-    String cellarPositionFormatted = (bottle.clusterId == null) ? "Non renseigné" : "Ligne ${bottle.clusterY!} Colonne ${bottle.clusterX!}";
+    Country? bottleCountry =
+    (bottle.country == null) ? null : Country.tryParse(bottle.country!);
+    String cellarPositionFormatted = (bottle.clusterId == null)
+        ? "Non renseigné"
+        : "Ligne ${bottle.clusterY!} Colonne ${bottle.clusterX!}";
 
-    switch (
-        WineColors.values.firstWhere((e) => e.value == bottle.color)) {
+    switch (WineColors.values.firstWhere((e) => e.value == bottle.color)) {
       case WineColors.red:
         colorText = WineColors.red.label;
         break;
@@ -115,8 +123,7 @@ class _BottleDetailState extends State<BottleDetails> {
     }
 
     String inCellarString = "";
-    Duration inCellarSince =
-        DateTime.now().difference(bottle.createdAt!);
+    Duration inCellarSince = DateTime.now().difference(bottle.createdAt!);
     int years = inCellarSince.inDays ~/ 365;
     int extraDaysInYears = inCellarSince.inDays % 365;
 
@@ -160,30 +167,35 @@ class _BottleDetailState extends State<BottleDetails> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: Theme
+            .of(context)
+            .colorScheme
+            .inversePrimary,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text('${bottle.name}',),
+        title: Text(
+          '${bottle.name}',
+        ),
         actions: <Widget>[
           IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.edit),
+            onPressed: () {},
+            icon: const Icon(Icons.edit),
           ),
           IconButton(
-              onPressed: () async {
-                bool? shouldDelete = await showDialog<bool>(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return DeleteBottleDialog(bottle: bottle);
-                });
+            onPressed: () async {
+              bool? shouldDelete = await showDialog<bool>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return DeleteBottleDialog(bottle: bottle);
+                  });
 
-                if ((shouldDelete ?? false) && context.mounted) {
-                  deleteBottleCallback(context, bottle);
-                }
-              },
-              icon: const Icon(Icons.delete_forever),
+              if ((shouldDelete ?? false) && context.mounted) {
+                deleteBottleCallback(context, bottle);
+              }
+            },
+            icon: const Icon(Icons.delete_forever),
           ),
         ],
       ),
@@ -205,21 +217,21 @@ class _BottleDetailState extends State<BottleDetails> {
                       height: 160,
                       child: (bottle.imageUri == null)
                           ? Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: IconButton(
-                                icon: Image.asset(
-                                  'assets/wine-bottle.png',
-                                  width: 70,
-                                  height: 70,
-                                ),
-                                iconSize: 70,
-                                onPressed: registerNewPicture,
-                              ),
-                            )
+                        padding: const EdgeInsets.all(8.0),
+                        child: IconButton(
+                          icon: Image.asset(
+                            'assets/wine-bottle.png',
+                            width: 70,
+                            height: 70,
+                          ),
+                          iconSize: 70,
+                          onPressed: registerNewPicture,
+                        ),
+                      )
                           : IconButton(
-                              icon: Image.file(File(bottle.imageUri!)),
-                              onPressed: registerNewPicture,
-                            ),
+                        icon: Image.file(File(bottle.imageUri!)),
+                        onPressed: registerNewPicture,
+                      ),
                     ),
                   ),
                   const Expanded(flex: 1, child: SizedBox()),
@@ -231,12 +243,12 @@ class _BottleDetailState extends State<BottleDetails> {
                         Text("${bottle.name}"),
                         Text(
                           (bottle.signature == null ||
-                                  bottle.signature!.isEmpty)
+                              bottle.signature!.isEmpty)
                               ? "Aucun domaine"
                               : "${bottle.signature}",
                           style: TextStyle(
                               fontStyle: (bottle.signature == null ||
-                                      bottle.signature!.isEmpty)
+                                  bottle.signature!.isEmpty)
                                   ? FontStyle.italic
                                   : FontStyle.normal),
                         ),
@@ -344,11 +356,13 @@ class _BottleDetailState extends State<BottleDetails> {
                           const Text("Cépage"),
                           const Spacer(),
                           Text(
-                            (bottle.grapeVariety == null || bottle.grapeVariety!.isEmpty)
+                            (bottle.grapeVariety == null ||
+                                bottle.grapeVariety!.isEmpty)
                                 ? "Non renseigné"
                                 : "${bottle.grapeVariety}",
                             style: TextStyle(
-                                fontStyle: (bottle.grapeVariety == null || bottle.grapeVariety!.isEmpty)
+                                fontStyle: (bottle.grapeVariety == null ||
+                                    bottle.grapeVariety!.isEmpty)
                                     ? FontStyle.italic
                                     : FontStyle.normal),
                           ),
@@ -380,27 +394,69 @@ class _BottleDetailState extends State<BottleDetails> {
                         color: Color.fromARGB(255, 220, 220, 220),
                       ),
                     ),
-                    Offstage(
-                      offstage: bottle.isOpen!,
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: <Widget>[
-                            const Text("Emplacement"),
-                            const Spacer(),
-                            Text(
-                                cellarPositionFormatted,
-                              style: TextStyle(
-                                fontStyle: bottle.clusterId == null
-                                    ? FontStyle.italic
-                                    : FontStyle.normal,
+                    Consumer<ClustersProvider>(
+                      builder: (BuildContext context, ClustersProvider clusters,
+                          Widget? child) =>
+                          Offstage(
+                            offstage: (bottle.isOpen! && clusters.clusters
+                                .length <= 1),
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: <Widget>[
+                                  Text(clusters.cellarType.label),
+                                  const Spacer(),
+                                  Text(
+                                    clusters
+                                        .getClusterById(bottle.clusterId!)
+                                        ?.name! == null
+                                        ? "Non renseigné"
+                                        : clusters.getClusterById(
+                                        bottle.clusterId!)!.name!,
+                                    style: TextStyle(
+                                      fontStyle: bottle.clusterId == null
+                                          ? FontStyle.italic
+                                          : FontStyle.normal,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                          ],
-                        ),
-                      )
+                          ),
                     ),
+                    Consumer<ClustersProvider>(
+                      builder: (BuildContext context, ClustersProvider clusters,
+                          Widget? child) =>
+                          Offstage(
+                            offstage: (bottle.isOpen! && clusters.clusters
+                                .length <= 1),
+                            child: const Divider(
+                              height: 1,
+                              color: Color.fromARGB(255, 220, 220, 220),
+                            ),
+                          ),
+                    ),
+                    Offstage(
+                        offstage: bottle.isOpen!,
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: <Widget>[
+                              const Text("Emplacement"),
+                              const Spacer(),
+                              Text(
+                                cellarPositionFormatted,
+                                style: TextStyle(
+                                  fontStyle: bottle.clusterId == null
+                                      ? FontStyle.italic
+                                      : FontStyle.normal,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )),
                     Offstage(
                       offstage: !bottle.isOpen!,
                       child: Padding(
@@ -410,8 +466,7 @@ class _BottleDetailState extends State<BottleDetails> {
                           children: <Widget>[
                             const Text("Mise en cave le"),
                             const Spacer(),
-                            Text(DateFormat.yMMMd()
-                                .format(bottle.createdAt!))
+                            Text(DateFormat.yMMMd().format(bottle.createdAt!))
                           ],
                         ),
                       ),
@@ -433,10 +488,11 @@ class _BottleDetailState extends State<BottleDetails> {
                             const Text("Sortie le"),
                             const Spacer(),
                             Text(
-                                // Test to be able to perform null operator
-                                ((bottle.isOpen ?? false) && bottle.openedAt != null)
+                              // Test to be able to perform null operator
+                                ((bottle.isOpen ?? false) &&
+                                    bottle.openedAt != null)
                                     ? DateFormat.yMMMd()
-                                        .format(bottle.openedAt!)
+                                    .format(bottle.openedAt!)
                                     : "Aucune donnée"),
                           ],
                         ),
@@ -468,7 +524,8 @@ class _BottleDetailState extends State<BottleDetails> {
                           Text(
                             bottle.country == null
                                 ? "Non renseigné"
-                                : "${bottleCountry?.flagEmoji} ${bottleCountry?.displayNameNoCountryCode}",
+                                : "${bottleCountry?.flagEmoji} ${bottleCountry
+                                ?.displayNameNoCountryCode}",
                             style: TextStyle(
                                 fontStyle: bottle.country == null
                                     ? FontStyle.italic
@@ -493,7 +550,8 @@ class _BottleDetailState extends State<BottleDetails> {
                                 ? "Non renseignée"
                                 : "${bottle.area}",
                             style: TextStyle(
-                                fontStyle: (bottle.area == null || bottle.area!.isEmpty)
+                                fontStyle: (bottle.area == null ||
+                                    bottle.area!.isEmpty)
                                     ? FontStyle.italic
                                     : FontStyle.normal),
                           ),
@@ -516,7 +574,8 @@ class _BottleDetailState extends State<BottleDetails> {
                                 ? "Non renseignée"
                                 : "${bottle.subArea}",
                             style: TextStyle(
-                                fontStyle: (bottle.subArea == null || bottle.subArea!.isEmpty)
+                                fontStyle: (bottle.subArea == null ||
+                                    bottle.subArea!.isEmpty)
                                     ? FontStyle.italic
                                     : FontStyle.normal),
                           ),
@@ -530,10 +589,14 @@ class _BottleDetailState extends State<BottleDetails> {
                 height: 20,
               ),
               Visibility(
-                  visible: bottle.isOpen! || (bottle.tastingNote != null && bottle.tastingNote!.isNotEmpty),
+                  visible: bottle.isOpen! ||
+                      (bottle.tastingNote != null &&
+                          bottle.tastingNote!.isNotEmpty),
                   child: const Text('DEGUSTATION')),
               Visibility(
-                visible: bottle.isOpen! || (bottle.tastingNote != null && bottle.tastingNote!.isNotEmpty),
+                visible: bottle.isOpen! ||
+                    (bottle.tastingNote != null &&
+                        bottle.tastingNote!.isNotEmpty),
                 child: Container(
                   width: double.infinity,
                   height: 200,
@@ -545,12 +608,12 @@ class _BottleDetailState extends State<BottleDetails> {
                     padding: const EdgeInsets.all(12.0),
                     child: Text(
                       (bottle.tastingNote == null ||
-                              bottle.tastingNote!.isEmpty)
+                          bottle.tastingNote!.isEmpty)
                           ? "Aucune note"
                           : bottle.tastingNote!,
                       style: TextStyle(
                         fontStyle: (bottle.tastingNote == null ||
-                                bottle.tastingNote!.isEmpty)
+                            bottle.tastingNote!.isEmpty)
                             ? FontStyle.italic
                             : FontStyle.normal,
                       ),

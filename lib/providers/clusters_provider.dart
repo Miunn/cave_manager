@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:cave_manager/models/cellar_type_enum.dart';
 import 'package:cave_manager/models/cluster.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -69,4 +70,7 @@ class ClustersProvider extends ChangeNotifier {
     cellarDatabase.insertAll(cellarConfiguration);
     loadClusters();
   }
+
+  CellarCluster? getClusterById(int id) =>
+      _clusters.firstWhereOrNull((cluster) => cluster.id == id);
 }
