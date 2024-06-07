@@ -1,4 +1,3 @@
-import 'package:cave_manager/widgets/Ring/animated_ring.dart';
 import 'package:cave_manager/widgets/Ring/animated_semi_ring.dart';
 import 'package:flutter/cupertino.dart';
 

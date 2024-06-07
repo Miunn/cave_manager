@@ -1,9 +1,7 @@
 import 'dart:collection';
 
 import 'package:cave_manager/models/wine_colors_enum.dart';
-import 'package:cave_manager/providers/clusters_provider.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:provider/provider.dart';
 
 import '../models/bottle.dart';
 import '../utils/bottle_db_interface.dart';
@@ -11,7 +9,7 @@ import '../utils/bottle_db_interface.dart';
 class BottlesProvider extends ChangeNotifier {
   BottleDatabaseInterface bottleDatabase = BottleDatabaseInterface.instance;
   List<Bottle> _bottles = [];
-  Map<int, List<Bottle>> _bottlesByClusterId = {};
+  final Map<int, List<Bottle>> _bottlesByClusterId = {};
   UnmodifiableListView<Bottle> get bottles => UnmodifiableListView(_bottles);
   UnmodifiableListView<Bottle> get closedBottles => UnmodifiableListView(_bottles.where((bottle) => !(bottle.isOpen ?? false)));
   UnmodifiableListView<Bottle> get openedBottles => UnmodifiableListView(_bottles.where((bottle) => (bottle.isOpen ?? true)));

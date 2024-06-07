@@ -8,8 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/area_enum.dart';
-import '../models/area_enum.dart';
-import '../models/area_enum.dart';
 import '../models/bottle.dart';
 import '../models/wine_colors_enum.dart';
 

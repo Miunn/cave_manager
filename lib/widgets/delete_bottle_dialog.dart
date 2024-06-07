@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../models/bottle.dart';
-import '../providers/bottles_provider.dart';
 
 class DeleteBottleDialog extends StatelessWidget {
   const DeleteBottleDialog({super.key, required this.bottle});

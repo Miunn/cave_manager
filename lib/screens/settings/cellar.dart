@@ -1,9 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CellarSettings extends StatefulWidget {
-  const CellarSettings({Key? key});
+  const CellarSettings({super.key});
 
   @override
   State<CellarSettings> createState() => _CellarSettingsState();

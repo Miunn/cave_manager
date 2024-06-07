@@ -3,7 +3,6 @@ import 'package:cave_manager/providers/clusters_provider.dart';
 import 'package:cave_manager/screens/bottles.dart';
 import 'package:cave_manager/screens/cellar.dart';
 import 'package:cave_manager/screens/home.dart';
-import 'package:cave_manager/screens/settings.dart';
 import 'package:cave_manager/screens/statistics.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

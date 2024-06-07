@@ -1,21 +1,16 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
-import 'package:cave_manager/models/cellar_type_enum.dart';
 import 'package:cave_manager/providers/clusters_provider.dart';
 import 'package:cave_manager/screens/place_in_cellar.dart';
 import 'package:cave_manager/screens/take_picture.dart';
-import 'package:cave_manager/utils/bottle_db_interface.dart';
-import 'package:cave_manager/utils/cellar_db_interface.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/area_enum.dart';
 import '../models/bottle.dart';
-import '../models/cluster.dart';
 import '../models/wine_colors_enum.dart';
 import '../providers/bottles_provider.dart';
 

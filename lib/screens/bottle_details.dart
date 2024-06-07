@@ -4,18 +4,14 @@ import 'package:camera/camera.dart';
 import 'package:cave_manager/providers/bottles_provider.dart';
 import 'package:cave_manager/providers/clusters_provider.dart';
 import 'package:cave_manager/screens/take_picture.dart';
-import 'package:cave_manager/utils/cellar_db_interface.dart';
 import 'package:cave_manager/widgets/delete_bottle_dialog.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/bottle.dart';
-import '../models/cluster.dart';
 import '../models/wine_colors_enum.dart';
-import '../utils/bottle_db_interface.dart';
 import '../widgets/open_bottle_dialog.dart';
 
 class BottleDetails extends StatefulWidget {
