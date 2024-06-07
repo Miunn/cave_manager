@@ -3,10 +3,12 @@ import 'package:cave_manager/screens/add_bottle_dialog.dart';
 import 'package:cave_manager/screens/bottle_details.dart';
 import 'package:cave_manager/screens/settings.dart';
 import 'package:cave_manager/widgets/bottle_list_card.dart';
+import 'package:cave_manager/widgets/dropdown_chip.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/bottle.dart';
+import '../models/wine_colors_enum.dart';
 
 class Bottles extends StatefulWidget {
   const Bottles({super.key, required this.title});
@@ -18,13 +20,23 @@ class Bottles extends StatefulWidget {
 }
 
 class _BottlesState extends State<Bottles> {
+  Set<WineColors> filters = <WineColors>{};
+
+  List<Bottle> filterBottles(List<Bottle> bottles) {
+    if (filters.isEmpty) {
+      return bottles;
+    }
+
+    return bottles.where((bottle) => filters.contains(WineColors.fromValue(bottle.color ?? "other"))).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     // UI needs to change only when a bottle's name, domain or open status changes
-    List<Bottle> openedBottles = context.select<BottlesProvider, List<Bottle>>(
-        (provider) => provider.openedBottles);
-    List<Bottle> closedBottles = context.select<BottlesProvider, List<Bottle>>(
-        (provider) => provider.closedBottles);
+    List<Bottle> openedBottles = filterBottles(context.select<BottlesProvider, List<Bottle>>(
+        (provider) => provider.openedBottles));
+    List<Bottle> closedBottles = filterBottles(context.select<BottlesProvider, List<Bottle>>(
+        (provider) => provider.closedBottles));
 
     return Scaffold(
       appBar: AppBar(
@@ -46,107 +58,170 @@ class _BottlesState extends State<Bottles> {
               icon: const Icon(Icons.settings))
         ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 40.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(bottom: 16.0),
-                child: SearchAnchor(builder:
-                    (BuildContext context, SearchController controller) {
-                  return SearchBar(
-                    controller: controller,
-                    padding: const MaterialStatePropertyAll<EdgeInsets>(
-                        EdgeInsets.all(8.0)),
-                    hintText: "Rechercher une bouteille",
-                    onTap: () {
-                      controller.openView();
-                    },
-                    onChanged: (String value) {
-                      controller.openView();
-                      //context.read<BottlesProvider>().searchBottles(value);
-                    },
-                    leading: const Icon(Icons.search),
-                  );
-                }, suggestionsBuilder:
-                    (BuildContext context, SearchController controller) {
-                  List<Bottle> searchSuggest = context
-                      .read<BottlesProvider>()
-                      .searchBottles(controller.text);
-                  return List.generate(searchSuggest.length, (index) {
-                    Bottle item = searchSuggest[index];
-                    return ListTile(
-                      title: Text(item.name ?? "No name"),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20.0, 8.0, 20.0, 40.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 16.0),
+                  child: SearchAnchor(builder:
+                      (BuildContext context, SearchController controller) {
+                    return SearchBar(
+                      controller: controller,
+                      padding: const MaterialStatePropertyAll<EdgeInsets>(
+                          EdgeInsets.all(8.0)),
+                      hintText: "Rechercher une bouteille",
                       onTap: () {
-                        controller.closeView(item.name ?? "No name");
-                        controller.clear();
-                        Navigator.of(context).push(
-                          MaterialPageRoute<Bottle>(
-                            builder: (BuildContext context) =>
-                                BottleDetails(bottleId: item.id!),
-                          ),
-                        );
+                        controller.openView();
                       },
+                      onChanged: (String value) {
+                        controller.openView();
+                        //context.read<BottlesProvider>().searchBottles(value);
+                      },
+                      leading: const Icon(Icons.search),
                     );
-                  });
-                }),
-              ),
-              (closedBottles.length > 1)
-                  ? Text(
-                      "${closedBottles.length} Bouteilles en cave",
-                      style: const TextStyle(fontSize: 15),
-                    )
-                  : Text(
-                      "${closedBottles.length} Bouteille en cave",
-                      style: const TextStyle(fontSize: 15),
+                  }, suggestionsBuilder:
+                      (BuildContext context, SearchController controller) {
+                    List<Bottle> searchSuggest = context
+                        .read<BottlesProvider>()
+                        .searchBottles(controller.text);
+                    return List.generate(searchSuggest.length, (index) {
+                      Bottle item = searchSuggest[index];
+                      return ListTile(
+                        title: Text(item.name ?? "No name"),
+                        onTap: () {
+                          controller.closeView(item.name ?? "No name");
+                          controller.clear();
+                          Navigator.of(context).push(
+                            MaterialPageRoute<Bottle>(
+                              builder: (BuildContext context) =>
+                                  BottleDetails(bottleId: item.id!),
+                            ),
+                          );
+                        },
+                      );
+                    });
+                  }),
+                ),
+                Wrap(
+                  spacing: 8.0,
+                  children: [
+                    FilterChip(
+                      label: const Text("Rouge",),
+                      selected: filters.contains(WineColors.red),
+                      onSelected: (bool selected) {
+                        setState(() {
+                          if (selected) {
+                            filters.add(WineColors.red);
+                          } else {
+                            filters.remove(WineColors.red);
+                          }
+                        });
+                      },
                     ),
-              Visibility(
-                visible: closedBottles.isEmpty,
-                child: const Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    "Aucune bouteille en cave",
-                    style: TextStyle(fontStyle: FontStyle.italic),
+                    FilterChip(
+                      label: const Text("Rosé",),
+                      selected: filters.contains(WineColors.pink),
+                      onSelected: (bool selected) {
+                        setState(() {
+                          if (selected) {
+                            filters.add(WineColors.pink);
+                          } else {
+                            filters.remove(WineColors.pink);
+                          }
+                        });
+                      },
+                    ),
+                    FilterChip(
+                      label: const Text("Blanc",),
+                      selected: filters.contains(WineColors.white),
+                      onSelected: (bool selected) {
+                        setState(() {
+                          if (selected) {
+                            filters.add(WineColors.white);
+                          } else {
+                            filters.remove(WineColors.white);
+                          }
+                        });
+                      },
+                    ),
+                    DropdownChip(
+                        label: const Text("Région"),
+                        items: const [
+                          ("Bordeaux", Text("Bordeaux")),
+                          ("Bourgogne", Text("Bourgogne")),
+                          ("Champagne", Text("Champagne")),
+                          ("Languedoc", Text("Languedoc")),
+                          ("Provence", Text("Provence")),
+                          ("Rhône", Text("Rhône")),
+                          ("Sud-Ouest", Text("Sud-Ouest")),
+                          ("Val de Loire", Text("Val de Loire")),
+                          ("Vallée du Rhône", Text("Vallée du Rhône")),
+                        ],
+                        onChanged: (String value) {
+                          debugPrint(value);
+                        }
+                    )
+                  ],
+                ),
+                (closedBottles.length > 1)
+                    ? Text(
+                        "${closedBottles.length} Bouteilles en cave",
+                        style: const TextStyle(fontSize: 15),
+                      )
+                    : Text(
+                        "${closedBottles.length} Bouteille en cave",
+                        style: const TextStyle(fontSize: 15),
+                      ),
+                Visibility(
+                  visible: closedBottles.isEmpty,
+                  child: const Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      "Aucune bouteille en cave",
+                      style: TextStyle(fontStyle: FontStyle.italic),
+                    ),
                   ),
                 ),
-              ),
-              ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: closedBottles.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return BottleListCard(bottleId: closedBottles[index].id!);
-                  }),
-              const SizedBox(
-                height: 20,
-              ),
-              (openedBottles.length > 1)
-                  ? Text(
-                      "${openedBottles.length} Bouteilles ouvertes",
-                      style: const TextStyle(fontSize: 15),
-                    )
-                  : Text(
-                      "${openedBottles.length} Bouteille ouverte",
-                      style: const TextStyle(fontSize: 15),
+                ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: closedBottles.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return BottleListCard(bottleId: closedBottles[index].id!);
+                    }),
+                const SizedBox(
+                  height: 20,
+                ),
+                (openedBottles.length > 1)
+                    ? Text(
+                        "${openedBottles.length} Bouteilles ouvertes",
+                        style: const TextStyle(fontSize: 15),
+                      )
+                    : Text(
+                        "${openedBottles.length} Bouteille ouverte",
+                        style: const TextStyle(fontSize: 15),
+                      ),
+                Visibility(
+                  visible: openedBottles.isEmpty,
+                  child: const Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      "Aucune bouteille ouverte",
+                      style: TextStyle(fontStyle: FontStyle.italic),
                     ),
-              Visibility(
-                visible: openedBottles.isEmpty,
-                child: const Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    "Aucune bouteille ouverte",
-                    style: TextStyle(fontStyle: FontStyle.italic),
                   ),
                 ),
-              ),
-              ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: openedBottles.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return BottleListCard(bottleId: openedBottles[index].id!);
-                  }),
-            ],
+                ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: openedBottles.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return BottleListCard(bottleId: openedBottles[index].id!);
+                    }),
+              ],
+            ),
           ),
         ),
       ),

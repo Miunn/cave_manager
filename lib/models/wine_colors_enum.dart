@@ -5,6 +5,11 @@ enum WineColors {
   other('Autre', 'other');
 
   const WineColors(this.label, this.value);
+
   final String label;
   final String value;
+
+  static WineColors fromValue(String value) {
+    return WineColors.values.firstWhere((element) => element.value == value);
+  }
 }
