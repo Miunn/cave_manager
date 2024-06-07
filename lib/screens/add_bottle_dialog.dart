@@ -38,8 +38,8 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
   final TextEditingController alcoholLevelController = TextEditingController();
 
   Country? selectedCountry = CountryService().findByCode("fr");
-  final TextEditingController areaController = TextEditingController();
-  final TextEditingController subAreaController = TextEditingController();
+  String? area;
+  String? subArea;
   final TextEditingController grapeVarietyController = TextEditingController();
 
   WineColors selectedColor = WineColors.red;
@@ -81,8 +81,6 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
     signatureController.dispose();
     vintageYearController.dispose();
     alcoholLevelController.dispose();
-    areaController.dispose();
-    subAreaController.dispose();
     grapeVarietyController.dispose();
     super.dispose();
   }
@@ -267,6 +265,10 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
                 ),
                 Autocomplete<String>(
                   optionsBuilder: (TextEditingValue textEditingValue) {
+                    setState(() {
+                      area = textEditingValue.text;
+                    });
+
                     if (textEditingValue.text == '') {
                       return const Iterable<String>.empty();
                     }
@@ -301,15 +303,16 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
                 ),
                 Autocomplete<String>(
                   optionsBuilder: (TextEditingValue textEditingValue) {
+                    setState(() {
+                      subArea = textEditingValue.text;
+                    });
+
                     if (textEditingValue.text == '') {
                       return const Iterable<String>.empty();
                     }
                     return Areas.values.where((element) => element.label
                         .toLowerCase()
                         .contains(textEditingValue.text.toLowerCase())).map((e) => e.label);
-                  },
-                  onSelected: (String selection) {
-                    debugPrint("Selected $selection");
                   },
                   fieldViewBuilder: (BuildContext context,
                       TextEditingController textEditingController,
@@ -367,8 +370,8 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
                   vintageYear: int.tryParse(vintageYearController.text),
                   alcoholLevel: double.tryParse(alcoholLevelController.text),
                   country: selectedCountry?.countryCode,
-                  area: areaController.text,
-                  subArea: subAreaController.text,
+                  area: area,
+                  subArea: subArea,
                   grapeVariety: grapeVarietyController.text);
               if (!context.read<ClustersProvider>().isCellarConfigured) {
                 context.read<BottlesProvider>().addBottle(bottle);

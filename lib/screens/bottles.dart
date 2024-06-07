@@ -31,12 +31,10 @@ class _BottlesState extends State<Bottles> {
         ? bottles
         : bottles.where((bottle) => colorFilters.contains(WineColors.fromValue(bottle.color ?? "other"))).toList();
 
-    debugPrint("colorFilteredBottles: $colorFilteredBottles");
     List<Bottle> areaFilteredBottles = areaFilter == null
         ? colorFilteredBottles
-        : colorFilteredBottles.where((bottle) => bottle.area == areaFilter!.value).toList();
+        : colorFilteredBottles.where((bottle) => bottle.area == areaFilter!.label).toList();
 
-    debugPrint("areaFilteredBottles: $areaFilteredBottles");
     return areaFilteredBottles;
   }
 

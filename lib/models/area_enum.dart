@@ -24,4 +24,8 @@ enum Areas {
   static Areas? fromValue(String? value) {
     return Areas.values.firstWhereOrNull((area) => area.value == value);
   }
+
+  static Areas? fromLabel(String? label) {
+    return Areas.values.firstWhereOrNull((area) => area.label == label);
+  }
 }
