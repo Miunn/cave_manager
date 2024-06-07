@@ -99,7 +99,7 @@ class _BottleDetailState extends State<BottleDetails> {
     (bottle.country == null) ? null : Country.tryParse(bottle.country!);
     String cellarPositionFormatted = (bottle.clusterId == null)
         ? "Non renseigné"
-        : "Ligne ${bottle.clusterY!} Colonne ${bottle.clusterX!}";
+        : "Ligne ${bottle.clusterY! + 1} Colonne ${bottle.clusterX! + 1}";
 
     switch (WineColors.values.firstWhere((e) => e.value == bottle.color)) {
       case WineColors.red:
