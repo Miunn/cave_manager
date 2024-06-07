@@ -7,6 +7,9 @@ import 'package:cave_manager/widgets/dropdown_chip.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../models/area_enum.dart';
+import '../models/area_enum.dart';
+import '../models/area_enum.dart';
 import '../models/bottle.dart';
 import '../models/wine_colors_enum.dart';
 
@@ -150,17 +153,7 @@ class _BottlesState extends State<Bottles> {
                     ),
                     DropdownChip(
                         label: const Text("Région"),
-                        items: const [
-                          ("Bordeaux", Text("Bordeaux")),
-                          ("Bourgogne", Text("Bourgogne")),
-                          ("Champagne", Text("Champagne")),
-                          ("Languedoc", Text("Languedoc")),
-                          ("Provence", Text("Provence")),
-                          ("Rhône", Text("Rhône")),
-                          ("Sud-Ouest", Text("Sud-Ouest")),
-                          ("Val de Loire", Text("Val de Loire")),
-                          ("Vallée du Rhône", Text("Vallée du Rhône")),
-                        ],
+                        items: Areas.values.map((area) => (area.value, Text(area.label))).toList(),
                         onChanged: (String value) {
                           debugPrint(value);
                         }

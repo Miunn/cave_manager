@@ -13,6 +13,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../models/area_enum.dart';
 import '../models/bottle.dart';
 import '../models/cluster.dart';
 import '../models/wine_colors_enum.dart';
@@ -42,19 +43,6 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
   final TextEditingController grapeVarietyController = TextEditingController();
 
   WineColors selectedColor = WineColors.red;
-
-  static const List<String> _areas = <String>[
-    "Alsace/Moselle",
-    "Beaujolais",
-    "Bourgogne",
-    "Bordeaux",
-    "Corse",
-    "Jura",
-    "Languedoc Roussillon",
-    "Sud Est",
-    "Sud Ouest",
-    "Vallée de la Loire",
-  ];
 
   @override
   void initState() {
@@ -101,7 +89,6 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
 
   @override
   Widget build(BuildContext context) {
-
     registerNewPicture() async {
       XFile? capturedImage = await Navigator.push<XFile?>(
         context,
@@ -283,11 +270,9 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
                     if (textEditingValue.text == '') {
                       return const Iterable<String>.empty();
                     }
-                    return _areas.where((String option) {
-                      return option
-                          .toLowerCase()
-                          .contains(textEditingValue.text.toLowerCase());
-                    });
+                    return Areas.values.where((element) => element.label
+                        .toLowerCase()
+                        .contains(textEditingValue.text.toLowerCase())).map((e) => e.label);
                   },
                   onSelected: (String selection) {
                     debugPrint("Selected $selection");
@@ -319,11 +304,9 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
                     if (textEditingValue.text == '') {
                       return const Iterable<String>.empty();
                     }
-                    return _areas.where((String option) {
-                      return option
-                          .toLowerCase()
-                          .contains(textEditingValue.text.toLowerCase());
-                    });
+                    return Areas.values.where((element) => element.label
+                        .toLowerCase()
+                        .contains(textEditingValue.text.toLowerCase())).map((e) => e.label);
                   },
                   onSelected: (String selection) {
                     debugPrint("Selected $selection");
