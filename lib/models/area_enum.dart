@@ -1,3 +1,5 @@
+import 'package:collection/collection.dart';
+
 enum Areas {
   alsace('Alsace', 'alsace'),
   beaujolais('Beaujolais', 'beaujolais'),
@@ -18,4 +20,8 @@ enum Areas {
   const Areas(this.label, this.value);
   final String label;
   final String value;
+
+  static Areas? fromValue(String? value) {
+    return Areas.values.firstWhereOrNull((area) => area.value == value);
+  }
 }

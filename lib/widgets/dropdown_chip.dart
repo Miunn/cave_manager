@@ -9,7 +9,7 @@ class DropdownChip extends StatefulWidget {
 
   final Widget label;
   final List<(String, Widget)> items;
-  final Function(String)? onChanged;
+  final Function(String?)? onChanged;
 
   @override
   State<DropdownChip> createState() => _DropdownChipState();
@@ -40,7 +40,7 @@ class _DropdownChipState extends State<DropdownChip> {
                   setState(() {
                     selectedItem = null;
                   });
-                  widget.onChanged?.call('');
+                  widget.onChanged?.call(null);
                 }
               : null,
         );

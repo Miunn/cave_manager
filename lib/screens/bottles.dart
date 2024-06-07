@@ -23,14 +23,21 @@ class Bottles extends StatefulWidget {
 }
 
 class _BottlesState extends State<Bottles> {
-  Set<WineColors> filters = <WineColors>{};
+  Set<WineColors> colorFilters = <WineColors>{};
+  Areas? areaFilter;
 
   List<Bottle> filterBottles(List<Bottle> bottles) {
-    if (filters.isEmpty) {
-      return bottles;
-    }
+    List<Bottle> colorFilteredBottles = colorFilters.isEmpty
+        ? bottles
+        : bottles.where((bottle) => colorFilters.contains(WineColors.fromValue(bottle.color ?? "other"))).toList();
 
-    return bottles.where((bottle) => filters.contains(WineColors.fromValue(bottle.color ?? "other"))).toList();
+    debugPrint("colorFilteredBottles: $colorFilteredBottles");
+    List<Bottle> areaFilteredBottles = areaFilter == null
+        ? colorFilteredBottles
+        : colorFilteredBottles.where((bottle) => bottle.area == areaFilter!.value).toList();
+
+    debugPrint("areaFilteredBottles: $areaFilteredBottles");
+    return areaFilteredBottles;
   }
 
   @override
@@ -114,39 +121,39 @@ class _BottlesState extends State<Bottles> {
                   children: [
                     FilterChip(
                       label: const Text("Rouge",),
-                      selected: filters.contains(WineColors.red),
+                      selected: colorFilters.contains(WineColors.red),
                       onSelected: (bool selected) {
                         setState(() {
                           if (selected) {
-                            filters.add(WineColors.red);
+                            colorFilters.add(WineColors.red);
                           } else {
-                            filters.remove(WineColors.red);
+                            colorFilters.remove(WineColors.red);
                           }
                         });
                       },
                     ),
                     FilterChip(
                       label: const Text("Rosé",),
-                      selected: filters.contains(WineColors.pink),
+                      selected: colorFilters.contains(WineColors.pink),
                       onSelected: (bool selected) {
                         setState(() {
                           if (selected) {
-                            filters.add(WineColors.pink);
+                            colorFilters.add(WineColors.pink);
                           } else {
-                            filters.remove(WineColors.pink);
+                            colorFilters.remove(WineColors.pink);
                           }
                         });
                       },
                     ),
                     FilterChip(
                       label: const Text("Blanc",),
-                      selected: filters.contains(WineColors.white),
+                      selected: colorFilters.contains(WineColors.white),
                       onSelected: (bool selected) {
                         setState(() {
                           if (selected) {
-                            filters.add(WineColors.white);
+                            colorFilters.add(WineColors.white);
                           } else {
-                            filters.remove(WineColors.white);
+                            colorFilters.remove(WineColors.white);
                           }
                         });
                       },
@@ -154,8 +161,10 @@ class _BottlesState extends State<Bottles> {
                     DropdownChip(
                         label: const Text("Région"),
                         items: Areas.values.map((area) => (area.value, Text(area.label))).toList(),
-                        onChanged: (String value) {
-                          debugPrint(value);
+                        onChanged: (String? value) {
+                          setState(() {
+                            areaFilter = Areas.fromValue(value);
+                          });
                         }
                     )
                   ],
