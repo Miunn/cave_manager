@@ -31,6 +31,7 @@ class _BottlesState extends State<Bottles> {
         ? bottles
         : bottles.where((bottle) => colorFilters.contains(WineColors.fromValue(bottle.color ?? "other"))).toList();
 
+    // Care to filter on area label because autocomplete widget register the label inside the database
     List<Bottle> areaFilteredBottles = areaFilter == null
         ? colorFilteredBottles
         : colorFilteredBottles.where((bottle) => bottle.area == areaFilter!.label).toList();
