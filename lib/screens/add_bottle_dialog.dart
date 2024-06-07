@@ -276,9 +276,6 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
                         .toLowerCase()
                         .contains(textEditingValue.text.toLowerCase())).map((e) => e.label);
                   },
-                  onSelected: (String selection) {
-                    debugPrint("Selected $selection");
-                  },
                   fieldViewBuilder: (
                     BuildContext context,
                     TextEditingController textEditingController,
@@ -326,7 +323,6 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
                       ),
                       onFieldSubmitted: (String value) {
                         onFieldSubmitted();
-                        debugPrint('You just typed a new entry  $value');
                       },
                     );
                   },
@@ -389,10 +385,11 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
                 }
 
                 if (context.mounted) {
-                  context.read<BottlesProvider>().addBottle(bottle);
+                  await context.read<BottlesProvider>().addBottle(bottle);
+                }
+
+                if (context.mounted) {
                   Navigator.of(context).pop(bottle);
-                } else {
-                  debugPrint("Context not mounted");
                 }
               }
             },

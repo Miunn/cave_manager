@@ -35,14 +35,14 @@ class _CellarLayoutState extends State<CellarLayout> {
   List<Widget> getTabsContent(
       CellarType cellarType,
       UnmodifiableListView<CellarCluster> clusters,
-      UnmodifiableMapView<int, UnmodifiableListView<Bottle>> bottles) {
+      UnmodifiableMapView<int, UnmodifiableListView<Bottle>> bottlesByCluster) {
     List<Widget> tabsContent = [];
 
     for (CellarCluster cluster in clusters) {
       int currentWidth = cluster.width ?? 0;
       int currentHeight = cluster.height ?? 0;
 
-      List<Widget> rows = getClusterLayout(currentWidth, currentHeight, cluster, bottles);
+      List<Widget> rows = getClusterLayout(currentWidth, currentHeight, cluster, bottlesByCluster[cluster.id]!);
 
       tabsContent.add(
         SingleChildScrollView(
@@ -63,13 +63,13 @@ class _CellarLayoutState extends State<CellarLayout> {
     return tabsContent;
   }
 
-  List<Row> getClusterLayout(int width, int height, CellarCluster cluster, UnmodifiableMapView<int, UnmodifiableListView<Bottle>> bottles) {
+  List<Row> getClusterLayout(int width, int height, CellarCluster cluster, UnmodifiableListView<Bottle> bottles) {
     Bottle? currentBottle;
     List<Row> rows = [];
     int bottleListIndex = 0;
 
-    if (bottles[cluster.id] != null && bottles[cluster.id]!.isNotEmpty) {
-      currentBottle = bottles[cluster.id]![bottleListIndex];
+    if (bottles.isNotEmpty) {
+      currentBottle = bottles[bottleListIndex];
     }
     bool displayBottle = false;
     void Function() onTap;
@@ -147,8 +147,8 @@ class _CellarLayoutState extends State<CellarLayout> {
           bottleListIndex++;
           displayBottle = false;
 
-          if (bottleListIndex < bottles[cluster.id!]!.length) {
-            currentBottle = bottles[cluster.id!]![bottleListIndex];
+          if (bottleListIndex < bottles.length) {
+            currentBottle = bottles[bottleListIndex];
           }
         }
       }
@@ -165,7 +165,7 @@ class _CellarLayoutState extends State<CellarLayout> {
     UnmodifiableListView<CellarCluster> clusters =
         context.read<ClustersProvider>().clusters;
     UnmodifiableMapView<int, UnmodifiableListView<Bottle>> bottlesByCluster =
-        context.read<BottlesProvider>().sortedBottlesByCluster;
+        context.watch<BottlesProvider>().sortedBottlesByCluster;
 
     if (clusters.length > 1) {
       return DefaultTabController(
@@ -201,7 +201,7 @@ class _CellarLayoutState extends State<CellarLayout> {
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               ...getClusterLayout(
-                  clusters[0].width ?? 0, clusters[0].height ?? 0, clusters[0], bottlesByCluster),
+                  clusters[0].width ?? 0, clusters[0].height ?? 0, clusters[0], bottlesByCluster[clusters[0].id!]!),
             ]
           ),
         ),

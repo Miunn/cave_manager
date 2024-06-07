@@ -11,7 +11,7 @@ import '../utils/bottle_db_interface.dart';
 class BottlesProvider extends ChangeNotifier {
   BottleDatabaseInterface bottleDatabase = BottleDatabaseInterface.instance;
   List<Bottle> _bottles = [];
-  Map<int, List<Bottle>> bottlesByClusterId = {};
+  Map<int, List<Bottle>> _bottlesByClusterId = {};
   UnmodifiableListView<Bottle> get bottles => UnmodifiableListView(_bottles);
   UnmodifiableListView<Bottle> get closedBottles => UnmodifiableListView(_bottles.where((bottle) => !(bottle.isOpen ?? false)));
   UnmodifiableListView<Bottle> get openedBottles => UnmodifiableListView(_bottles.where((bottle) => (bottle.isOpen ?? true)));
@@ -19,8 +19,8 @@ class BottlesProvider extends ChangeNotifier {
   UnmodifiableMapView<int, UnmodifiableListView<Bottle>> get sortedBottlesByCluster {
     Map<int, UnmodifiableListView<Bottle>> unmodifiableBottlesByClusterId = {};
 
-    for (int clusterId in bottlesByClusterId.keys) {
-      unmodifiableBottlesByClusterId[clusterId] = UnmodifiableListView(bottlesByClusterId[clusterId]!);
+    for (int clusterId in _bottlesByClusterId.keys) {
+      unmodifiableBottlesByClusterId[clusterId] = UnmodifiableListView(_bottlesByClusterId[clusterId]!);
     }
 
     return UnmodifiableMapView(unmodifiableBottlesByClusterId);
@@ -39,21 +39,22 @@ class BottlesProvider extends ChangeNotifier {
 
   Future<void> loadBottles() async {
     _bottles = await bottleDatabase.getAll();
+    _bottlesByClusterId.clear();
     for (Bottle bottle in closedBottles) {
       if (bottle.clusterId == null) {
         continue;
       }
 
-      if (bottlesByClusterId[bottle.clusterId!] == null) {
-        bottlesByClusterId[bottle.clusterId!] = [];
+      if (_bottlesByClusterId[bottle.clusterId!] == null) {
+        _bottlesByClusterId[bottle.clusterId!] = [];
       }
 
-      bottlesByClusterId[bottle.clusterId!]!.add(bottle);
+      _bottlesByClusterId[bottle.clusterId!]!.add(bottle);
     }
 
     // Sorting bottles to displayed all of them correctly
-    for (int clusterId in bottlesByClusterId.keys) {
-      bottlesByClusterId[clusterId]!.sort((bottle1, bottle2) {
+    for (int clusterId in _bottlesByClusterId.keys) {
+      _bottlesByClusterId[clusterId]!.sort((bottle1, bottle2) {
         if (bottle1.clusterY == bottle2.clusterY) {
           return bottle1.clusterX!.compareTo(bottle2.clusterX!);
         }
