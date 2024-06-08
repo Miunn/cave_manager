@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:cave_manager/models/cluster.dart';
 import 'package:cave_manager/providers/bottles_provider.dart';
 import 'package:cave_manager/providers/clusters_provider.dart';
+import 'package:cave_manager/widgets/blinking.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,9 +13,10 @@ import '../screens/bottle_details.dart';
 import 'cellar_pin.dart';
 
 class CellarLayout extends StatefulWidget {
-  const CellarLayout({super.key, required this.onTapEmptyCallback});
+  const CellarLayout({super.key, required this.onTapEmptyCallback, this.blinkingBottleId});
 
   final void Function(int clusterId, int row, int column) onTapEmptyCallback;
+  final int? blinkingBottleId;
 
   @override
   State<CellarLayout> createState() => _CellarLayoutState();
@@ -129,19 +131,38 @@ class _CellarLayoutState extends State<CellarLayout> {
           onTap = () => widget.onTapEmptyCallback(cluster.id!, i, j);
         }
 
-        rowChildren.add(
-          SizedBox(
-            width: 35,
-            height: 35,
-            child: Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: CellarPin(
-                bottle: (displayBottle) ? currentBottle : null,
-                onTap: onTap,
+        if (displayBottle && currentBottle != null && widget.blinkingBottleId == currentBottle.id) {
+          rowChildren.add(
+            SizedBox(
+              width: 35,
+              height: 35,
+              child: Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: BlinkingWidget(
+                  duration: const Duration(milliseconds: 1000),
+                  child: CellarPin(
+                    bottle: currentBottle,
+                    onTap: onTap,
+                  ),
+                ),
               ),
             ),
-          ),
-        );
+          );
+        } else {
+          rowChildren.add(
+            SizedBox(
+              width: 35,
+              height: 35,
+              child: Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: CellarPin(
+                  bottle: (displayBottle) ? currentBottle : null,
+                  onTap: onTap,
+                ),
+              ),
+            ),
+          );
+        }
 
         if (displayBottle) {
           bottleListIndex++;

@@ -6,7 +6,9 @@ import 'package:cave_manager/providers/clusters_provider.dart';
 import 'package:cave_manager/screens/take_picture.dart';
 import 'package:cave_manager/widgets/delete_bottle_dialog.dart';
 import 'package:country_picker/country_picker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -276,19 +278,36 @@ class _BottleDetailState extends State<BottleDetails> {
                 offstage: bottle.isOpen!,
                 child: SizedBox(
                   width: double.infinity,
-                  child: FilledButton(
-                    onPressed: () async {
-                      bool? open = await showDialog<bool>(
-                        context: context,
-                        builder: (BuildContext context) =>
-                            OpenBottleDialog(bottle: bottle),
-                      );
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: OutlinedButton(
+                            onPressed: () {},
+                            child: const Text("Déplacer"),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      Expanded(
+                        child: FilledButton(
+                          onPressed: () async {
+                            bool? open = await showDialog<bool>(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  OpenBottleDialog(bottle: bottle),
+                            );
 
-                      if (open != null && open && context.mounted) {
-                        openBottle(context, bottle);
-                      }
-                    },
-                    child: const Text("Sortir de cave"),
+                            if (open != null && open && context.mounted) {
+                              openBottle(context, bottle);
+                            }
+                          },
+                          child: const Text("Sortir de cave"),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
