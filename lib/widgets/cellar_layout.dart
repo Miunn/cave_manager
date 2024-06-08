@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/bottle.dart';
-import '../models/cellar_type_enum.dart';
+import '../models/enum_cellar_type.dart';
 import '../screens/bottle_details.dart';
 import 'cellar_pin.dart';
 

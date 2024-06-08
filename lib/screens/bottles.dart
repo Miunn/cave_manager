@@ -1,3 +1,4 @@
+import 'package:cave_manager/models/enum_sort_type.dart';
 import 'package:cave_manager/providers/bottles_provider.dart';
 import 'package:cave_manager/screens/add_bottle_dialog.dart';
 import 'package:cave_manager/screens/bottle_details.dart';
@@ -9,7 +10,7 @@ import 'package:provider/provider.dart';
 
 import '../models/area_enum.dart';
 import '../models/bottle.dart';
-import '../models/wine_colors_enum.dart';
+import '../models/enum_wine_colors.dart';
 
 class Bottles extends StatefulWidget {
   const Bottles({super.key, required this.title});
@@ -23,27 +24,66 @@ class Bottles extends StatefulWidget {
 class _BottlesState extends State<Bottles> {
   Set<WineColors> colorFilters = <WineColors>{};
   Areas? areaFilter;
+  SortType sortName = SortType.none;
+  SortType sortDomain = SortType.none;
 
   List<Bottle> filterBottles(List<Bottle> bottles) {
-    List<Bottle> colorFilteredBottles = colorFilters.isEmpty
+    List<Bottle> filteredBottles = colorFilters.isEmpty
         ? bottles
-        : bottles.where((bottle) => colorFilters.contains(WineColors.fromValue(bottle.color ?? "other"))).toList();
+        : bottles
+            .where((bottle) => colorFilters
+                .contains(WineColors.fromValue(bottle.color ?? "other")))
+            .toList();
 
     // Care to filter on area label because autocomplete widget register the label inside the database
-    List<Bottle> areaFilteredBottles = areaFilter == null
-        ? colorFilteredBottles
-        : colorFilteredBottles.where((bottle) => bottle.area == areaFilter!.label).toList();
+    filteredBottles = areaFilter == null
+        ? filteredBottles
+        : filteredBottles
+            .where((bottle) => bottle.area == areaFilter!.label)
+            .toList();
 
-    return areaFilteredBottles;
+    if (sortName != SortType.none) {
+      filteredBottles.sort((a, b) {
+        if (sortName == SortType.ascending) {
+          return a.name!.toLowerCase().compareTo(b.name!.toLowerCase());
+        } else {
+          return b.name!.toLowerCase().compareTo(a.name!.toLowerCase());
+        }
+      });
+    }
+
+    if (sortDomain != SortType.none) {
+      filteredBottles.sort((a, b) {
+        if (sortDomain == SortType.ascending) {
+          return a.signature!.toLowerCase().compareTo(b.signature!.toLowerCase());
+        } else {
+          return b.signature!.toLowerCase().compareTo(a.signature!.toLowerCase());
+        }
+      });
+    }
+
+    return filteredBottles;
+  }
+  
+  getSortIcon(SortType sortType) {
+    if (sortType == SortType.ascending) {
+      return const Icon(Icons.arrow_upward, color: Colors.black);
+    } else if (sortType == SortType.descending) {
+      return const Icon(Icons.arrow_downward, color: Colors.black);
+    } else {
+      return const Icon(Icons.swap_vert, color: Colors.black);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     // UI needs to change only when a bottle's name, domain or open status changes
-    List<Bottle> openedBottles = filterBottles(context.select<BottlesProvider, List<Bottle>>(
-        (provider) => provider.openedBottles));
-    List<Bottle> closedBottles = filterBottles(context.select<BottlesProvider, List<Bottle>>(
-        (provider) => provider.closedBottles));
+    List<Bottle> openedBottles = filterBottles(
+        context.select<BottlesProvider, List<Bottle>>(
+            (provider) => provider.openedBottles).toList());
+    List<Bottle> closedBottles = filterBottles(
+        context.select<BottlesProvider, List<Bottle>>(
+            (provider) => provider.closedBottles).toList());
 
     return Scaffold(
       appBar: AppBar(
@@ -117,7 +157,9 @@ class _BottlesState extends State<Bottles> {
                   spacing: 8.0,
                   children: [
                     FilterChip(
-                      label: const Text("Rouge",),
+                      label: const Text(
+                        "Rouge",
+                      ),
                       selected: colorFilters.contains(WineColors.red),
                       onSelected: (bool selected) {
                         setState(() {
@@ -130,7 +172,9 @@ class _BottlesState extends State<Bottles> {
                       },
                     ),
                     FilterChip(
-                      label: const Text("Rosé",),
+                      label: const Text(
+                        "Rosé",
+                      ),
                       selected: colorFilters.contains(WineColors.pink),
                       onSelected: (bool selected) {
                         setState(() {
@@ -143,7 +187,9 @@ class _BottlesState extends State<Bottles> {
                       },
                     ),
                     FilterChip(
-                      label: const Text("Blanc",),
+                      label: const Text(
+                        "Blanc",
+                      ),
                       selected: colorFilters.contains(WineColors.white),
                       onSelected: (bool selected) {
                         setState(() {
@@ -157,13 +203,32 @@ class _BottlesState extends State<Bottles> {
                     ),
                     DropdownChip(
                         label: const Text("Région"),
-                        items: Areas.values.map((area) => (area.value, Text(area.label))).toList(),
+                        items: Areas.values
+                            .map((area) => (area.value, Text(area.label)))
+                            .toList(),
                         onChanged: (String? value) {
                           setState(() {
                             areaFilter = Areas.fromValue(value);
                           });
-                        }
-                    )
+                        }),
+                    ActionChip(
+                      avatar: getSortIcon(sortName),
+                      label: const Text("A-Z Nom"),
+                      onPressed: () {
+                        setState(() {
+                          sortName = sortName.next();
+                        });
+                      },
+                    ),
+                    ActionChip(
+                      avatar: getSortIcon(sortDomain),
+                      label: const Text("A-Z Domaine"),
+                      onPressed: () {
+                        setState(() {
+                          sortDomain = sortDomain.next();
+                        });
+                      },
+                    ),
                   ],
                 ),
                 (closedBottles.length > 1)

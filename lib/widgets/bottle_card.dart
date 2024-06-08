@@ -1,5 +1,5 @@
 import 'package:cave_manager/models/bottle.dart';
-import 'package:cave_manager/models/wine_colors_enum.dart';
+import 'package:cave_manager/models/enum_wine_colors.dart';
 import 'package:cave_manager/screens/bottle_details.dart';
 import 'package:cave_manager/widgets/open_bottle_dialog.dart';
 import 'package:flutter/material.dart';

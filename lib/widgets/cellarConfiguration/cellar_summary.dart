@@ -1,7 +1,7 @@
 import 'package:cave_manager/models/cluster.dart';
 import 'package:flutter/material.dart';
 
-import '../../models/cellar_type_enum.dart';
+import '../../models/enum_cellar_type.dart';
 
 class CellarSummary extends StatelessWidget {
   const CellarSummary(

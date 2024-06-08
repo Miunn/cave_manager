@@ -1,5 +1,5 @@
 
-import 'package:cave_manager/models/cellar_type_enum.dart';
+import 'package:cave_manager/models/enum_cellar_type.dart';
 import 'package:cave_manager/models/cluster.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';

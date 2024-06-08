@@ -1,4 +1,4 @@
-import 'package:cave_manager/models/cellar_type_enum.dart';
+import 'package:cave_manager/models/enum_cellar_type.dart';
 import 'package:cave_manager/models/cluster.dart';
 import 'package:cave_manager/providers/clusters_provider.dart';
 import 'package:cave_manager/widgets/cellarConfiguration/cellar_cluster_selector.dart';

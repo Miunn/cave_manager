@@ -1,6 +1,6 @@
 import 'dart:collection';
 
-import 'package:cave_manager/models/wine_colors_enum.dart';
+import 'package:cave_manager/models/enum_wine_colors.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../models/bottle.dart';

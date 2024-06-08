@@ -11,7 +11,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../models/bottle.dart';
-import '../models/wine_colors_enum.dart';
+import '../models/enum_wine_colors.dart';
 import '../widgets/open_bottle_dialog.dart';
 
 class BottleDetails extends StatefulWidget {

@@ -2,7 +2,7 @@ import 'package:cave_manager/providers/clusters_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/cellar_type_enum.dart';
+import '../../models/enum_cellar_type.dart';
 
 class CellarTypeSelector extends StatefulWidget {
   const CellarTypeSelector({super.key});
