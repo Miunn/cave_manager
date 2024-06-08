@@ -187,6 +187,7 @@ class _BottlesState extends State<Bottles> {
                 ),
                 ListView.builder(
                     shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
                     itemCount: closedBottles.length,
                     itemBuilder: (BuildContext context, int index) {
                       return BottleListCard(bottleId: closedBottles[index].id!);
