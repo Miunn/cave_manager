@@ -32,6 +32,7 @@ class _MoveBottleState extends State<MoveBottle> {
           Navigator.of(context).pop(widget.bottle);
         },
         blinkingBottleId: widget.bottle.id,
+        startingClusterId: widget.bottle.clusterId,
       ),
     );
   }
