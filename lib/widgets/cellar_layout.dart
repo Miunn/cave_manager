@@ -13,25 +13,31 @@ import '../screens/bottle_details.dart';
 import 'cellar_pin.dart';
 
 class CellarLayout extends StatefulWidget {
-  const CellarLayout({super.key, required this.onTapEmptyCallback, this.blinkingBottleId});
+  const CellarLayout({super.key, required this.onTapEmptyCallback, this.blinkingBottleId, this.startingClusterId});
 
   final void Function(int clusterId, int row, int column) onTapEmptyCallback;
   final int? blinkingBottleId;
+  final int? startingClusterId;
 
   @override
   State<CellarLayout> createState() => _CellarLayoutState();
 }
 
 class _CellarLayoutState extends State<CellarLayout> {
-  List<Tab> getTabs(UnmodifiableListView<CellarCluster> clusters) {
+  (int, List<Tab>) getTabs(UnmodifiableListView<CellarCluster> clusters) {
+    int initialIndex = 0;
     List<Tab> tabList = [];
 
     for (int i = 0; i < clusters.length; i++) {
+      if (clusters[i].id == widget.startingClusterId) {
+        initialIndex = i;
+      }
+
       tabList.add(Tab(
         text: clusters[i].name ?? "$i",
       ));
     }
-    return tabList;
+    return (initialIndex, tabList);
   }
 
   List<Widget> getTabsContent(
@@ -189,14 +195,17 @@ class _CellarLayoutState extends State<CellarLayout> {
         context.watch<BottlesProvider>().sortedBottlesByCluster;
 
     if (clusters.length > 1) {
+      (int, List<Tab>) tabs = getTabs(clusters);
+
       return DefaultTabController(
         length: clusters.length,
+        initialIndex: tabs.$1,
         child: Column(
           children: [
             SizedBox(
               height: 48,
               child: TabBar(
-                tabs: getTabs(clusters),
+                tabs: tabs.$2,
               ),
             ),
             Expanded(
