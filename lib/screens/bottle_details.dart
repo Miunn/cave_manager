@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:cave_manager/providers/bottles_provider.dart';
 import 'package:cave_manager/providers/clusters_provider.dart';
+import 'package:cave_manager/screens/move_bottle.dart';
 import 'package:cave_manager/screens/take_picture.dart';
+import 'package:cave_manager/widgets/cellar_layout.dart';
 import 'package:cave_manager/widgets/delete_bottle_dialog.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -284,7 +286,17 @@ class _BottleDetailState extends State<BottleDetails> {
                     children: [
                       Expanded(
                         child: OutlinedButton(
-                            onPressed: () {},
+                            onPressed: () async {
+                              Bottle? updatedBottle = await Navigator.of(context).push<Bottle?>(
+                                MaterialPageRoute(
+                                  builder: (context) => MoveBottle(bottle: bottle)
+                                ),
+                              );
+
+                              if (updatedBottle != null && context.mounted) {
+                                context.read<BottlesProvider>().updateBottle(updatedBottle);
+                              }
+                            },
                             child: const Text("Déplacer"),
                         ),
                       ),
