@@ -44,6 +44,7 @@ dependencies:
   shared_preferences: ^2.2.3
   provider: ^6.1.2
   collection: ^1.18.0
+  material_design_icons_flutter: ^7.0.7296
   #get_storage: ^2.0.0
 
 dev_dependencies:
