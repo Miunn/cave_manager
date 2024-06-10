@@ -13,9 +13,7 @@ import '../models/bottle.dart';
 import '../models/enum_wine_colors.dart';
 
 class Bottles extends StatefulWidget {
-  const Bottles({super.key, required this.title});
-
-  final String title;
+  const Bottles({super.key});
 
   @override
   State<Bottles> createState() => _BottlesState();

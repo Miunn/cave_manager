@@ -9,9 +9,7 @@ import '../widgets/cellar_configuration.dart';
 import 'add_bottle_dialog.dart';
 
 class Cellar extends StatefulWidget {
-  const Cellar({super.key, required this.title});
-
-  final String title;
+  const Cellar({super.key});
 
   @override
   State<Cellar> createState() => _CellarState();

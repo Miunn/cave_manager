@@ -9,9 +9,7 @@ import '../widgets/cellar_fillng.dart';
 import 'add_bottle_dialog.dart';
 
 class Home extends StatefulWidget {
-  const Home({super.key, required this.title});
-
-  final String title;
+  const Home({super.key});
 
   @override
   State<Home> createState() => _HomeState();

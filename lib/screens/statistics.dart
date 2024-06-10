@@ -4,9 +4,7 @@ import 'package:cave_manager/widgets/cellar_filling_short.dart';
 import 'package:flutter/material.dart';
 
 class Statistics extends StatefulWidget {
-  const Statistics({super.key, required this.title});
-
-  final String title;
+  const Statistics({super.key});
 
   @override
   State<Statistics> createState() => _StatisticsState();

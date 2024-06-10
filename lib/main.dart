@@ -63,7 +63,7 @@ class MyHomePage extends StatefulWidget {
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
 
-  String title;
+  final String title;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -82,37 +82,15 @@ class _MyHomePageState extends State<MyHomePage> {
     // than having to individually change instances of widgets.
     return Scaffold(
       body: <Widget>[
-        const Home(title: "Accueil"),
-        const Bottles(title: "Mes bouteilles"),
-        const Cellar(title: "Ma cave"),
-        const Statistics(title: "Statistiques"),
+        const Home(),
+        const Bottles(),
+        const Cellar(),
+        const Statistics(),
       ][currentPageIndex],
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) {
           setState(() {
             currentPageIndex = index;
-            switch (index) {
-              case 0:
-                {
-                  widget.title = 'Accueil';
-                }
-                break;
-              case 1:
-                {
-                  widget.title = 'Mes bouteilles';
-                }
-                break;
-              case 2:
-                {
-                  widget.title = 'Ma cave';
-                }
-                break;
-              case 3:
-                {
-                  widget.title = 'Statistiques';
-                }
-                break;
-            }
           });
         },
         indicatorColor: Colors.amber,
