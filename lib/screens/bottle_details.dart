@@ -300,9 +300,7 @@ class _BottleDetailState extends State<BottleDetails> {
                             child: const Text("Déplacer"),
                         ),
                       ),
-                      const SizedBox(
-                        width: 15,
-                      ),
+                      const SizedBox(width: 15),
                       Expanded(
                         child: FilledButton(
                           onPressed: () async {

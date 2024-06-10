@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/bottles_provider.dart';
+import 'cellar_layout.dart';
 
 class BottleCard extends StatelessWidget {
   const BottleCard({super.key, required this.bottleId});
@@ -90,6 +91,28 @@ class BottleCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
+                TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Scaffold(
+                        appBar: AppBar(
+                          title: Text("${bottle.name} - En cave"),
+                          leading: IconButton(
+                              icon: const Icon(Icons.close),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              }),
+                        ),
+                        body: CellarLayout(
+                          blinkingBottleId: bottle.id,
+                          startingClusterId: bottle.clusterId,
+                        ),
+                      )),
+                      );
+                    },
+                    child: const Text("Voir en cave")),
                 TextButton(
                     child: const Text("Sortir la bouteille"),
                     onPressed: () async {

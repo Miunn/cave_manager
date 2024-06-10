@@ -13,9 +13,9 @@ import '../screens/bottle_details.dart';
 import 'cellar_pin.dart';
 
 class CellarLayout extends StatefulWidget {
-  const CellarLayout({super.key, required this.onTapEmptyCallback, this.blinkingBottleId, this.startingClusterId});
+  const CellarLayout({super.key, this.onTapEmptyCallback, this.blinkingBottleId, this.startingClusterId});
 
-  final void Function(int clusterId, int row, int column) onTapEmptyCallback;
+  final void Function(int clusterId, int row, int column)? onTapEmptyCallback;
   final int? blinkingBottleId;
   final int? startingClusterId;
 
@@ -80,7 +80,7 @@ class _CellarLayoutState extends State<CellarLayout> {
       currentBottle = bottles[bottleListIndex];
     }
     bool displayBottle = false;
-    void Function() onTap;
+    void Function()? onTap;
 
     List<Widget> firstRow = [
       const SizedBox(
@@ -133,8 +133,8 @@ class _CellarLayoutState extends State<CellarLayout> {
             );
           };
           displayBottle = true;
-        } else {
-          onTap = () => widget.onTapEmptyCallback(cluster.id!, i, j);
+        } else if (widget.onTapEmptyCallback != null) {
+          onTap = () => widget.onTapEmptyCallback!(cluster.id!, i, j);
         }
 
         if (displayBottle && currentBottle != null && widget.blinkingBottleId == currentBottle.id) {
