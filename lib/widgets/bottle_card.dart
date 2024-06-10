@@ -1,6 +1,7 @@
 import 'package:cave_manager/models/bottle.dart';
 import 'package:cave_manager/models/enum_wine_colors.dart';
 import 'package:cave_manager/screens/bottle_details.dart';
+import 'package:cave_manager/screens/view_bottle_in_cellar.dart';
 import 'package:cave_manager/widgets/open_bottle_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -96,20 +97,8 @@ class BottleCard extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => Scaffold(
-                        appBar: AppBar(
-                          title: Text("${bottle.name} - En cave"),
-                          leading: IconButton(
-                              icon: const Icon(Icons.close),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              }),
+                            builder: (context) => ViewBottleInCellar(bottle: bottle),
                         ),
-                        body: CellarLayout(
-                          blinkingBottleId: bottle.id,
-                          startingClusterId: bottle.clusterId,
-                        ),
-                      )),
                       );
                     },
                     child: const Text("Voir en cave")),
