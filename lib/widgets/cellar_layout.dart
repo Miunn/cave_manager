@@ -72,15 +72,9 @@ class _CellarLayoutState extends State<CellarLayout> {
   }
 
   List<Row> getClusterLayout(int width, int height, CellarCluster cluster, UnmodifiableListView<Bottle> bottles) {
-    Bottle? currentBottle;
     List<Row> rows = [];
     int bottleListIndex = 0;
-
-    if (bottles.isNotEmpty) {
-      currentBottle = bottles[bottleListIndex];
-    }
     bool displayBottle = false;
-    void Function()? onTap;
 
     List<Widget> firstRow = [
       const SizedBox(
@@ -119,6 +113,8 @@ class _CellarLayoutState extends State<CellarLayout> {
         )
       ];
       for (int j = 0; j < width; j++) {
+        Bottle? currentBottle = (bottles.isNotEmpty && bottleListIndex < bottles.length) ? bottles[bottleListIndex] : null;
+        void Function() onTap;
         if (currentBottle != null &&
             currentBottle.clusterY == i &&
             currentBottle.clusterX == j) {
@@ -135,6 +131,8 @@ class _CellarLayoutState extends State<CellarLayout> {
           displayBottle = true;
         } else if (widget.onTapEmptyCallback != null) {
           onTap = () => widget.onTapEmptyCallback!(cluster.id!, i, j);
+        } else {
+          onTap = () {};
         }
 
         if (displayBottle && currentBottle != null && widget.blinkingBottleId == currentBottle.id) {
@@ -173,10 +171,6 @@ class _CellarLayoutState extends State<CellarLayout> {
         if (displayBottle) {
           bottleListIndex++;
           displayBottle = false;
-
-          if (bottleListIndex < bottles.length) {
-            currentBottle = bottles[bottleListIndex];
-          }
         }
       }
       rows.add(Row(
