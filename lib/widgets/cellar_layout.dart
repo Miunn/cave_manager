@@ -143,7 +143,7 @@ class _CellarLayoutState extends State<CellarLayout> {
               child: Padding(
                 padding: const EdgeInsets.all(2.0),
                 child: BlinkingWidget(
-                  duration: const Duration(milliseconds: 1000),
+                  duration: const Duration(milliseconds: 700),
                   child: CellarPin(
                     bottle: currentBottle,
                     onTap: onTap,
