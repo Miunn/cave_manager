@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class CellarSettings extends StatefulWidget {
-  const CellarSettings({super.key});
+class SettingsCellar extends StatefulWidget {
+  const SettingsCellar({super.key});
 
   @override
-  State<CellarSettings> createState() => _CellarSettingsState();
+  State<SettingsCellar> createState() => _SettingsCellarState();
 }
 
-class _CellarSettingsState extends State<CellarSettings> {
+class _SettingsCellarState extends State<SettingsCellar> {
   int cellarWidth = 0;
   int cellarHeight = 0;
 

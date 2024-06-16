@@ -1,6 +1,11 @@
+import 'package:cave_manager/models/enum_themes.dart';
+import 'package:cave_manager/providers/bottles_provider.dart';
 import 'package:cave_manager/screens/settings/cellar.dart';
 import 'package:cave_manager/widgets/cellar_filling_short.dart';
+import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/bottle_db_interface.dart';
 
@@ -14,8 +19,9 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
-  BottleDatabaseInterface bottleDatabase = BottleDatabaseInterface.instance;
-  int _totalBottles = 0;
+  Country appLocale = Country.parse('fr');
+  Country defaultCountry = Country.parse('fr');
+  AppTheme appTheme = AppTheme.system;
 
   @override
   void initState() {
@@ -24,10 +30,12 @@ class _SettingsState extends State<Settings> {
   }
 
   getState() async {
-    _totalBottles = await bottleDatabase.getInCellarCount();
+    final prefs = await SharedPreferences.getInstance();
 
     setState(() {
-      _totalBottles = _totalBottles;
+      appLocale = Country.parse(prefs.getString('appLocale') ?? 'fr');
+      defaultCountry = Country.parse(prefs.getString('defaultCountry') ?? 'fr');
+      appTheme = AppTheme.fromValue(prefs.getString('appTheme') ?? 'system');
     });
   }
 
@@ -40,51 +48,79 @@ class _SettingsState extends State<Settings> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text(
-          widget.title,
-        ),
+        title: Text(widget.title),
       ),
       body: Column(
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.all(20.0),
-            child: CellarFillingShort(
-              bottleAmount: _totalBottles,
-              text: _totalBottles > 1
-                  ? 'Bouteilles en cave'
-                  : 'Bouteille en cave',
+            child: Consumer<BottlesProvider>(
+              builder: (BuildContext context, BottlesProvider bottles, Widget? child) =>
+                CellarFillingShort(
+                  bottleAmount: bottles.closedBottles.length,
+                  text: bottles.closedBottles.length > 1
+                      ? 'Bouteilles en cave'
+                      : 'Bouteille en cave',
+                )
             ),
           ),
           Expanded(
             child: ListView(
               children: <Widget>[
-                InkWell(
+                ListTile(
+                  leading: const Icon(Icons.language),
+                  title: const Text('Langue'),
+                  subtitle: const Text("Language de l'application"),
+                  trailing: Text(appLocale.name),
                   onTap: () {
-                    debugPrint("Tap général");
+                    showCountryPicker(
+                      context: context,
+                      showPhoneCode: false,
+                      onSelect: (Country country) async {
+                        final prefs = await SharedPreferences.getInstance();
+                        setState(() {
+                          prefs.setString('appLocale', country.countryCode);
+                          appLocale = country;
+                        });
+                      },
+                    );
                   },
-                  child: const ListTile(
-                    leading: Icon(Icons.tune),
-                    title: Text("Général"),
-                    subtitle: Text("Langue, Pays par défaut"),
-                    trailing: Icon(Icons.arrow_forward_ios),
-                  ),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.public),
+                  title: const Text('Pays par défaut'),
+                  subtitle: const Text("Sélectionné lors de l'ajout d'une bouteille"),
+                  trailing: Text(defaultCountry.name),
+                  onTap: () {
+                    showCountryPicker(
+                      context: context,
+                      showPhoneCode: false,
+                      onSelect: (Country country) async {
+                        final prefs = await SharedPreferences.getInstance();
+                        setState(() {
+                          prefs.setString('defaultCountry', country.countryCode);
+                          defaultCountry = country;
+                        });
+                      },
+                    );
+                  },
                 ),
                 InkWell(
                   onTap: () {
                     debugPrint("Tap Apparence");
                   },
-                  child: const ListTile(
-                    leading: Icon(Icons.palette_outlined),
-                    title: Text("Apparence"),
-                    subtitle: Text("Thème de l'application"),
-                    trailing: Icon(Icons.arrow_forward_ios),
+                  child: ListTile(
+                    leading: const Icon(Icons.palette_outlined),
+                    title: const Text("Apparence"),
+                    subtitle: const Text("Thème de l'application"),
+                    trailing: Text(appTheme.label),
                   ),
                 ),
                 InkWell(
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => const CellarSettings(),
+                        builder: (context) => const SettingsCellar(),
                       ),
                     );
                   },
