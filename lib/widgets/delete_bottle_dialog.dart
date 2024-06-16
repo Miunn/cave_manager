@@ -10,8 +10,9 @@ class DeleteBottleDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text("Supprimer la bouteille"),
-      content: Text("${bottle.name} sera supprimer définitivement"),
+      icon: const Icon(Icons.delete_outline),
+      title: const Text("Supprimer la bouteille ?"),
+      content: Text("${bottle.name}sera définitivement supprimée"),
       actions: <Widget>[
         TextButton(
           onPressed: () => Navigator.pop(context, false),
