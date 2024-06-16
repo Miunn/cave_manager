@@ -50,7 +50,7 @@ class _CellarLayoutState extends State<CellarLayout> {
       int currentWidth = cluster.width ?? 0;
       int currentHeight = cluster.height ?? 0;
 
-      List<Widget> rows = getClusterLayout(currentWidth, currentHeight, cluster, bottlesByCluster[cluster.id]!);
+      List<Widget> rows = getClusterLayout(currentWidth, currentHeight, cluster, bottlesByCluster[cluster.id] ?? UnmodifiableListView([]));
 
       tabsContent.add(
         SingleChildScrollView(
