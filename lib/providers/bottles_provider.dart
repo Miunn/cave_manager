@@ -28,6 +28,8 @@ class BottlesProvider extends ChangeNotifier {
   int get redCount => closedBottles.where((bottle) => bottle.color == WineColors.red.value).length;
   int get pinkCount => closedBottles.where((bottle) => bottle.color == WineColors.pink.value).length;
   int get whiteCount => closedBottles.where((bottle) => bottle.color == WineColors.white.value).length;
+  int? get lowestYear => closedBottles.fold(null, (int? min, bottle) => (bottle.vintageYear == null) ? min : (min == null || bottle.vintageYear! < min ? bottle.vintageYear : min));
+  int? get highestYear => closedBottles.fold(null, (int? max, bottle) => (bottle.vintageYear == null) ? max : (max == null || bottle.vintageYear! > max ? bottle.vintageYear : max));
 
   Bottle getBottleById(int id) => _bottles.firstWhere((bottle) => bottle.id == id, orElse: () => Bottle(null, null, null));
 
