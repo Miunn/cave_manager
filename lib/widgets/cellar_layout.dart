@@ -13,7 +13,11 @@ import '../screens/bottle_details.dart';
 import 'cellar_pin.dart';
 
 class CellarLayout extends StatefulWidget {
-  const CellarLayout({super.key, this.onTapEmptyCallback, this.blinkingBottleId, this.startingClusterId});
+  const CellarLayout(
+      {super.key,
+      this.onTapEmptyCallback,
+      this.blinkingBottleId,
+      this.startingClusterId});
 
   final void Function(int clusterId, int row, int column)? onTapEmptyCallback;
   final int? blinkingBottleId;
@@ -50,7 +54,8 @@ class _CellarLayoutState extends State<CellarLayout> {
       int currentWidth = cluster.width ?? 0;
       int currentHeight = cluster.height ?? 0;
 
-      List<Widget> rows = getClusterLayout(currentWidth, currentHeight, cluster, bottlesByCluster[cluster.id] ?? UnmodifiableListView([]));
+      List<Widget> rows = getClusterLayout(currentWidth, currentHeight, cluster,
+          bottlesByCluster[cluster.id] ?? UnmodifiableListView([]));
 
       tabsContent.add(
         SingleChildScrollView(
@@ -71,7 +76,8 @@ class _CellarLayoutState extends State<CellarLayout> {
     return tabsContent;
   }
 
-  List<Row> getClusterLayout(int width, int height, CellarCluster cluster, UnmodifiableListView<Bottle> bottles) {
+  List<Row> getClusterLayout(int width, int height, CellarCluster cluster,
+      UnmodifiableListView<Bottle> bottles) {
     List<Row> rows = [];
     int bottleListIndex = 0;
     bool displayBottle = false;
@@ -113,7 +119,10 @@ class _CellarLayoutState extends State<CellarLayout> {
         )
       ];
       for (int j = 0; j < width; j++) {
-        Bottle? currentBottle = (bottles.isNotEmpty && bottleListIndex < bottles.length) ? bottles[bottleListIndex] : null;
+        Bottle? currentBottle =
+            (bottles.isNotEmpty && bottleListIndex < bottles.length)
+                ? bottles[bottleListIndex]
+                : null;
         void Function() onTap;
         if (currentBottle != null &&
             currentBottle.clusterY == i &&
@@ -123,7 +132,7 @@ class _CellarLayoutState extends State<CellarLayout> {
               context,
               MaterialPageRoute(
                 builder: (context) => BottleDetails(
-                  bottleId: currentBottle!.id!,
+                  bottleId: currentBottle.id!,
                 ),
               ),
             );
@@ -135,7 +144,9 @@ class _CellarLayoutState extends State<CellarLayout> {
           onTap = () {};
         }
 
-        if (displayBottle && currentBottle != null && widget.blinkingBottleId == currentBottle.id) {
+        if (displayBottle &&
+            currentBottle != null &&
+            widget.blinkingBottleId == currentBottle.id) {
           rowChildren.add(
             SizedBox(
               width: 35,
@@ -204,8 +215,8 @@ class _CellarLayoutState extends State<CellarLayout> {
             ),
             Expanded(
                 child: TabBarView(
-                    children:
-                    getTabsContent(cellarType, clusters, bottlesByCluster))),
+                    children: getTabsContent(
+                        cellarType, clusters, bottlesByCluster))),
           ],
         ),
       );
@@ -217,17 +228,15 @@ class _CellarLayoutState extends State<CellarLayout> {
         scrollDirection: Axis.horizontal,
         child: Padding(
           padding: const EdgeInsets.all(12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                clusters[0].name ?? cellarType.label,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-              ...getClusterLayout(
-                  clusters[0].width ?? 0, clusters[0].height ?? 0, clusters[0], bottlesByCluster[clusters[0].id!]!),
-            ]
-          ),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text(
+              clusters[0].name ?? cellarType.label,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            ...getClusterLayout(clusters[0].width ?? 0, clusters[0].height ?? 0,
+                clusters[0], bottlesByCluster[clusters[0].id!]!),
+          ]),
         ),
       ),
     );
