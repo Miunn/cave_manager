@@ -1,7 +1,10 @@
+import 'package:cave_manager/providers/bottles_provider.dart';
 import 'package:cave_manager/screens/settings.dart';
 import 'package:cave_manager/utils/bottle_db_interface.dart';
 import 'package:cave_manager/widgets/cellar_filling_short.dart';
+import 'package:cave_manager/widgets/statistic_card.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Statistics extends StatefulWidget {
   const Statistics({super.key});
@@ -41,6 +44,8 @@ class _StatisticsState extends State<Statistics> {
 
   @override
   Widget build(BuildContext context) {
+    BottlesProvider bottlesProvider = context.watch<BottlesProvider>();
+
     return Scaffold(
       appBar: AppBar(
         // TRY THIS: Try changing the color here to a specific color (to
@@ -60,40 +65,51 @@ class _StatisticsState extends State<Statistics> {
           )
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
-        child: Column(
-
-          children: <Widget>[
-            Center(
-              child: Wrap(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+          child: Column(
+            children: <Widget>[
+              Center(
+                child: Wrap(
+                  runSpacing: 30.0,
+                  spacing: 50.0,
+                  children: <Widget>[
+                    CellarFillingShort(
+                      bottleAmount: _inCellarBottles,
+                      text: "En cave",
+                    ),
+                    CellarFillingShort(
+                      bottleAmount: _redCount,
+                      text: "Vin rouge",
+                    ),
+                    CellarFillingShort(
+                      bottleAmount: _pinkCount,
+                      text: "Vin rosé",
+                    ),
+                    CellarFillingShort(
+                      bottleAmount: _whiteCount,
+                      text: "Vin blanc",
+                    ),
+                    CellarFillingShort(
+                      bottleAmount: _openedBottles,
+                      text: "Ouvertes",
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 30.0),
+              Wrap(
                 runSpacing: 30.0,
                 spacing: 50.0,
-                children: <Widget>[
-                  CellarFillingShort(
-                    bottleAmount: _inCellarBottles,
-                    text: "En cave",
-                  ),
-                  CellarFillingShort(
-                    bottleAmount: _redCount,
-                    text: "Vin rouge",
-                  ),
-                  CellarFillingShort(
-                    bottleAmount: _pinkCount,
-                    text: "Vin rosé",
-                  ),
-                  CellarFillingShort(
-                    bottleAmount: _whiteCount,
-                    text: "Vin blanc",
-                  ),
-                  CellarFillingShort(
-                    bottleAmount: _openedBottles,
-                    text: "Ouvertes",
-                  ),
+                children: [
+                  StatisticCard(title: "Bouteilles ouvertes", value: bottlesProvider.openedBottles.length.toString()),
+                  StatisticCard(title: "Millésime le plus ancien", value: "${bottlesProvider.lowestYear ?? "N/A"}"),
+                  StatisticCard(title: "Millésime le plus récent", value: "${bottlesProvider.highestYear ?? "N/A"}"),
                 ],
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );
