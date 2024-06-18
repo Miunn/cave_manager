@@ -7,8 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../utils/bottle_db_interface.dart';
-
 class Settings extends StatefulWidget {
   const Settings({super.key, required this.title});
 

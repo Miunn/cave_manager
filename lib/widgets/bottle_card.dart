@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/bottles_provider.dart';
-import 'cellar_layout.dart';
 
 class BottleCard extends StatelessWidget {
   const BottleCard({super.key, required this.bottleId});
