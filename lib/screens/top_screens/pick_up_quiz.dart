@@ -1,3 +1,4 @@
+import 'package:cave_manager/widgets/pick_up_quiz/quiz_choice_card.dart';
 import 'package:flutter/material.dart';
 
 import '../settings.dart';
@@ -24,20 +25,40 @@ class _PickUpQuizState extends State<PickUpQuiz> {
         actions: <Widget>[
           IconButton(
               onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                    const Settings(title: "Paramètres")),
-              ),
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            const Settings(title: "Paramètres")),
+                  ),
               icon: const Icon(Icons.settings))
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
-        child: Column(
-          children: <Widget>[
-            const Text("Chercher une nouvelle bouteille à sortir")
-          ],
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const Text("Plutôt", style: TextStyle(fontSize: 18)),
+              const SizedBox(height: 30),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  QuizChoiceCard(
+                    onTap: () {},
+                    icon: const Icon(Icons.local_bar),
+                    label: "Apéritif",
+                  ),
+                  QuizChoiceCard(
+                    onTap: () {},
+                    icon: const Icon(Icons.restaurant),
+                    label: "Plat cuisiné",
+                  )
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );
