@@ -8,9 +8,9 @@ import 'package:cave_manager/widgets/dropdown_chip.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../models/area_enum.dart';
-import '../models/bottle.dart';
-import '../models/enum_wine_colors.dart';
+import '../../models/area_enum.dart';
+import '../../models/bottle.dart';
+import '../../models/enum_wine_colors.dart';
 
 class Bottles extends StatefulWidget {
   const Bottles({super.key});

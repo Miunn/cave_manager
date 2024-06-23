@@ -3,10 +3,10 @@ import 'package:cave_manager/widgets/bottle_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../models/bottle.dart';
-import '../providers/bottles_provider.dart';
-import '../widgets/cellar_fillng.dart';
-import 'add_bottle_dialog.dart';
+import '../../models/bottle.dart';
+import '../../providers/bottles_provider.dart';
+import '../../widgets/cellar_fillng.dart';
+import '../add_bottle_dialog.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});

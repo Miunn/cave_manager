@@ -1,22 +1,19 @@
 import 'package:cave_manager/providers/bottles_provider.dart';
 import 'package:cave_manager/providers/clusters_provider.dart';
-import 'package:cave_manager/screens/bottles.dart';
-import 'package:cave_manager/screens/cellar.dart';
-import 'package:cave_manager/screens/home.dart';
-import 'package:cave_manager/screens/statistics.dart';
+import 'package:cave_manager/screens/top_screens/bottles.dart';
+import 'package:cave_manager/screens/top_screens/cellar.dart';
+import 'package:cave_manager/screens/top_screens/home.dart';
+import 'package:cave_manager/screens/top_screens/pick_up_quiz.dart';
+import 'package:cave_manager/screens/top_screens/statistics.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (context) => BottlesProvider()),
-          ChangeNotifierProvider(create: (context) => ClustersProvider()),
-        ],
-        child: const MyApp()
-  ));
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (context) => BottlesProvider()),
+    ChangeNotifierProvider(create: (context) => ClustersProvider()),
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -86,6 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
         const Bottles(),
         const Cellar(),
         const Statistics(),
+        const PickUpQuiz(),
       ][currentPageIndex],
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) {
@@ -115,6 +113,11 @@ class _MyHomePageState extends State<MyHomePage> {
             selectedIcon: Icon(Icons.show_chart),
             icon: Icon(Icons.show_chart),
             label: 'Statistiques',
+          ),
+          NavigationDestination(
+              selectedIcon: Icon(Icons.quiz),
+              icon: Icon(Icons.quiz_outlined),
+              label: 'Choisir',
           ),
         ],
       ),

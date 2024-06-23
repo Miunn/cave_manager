@@ -3,10 +3,10 @@ import 'package:cave_manager/widgets/cellar_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../models/bottle.dart';
-import '../providers/clusters_provider.dart';
-import '../widgets/cellar_configuration.dart';
-import 'add_bottle_dialog.dart';
+import '../../models/bottle.dart';
+import '../../providers/clusters_provider.dart';
+import '../../widgets/cellar_configuration.dart';
+import '../add_bottle_dialog.dart';
 
 class Cellar extends StatefulWidget {
   const Cellar({super.key});
