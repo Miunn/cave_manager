@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 
 import '../settings.dart';
 
-class PickUpQuiz extends StatefulWidget {
-  const PickUpQuiz({super.key});
+class TakeOutQuiz extends StatefulWidget {
+  const TakeOutQuiz({super.key});
 
   @override
-  State<PickUpQuiz> createState() => _PickUpQuizState();
+  State<TakeOutQuiz> createState() => _TakeOutQuizState();
 }
 
-class _PickUpQuizState extends State<PickUpQuiz> {
+class _TakeOutQuizState extends State<TakeOutQuiz> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -3,7 +3,7 @@ import 'package:cave_manager/providers/clusters_provider.dart';
 import 'package:cave_manager/screens/top_screens/bottles.dart';
 import 'package:cave_manager/screens/top_screens/cellar.dart';
 import 'package:cave_manager/screens/top_screens/home.dart';
-import 'package:cave_manager/screens/top_screens/pick_up_quiz.dart';
+import 'package:cave_manager/screens/top_screens/take_out_quiz.dart';
 import 'package:cave_manager/screens/top_screens/statistics.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -83,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
         const Bottles(),
         const Cellar(),
         const Statistics(),
-        const PickUpQuiz(),
+        const TakeOutQuiz(),
       ][currentPageIndex],
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) {
