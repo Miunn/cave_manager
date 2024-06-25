@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:cave_manager/providers/bottles_provider.dart';
 import 'package:cave_manager/providers/clusters_provider.dart';
-import 'package:cave_manager/screens/move_bottle.dart';
+import 'package:cave_manager/screens/cellar/move_bottle.dart';
 import 'package:cave_manager/screens/take_picture.dart';
 import 'package:cave_manager/widgets/delete_bottle_dialog.dart';
 import 'package:country_picker/country_picker.dart';

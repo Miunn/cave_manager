@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../models/bottle.dart';
-import '../widgets/cellar_layout.dart';
+import '../../models/bottle.dart';
+import '../../widgets/cellar_layout.dart';
 
 class MoveBottle extends StatefulWidget {
   const MoveBottle({super.key, required this.bottle});

@@ -3,8 +3,8 @@ import 'package:cave_manager/providers/clusters_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../models/bottle.dart';
-import '../widgets/cellar_layout.dart';
+import '../../models/bottle.dart';
+import '../../widgets/cellar_layout.dart';
 
 class PlaceInCellar extends StatefulWidget {
   const PlaceInCellar({super.key, required this.bottle});

@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:cave_manager/providers/clusters_provider.dart';
-import 'package:cave_manager/screens/place_in_cellar.dart';
+import 'package:cave_manager/screens/cellar/place_in_cellar.dart';
 import 'package:cave_manager/screens/take_picture.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
