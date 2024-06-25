@@ -1,5 +1,7 @@
 import 'package:cave_manager/widgets/pick_up_quiz/quiz_choice_card.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../settings.dart';
 
@@ -11,6 +13,8 @@ class TakeOutQuiz extends StatefulWidget {
 }
 
 class _TakeOutQuizState extends State<TakeOutQuiz> {
+  int matchingBottles = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,23 +44,23 @@ class _TakeOutQuizState extends State<TakeOutQuiz> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              const Text("Plutôt", style: TextStyle(fontSize: 18)),
-              const SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              Wrap(
+                crossAxisAlignment: WrapCrossAlignment.center,
+                alignment: WrapAlignment.center,
                 children: [
                   QuizChoiceCard(
                     onTap: () {},
-                    icon: const Icon(Icons.local_bar),
-                    label: "Apéritif",
+                    icon: Icon(MdiIcons.foodSteak),
+                    label: "Viande",
                   ),
                   QuizChoiceCard(
                     onTap: () {},
-                    icon: const Icon(Icons.restaurant),
-                    label: "Plat cuisiné",
+                    icon: Icon(MdiIcons.fish),
+                    label: "Poisson",
                   )
                 ],
-              )
+              ),
+              Text("$matchingBottles bouteilles correspondantes", style: Theme.of(context).textTheme.bodyLarge),
             ],
           ),
         ),
