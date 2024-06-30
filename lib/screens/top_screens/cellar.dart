@@ -1,3 +1,4 @@
+import 'package:cave_manager/screens/cellar/cellar_customization.dart';
 import 'package:cave_manager/screens/settings.dart';
 import 'package:cave_manager/widgets/cellar_layout.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +59,12 @@ class _CellarState extends State<Cellar> {
 
     if (cellarConfigured) {
       actions.add(IconButton(
-        onPressed: () => {},
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const CellarCustomization(),
+          ),
+        ),
         icon: const Icon(Icons.tune),
       ));
     }

@@ -11,8 +11,11 @@ class ClustersProvider extends ChangeNotifier {
   CellarDatabaseInterface cellarDatabase = CellarDatabaseInterface.instance;
   CellarType _cellarType = CellarType.none;
   List<CellarCluster> _clusters = [];
+  Map<int, List<int>> _clustersRowConfiguration = {};
 
   CellarType get cellarType => _cellarType;
+  Map<int, List<int>> get clustersRowConfiguration => _clustersRowConfiguration;
+
 
   UnmodifiableListView<CellarCluster> get clusters =>
       UnmodifiableListView(_clusters);
@@ -29,6 +32,11 @@ class ClustersProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> loadClustersRowConfiguration() async {
+    _clustersRowConfiguration = await cellarDatabase.getClustersRowConfiguration();
+    notifyListeners();
+  }
+
   Future<void> loadCellar() async {
     final prefs = await SharedPreferences.getInstance();
     _cellarType = CellarType.values.firstWhere(
@@ -36,6 +44,7 @@ class ClustersProvider extends ChangeNotifier {
       orElse: () => CellarType.none,
     );
     loadClusters();
+    loadClustersRowConfiguration();
   }
 
   Future<void> addCluster(CellarCluster cluster) async {
@@ -72,4 +81,10 @@ class ClustersProvider extends ChangeNotifier {
 
   CellarCluster? getClusterById(int id) =>
       _clusters.firstWhereOrNull((cluster) => cluster.id == id);
+
+  void updateClustersRowConfiguration(int clusterId, int row, int customWidth) {
+    debugPrint("Update (PROVIDER) cluster $clusterId row $row with width $customWidth");
+    cellarDatabase.updateClusterRowConfiguration(clusterId, row, customWidth);
+    loadClustersRowConfiguration();
+  }
 }

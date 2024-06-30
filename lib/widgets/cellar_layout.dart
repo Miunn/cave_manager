@@ -4,7 +4,11 @@ import 'package:cave_manager/models/cluster.dart';
 import 'package:cave_manager/providers/bottles_provider.dart';
 import 'package:cave_manager/providers/clusters_provider.dart';
 import 'package:cave_manager/widgets/blinking.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 import '../models/bottle.dart';
@@ -17,17 +21,19 @@ class CellarLayout extends StatefulWidget {
       {super.key,
       this.onTapEmptyCallback,
       this.blinkingBottleId,
-      this.startingClusterId});
+      this.startingClusterId,
+      this.customize = false});
 
   final void Function(int clusterId, int row, int column)? onTapEmptyCallback;
   final int? blinkingBottleId;
   final int? startingClusterId;
+  final bool customize;
 
   @override
   State<CellarLayout> createState() => _CellarLayoutState();
 }
 
-class _CellarLayoutState extends State<CellarLayout> {
+class _CellarLayoutState extends State<CellarLayout> with SingleTickerProviderStateMixin {
   (int, List<Tab>) getTabs(UnmodifiableListView<CellarCluster> clusters) {
     int initialIndex = 0;
     List<Tab> tabList = [];
@@ -47,15 +53,20 @@ class _CellarLayoutState extends State<CellarLayout> {
   List<Widget> getTabsContent(
       CellarType cellarType,
       UnmodifiableListView<CellarCluster> clusters,
-      UnmodifiableMapView<int, UnmodifiableListView<Bottle>> bottlesByCluster) {
+      UnmodifiableMapView<int, UnmodifiableListView<Bottle>> bottlesByCluster,
+      Map<int, List<int>> clustersRowConfiguration) {
     List<Widget> tabsContent = [];
 
     for (CellarCluster cluster in clusters) {
       int currentWidth = cluster.width ?? 0;
       int currentHeight = cluster.height ?? 0;
 
-      List<Widget> rows = getClusterLayout(currentWidth, currentHeight, cluster,
-          bottlesByCluster[cluster.id] ?? UnmodifiableListView([]));
+      List<Widget> rows = getClusterLayout(
+          currentWidth, currentHeight,
+          cluster,
+          bottlesByCluster[cluster.id] ?? UnmodifiableListView([]),
+          clustersRowConfiguration
+      );
 
       tabsContent.add(
         SingleChildScrollView(
@@ -76,9 +87,17 @@ class _CellarLayoutState extends State<CellarLayout> {
     return tabsContent;
   }
 
-  List<Row> getClusterLayout(int width, int height, CellarCluster cluster,
-      UnmodifiableListView<Bottle> bottles) {
-    List<Row> rows = [];
+  List<Widget> getClusterLayout(
+      int width, int height,
+      CellarCluster cluster,
+      UnmodifiableListView<Bottle> bottles,
+      Map<int, List<int>> clustersRowConfiguration) {
+
+    if (cluster.id == null) {
+      return [];
+    }
+
+    List<Widget> rows = [];
     int bottleListIndex = 0;
     bool displayBottle = false;
 
@@ -128,6 +147,10 @@ class _CellarLayoutState extends State<CellarLayout> {
             currentBottle.clusterY == i &&
             currentBottle.clusterX == j) {
           onTap = () {
+            if (widget.customize) {
+              return;
+            }
+
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -184,9 +207,53 @@ class _CellarLayoutState extends State<CellarLayout> {
           displayBottle = false;
         }
       }
-      rows.add(Row(
-        children: rowChildren,
-      ));
+
+      if (widget.customize) {
+        rows.add(Stack(
+          alignment: AlignmentGeometry.lerp(Alignment.topLeft, Alignment.bottomRight, 0.5)!,
+            children: [
+          Opacity(
+            opacity: 0.2,
+            child: Row(
+              children: rowChildren,
+            ),
+          ),
+          Row(
+            children: [
+              FilledButton.tonal(
+                  onPressed: () {
+                    if (clustersRowConfiguration[cluster.id!]![i] <= 1) {
+                      return;
+                    }
+                    context.read<ClustersProvider>().updateClustersRowConfiguration(cluster.id!, i, clustersRowConfiguration[cluster.id!]![i]-1);
+                  },
+                  child: const Icon(Icons.remove),
+              ),
+              const SizedBox(width: 10),
+              Text("${clustersRowConfiguration[cluster.id!]![i]}",
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(width: 10),
+              FilledButton.tonal(
+                  onPressed: () {
+                    debugPrint("Registered: ${clustersRowConfiguration[cluster.id!]![i]}");
+                    debugPrint("Width: ${cluster.width}");
+                    if (clustersRowConfiguration[cluster.id!]![i] >= cluster.width!) {
+                      return;
+                    }
+                    debugPrint("Update");
+                    context.read<ClustersProvider>().updateClustersRowConfiguration(cluster.id!, i, clustersRowConfiguration[cluster.id!]![i]+1);
+                  },
+                  child: const Icon(Icons.add),
+              ),
+            ],
+          ),
+        ]));
+      } else {
+        rows.add(Row(
+          children: rowChildren,
+        ));
+      }
     }
     return rows;
   }
@@ -198,27 +265,28 @@ class _CellarLayoutState extends State<CellarLayout> {
         context.read<ClustersProvider>().clusters;
     UnmodifiableMapView<int, UnmodifiableListView<Bottle>> bottlesByCluster =
         context.watch<BottlesProvider>().sortedBottlesByCluster;
+    Map<int, List<int>> clustersRowConfiguration =
+        context.watch<ClustersProvider>().clustersRowConfiguration;
 
     if (clusters.length > 1) {
       (int, List<Tab>) tabs = getTabs(clusters);
 
       return DefaultTabController(
         length: clusters.length,
-        initialIndex: tabs.$1,
         child: Column(
-          children: [
-            SizedBox(
-              height: 48,
-              child: TabBar(
-                tabs: tabs.$2,
+            children: [
+              SizedBox(
+                height: 48,
+                child: TabBar(
+                  tabs: tabs.$2,
+                ),
               ),
-            ),
-            Expanded(
-                child: TabBarView(
-                    children: getTabsContent(
-                        cellarType, clusters, bottlesByCluster))),
-          ],
-        ),
+              Expanded(
+                  child: TabBarView(
+                      children: getTabsContent(
+                          cellarType, clusters, bottlesByCluster, clustersRowConfiguration))),
+            ],
+          ),
       );
     }
 
@@ -234,8 +302,13 @@ class _CellarLayoutState extends State<CellarLayout> {
               clusters[0].name ?? cellarType.label,
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
-            ...getClusterLayout(clusters[0].width ?? 0, clusters[0].height ?? 0,
-                clusters[0], bottlesByCluster[clusters[0].id!]!),
+            ...getClusterLayout(
+                clusters[0].width ?? 0,
+                clusters[0].height ?? 0,
+                clusters[0],
+                bottlesByCluster[clusters[0].id!]!,
+                clustersRowConfiguration
+            ),
           ]),
         ),
       ),
