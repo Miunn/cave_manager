@@ -76,6 +76,8 @@ class _CellarLayoutState extends State<CellarLayout> with SingleTickerProviderSt
             child: Padding(
               padding: const EdgeInsets.all(12.0),
               child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: rows,
               ),
             ),
@@ -137,7 +139,7 @@ class _CellarLayoutState extends State<CellarLayout> with SingleTickerProviderSt
           ),
         )
       ];
-      for (int j = 0; j < width; j++) {
+      for (int j = 0; j < clustersRowConfiguration[cluster.id!]![i]; j++) {
         Bottle? currentBottle =
             (bottles.isNotEmpty && bottleListIndex < bottles.length)
                 ? bottles[bottleListIndex]
@@ -215,6 +217,7 @@ class _CellarLayoutState extends State<CellarLayout> with SingleTickerProviderSt
           Opacity(
             opacity: 0.2,
             child: Row(
+              mainAxisSize: MainAxisSize.min,
               children: rowChildren,
             ),
           ),
