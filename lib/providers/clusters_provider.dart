@@ -83,7 +83,6 @@ class ClustersProvider extends ChangeNotifier {
       _clusters.firstWhereOrNull((cluster) => cluster.id == id);
 
   void updateClustersRowConfiguration(int clusterId, int row, int customWidth) {
-    debugPrint("Update (PROVIDER) cluster $clusterId row $row with width $customWidth");
     cellarDatabase.updateClusterRowConfiguration(clusterId, row, customWidth);
     loadClustersRowConfiguration();
   }

@@ -151,7 +151,6 @@ class CellarDatabaseInterface {
   }
 
   Future<void> updateClusterRowConfiguration(int clusterId, int row, int customWidth) async {
-    debugPrint("Update cluster $clusterId row $row with width $customWidth");
     final Database db = await database;
     await db.update(
       tableRowConfiguration,

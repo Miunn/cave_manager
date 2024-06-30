@@ -139,7 +139,18 @@ class _CellarLayoutState extends State<CellarLayout> with SingleTickerProviderSt
           ),
         )
       ];
-      for (int j = 0; j < clustersRowConfiguration[cluster.id!]![i]; j++) {
+      for (int j = 0; j < width; j++) {
+        // Add and empty spot if custom width is lower than the cluster width
+        if (j >= clustersRowConfiguration[cluster.id!]![i]) {
+          rowChildren.add(
+            const SizedBox(
+              width: 35,
+              height: 35,
+            ),
+          );
+          continue;
+        }
+
         Bottle? currentBottle =
             (bottles.isNotEmpty && bottleListIndex < bottles.length)
                 ? bottles[bottleListIndex]
@@ -217,11 +228,12 @@ class _CellarLayoutState extends State<CellarLayout> with SingleTickerProviderSt
           Opacity(
             opacity: 0.2,
             child: Row(
-              mainAxisSize: MainAxisSize.min,
+              mainAxisSize: MainAxisSize.max,
               children: rowChildren,
             ),
           ),
           Row(
+            mainAxisSize: MainAxisSize.max,
             children: [
               FilledButton.tonal(
                   onPressed: () {
@@ -239,12 +251,9 @@ class _CellarLayoutState extends State<CellarLayout> with SingleTickerProviderSt
               const SizedBox(width: 10),
               FilledButton.tonal(
                   onPressed: () {
-                    debugPrint("Registered: ${clustersRowConfiguration[cluster.id!]![i]}");
-                    debugPrint("Width: ${cluster.width}");
                     if (clustersRowConfiguration[cluster.id!]![i] >= cluster.width!) {
                       return;
                     }
-                    debugPrint("Update");
                     context.read<ClustersProvider>().updateClustersRowConfiguration(cluster.id!, i, clustersRowConfiguration[cluster.id!]![i]+1);
                   },
                   child: const Icon(Icons.add),

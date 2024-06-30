@@ -90,7 +90,6 @@ class _BottleDetailState extends State<BottleDetails> {
   Widget build(BuildContext context) {
     Bottle bottle = context.select<BottlesProvider, Bottle>(
         (provider) => provider.getBottleById(widget.bottleId));
-    debugPrint("Bottle: $bottle");
     String? colorText;
     Country? bottleCountry =
         (bottle.country == null) ? null : Country.tryParse(bottle.country!);
