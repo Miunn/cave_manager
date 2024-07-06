@@ -1,6 +1,76 @@
 {
-  "home": "Home",
-  "@home": {
-    "description": "The home page"
-  }
+	"@@locale": "en",
+	"home": "Home",
+	"@home": {
+		"description": "The home page"
+	},
+	"bottles": "Bottles",
+	"@bottles": {
+		"description": "The bottles page"
+	},
+	"cellar": "Cellar",
+	"@cellar": {
+		"description": "The cellar page"
+	},
+	"statistics": "Statistics",
+	"@statistics": {
+		"description": "The statistics page"
+	},
+	"choose": "Choose",
+	"@choose": {
+		"description": "The choose page"
+	},
+	"settings": "Settings",
+	"@settings": {
+		"description": "The settings page"
+	},
+	"bottlesTotal": "{bottles, plural, zero{0 bottles} one{1 bottle} other{{bottles}}}",
+	"bottlesCellar": "{bottles, plural, zero{0 Bottles in cellar} one{1 Bottle in cellar} other{{bottles} Bottles in cellar}}",
+	"redWine": "Red wine",
+	"pinkWine": "Pink wine",
+	"whiteWine": "White wine",
+	"lastRegisteredBottles": "Last registered bottles",
+	"seeInCellar": "See in cellar",
+	"takeOutBottle": "Take out bottle",
+	"searchBottle": "Search bottle",
+	"red": "Red",
+	"pink": "Pink",
+	"white": "White",
+	"sortName": "A-Z Name",
+	"sortEstate": "A-Z Estate",
+	"noEstate": "No estate",
+	"noVintage": "No vintage",
+	"noCountry": "No country",
+	"noRegion": "No region",
+	"noAppellation": "No appellation",
+	"noGrape": "No grape",
+	"specifications": "Specifications",
+	"appellation": "Appellation",
+	"estate": "Estate",
+	"vintage": "Vintage",
+	"color": "Color",
+	"alcoholLevel": "Alcohol level",
+	"grapeVariety": "Grape",
+	"inCellarSince": "In cellar since",
+	"location": "Location",
+	"origin": "Origin",
+	"country": "Country",
+	"region": "Region",
+	"subRegion": "Sub region",
+	"move": "Move",
+	"cellarConfiguration": "Cellar configuration",
+	"cellarSummary": "Cellar configuration summary",
+	"cellarType": "Cellar type",
+	"cellarClusterAmount": "{type} amount",
+	"cellarColumnAmount": "Column amount",
+	"cellarRowAmount": "Row amount",
+	"cellarTotalCapacity": "Total capacity",
+	"delete": "Delete",
+	"language": "Language",
+	"languageDescription": "App language",
+	"defaultCountry": "Default country",
+	"defaultCountryDescription": "Default country for new bottles",
+	"appearance": "Appearance",
+	"appearanceDescription": "App theme",
+	"cellarDescription": "Capacity, topology"
 }
