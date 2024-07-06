@@ -1,3 +1,77 @@
 {
-  "home": "Accueil"
+  "@@locale": "fr",
+  "home": "Accueil",
+  "@home": {
+    "description": "Page d'accueil"
+  },
+  "bottles": "Bouteilles",
+  "@bottles": {
+    "description": "Page des bouteilles"
+  },
+  "cellar": "Cave",
+  "@cellar": {
+    "description": "Page de cave"
+  },
+  "statistics": "Statistiques",
+  "@statistics": {
+    "description": "Page de statistiques"
+  },
+  "choose": "Choisir",
+  "@choose": {
+    "description": "Page de choix"
+  },
+  "settings": "Paramètres",
+  "@settings": {
+    "description": "Page de paramètres"
+  },
+  "bottlesTotal": "{bottles, plural, zero{0 bouteille} one{1 bouteille} other{{bottles} bouteilles}}",
+  "bottlesCellar": "{bottles, plural, zero{0 Bouteille en cave} one{1 Bouteille en cave} other{{bottles} Bouteilles en cave}}",
+  "bottlesTakenOut": "{bottles, plural, zero{Aucune bouteille ouverte} one{1 Bouteille ouverte} other{{bottles} Bouteilles ouvertes}}",
+  "redWine": "Vin rouge",
+  "pinkWine": "Vin rosé",
+  "whiteWine": "Vin blanc",
+  "lastRegisteredBottles": "Dernières bouteilles enregistrées",
+  "seeInCellar": "Voir en cave",
+  "takeOutBottle": "Sortir la bouteille",
+  "searchBottle": "Rechercher une bouteille",
+  "red": "Rouge",
+  "pink": "Rosé",
+  "white": "Blanc",
+  "sortName": "A-Z Nom",
+  "sortEstate": "A-Z Domaine",
+  "noEstate": "Aucun domaine",
+  "noVintage": "Non millésimé",
+  "noCountry": "Aucun pays",
+  "noRegion": "Aucune région",
+  "noAppellation": "Autre appellation",
+  "noGrape": "Aucun cépage",
+  "specifications": "Spécifications",
+  "appellation": "Appellation",
+  "estate": "Domaine",
+  "vintage": "Millésime",
+  "color": "Couleur",
+  "alcoholLevel": "Degré",
+  "grapeVariety": "Cépage",
+  "inCellarSince": "En cave depuis",
+  "location": "Emplacement",
+  "origin": "Origine",
+  "country": "Pays",
+  "region": "Région",
+  "subRegion": "Sous région",
+  "move": "Déplacer",
+  "cellarConfiguration": "Configuration de la cave",
+  "cellarSummary": "Résumé de votre configuration",
+  "cellarType": "Type de cave",
+  "cellarClusterAmount": "Nombre de {type}",
+  "cellarColumnAmount": "Nombre de colones",
+  "cellarRowAmount": "Nombre de lignes",
+  "cellarTotalCapacity": "Capacité totale",
+  "delete": "Supprimer",
+  "language": "Langue",
+  "languageDescription": "Langage de l'application",
+  "defaultCountry": "Pays par défaut",
+  "defaultCountryDescription": "Sélectionné lors de l'ajout d'une bouteille",
+  "appearance": "Apparence",
+  "appearanceDescription": "Thème de l'application",
+  "cellarDescription": "Capacité, Topologie"
 }
