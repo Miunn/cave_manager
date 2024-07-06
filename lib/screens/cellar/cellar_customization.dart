@@ -1,6 +1,8 @@
 import 'package:cave_manager/widgets/cellar_layout.dart';
 import 'package:flutter/material.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class CellarCustomization extends StatefulWidget {
   const CellarCustomization({super.key});
 
@@ -13,7 +15,7 @@ class _CellarCustomizationState extends State<CellarCustomization> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Mettre à jour la cave"),
+        title: Text(AppLocalizations.of(context)!.updateCellar),
         leading: IconButton(
             icon: const Icon(Icons.close),
             onPressed: () {

@@ -62,6 +62,9 @@
 	"region": "Region",
 	"subRegion": "Sub region",
 	"move": "Move",
+	"moveBottle": "Move bottle",
+	"updateCellar": "Update cellar",
+
 	"statisticsInCellar": "In cellar",
 	"statisticsTakenOut": "Taken out",
 	"statisticsOldestVintage": "Oldest vintage",

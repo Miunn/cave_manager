@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../../models/bottle.dart';
 import '../../widgets/cellar_layout.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class MoveBottle extends StatefulWidget {
   const MoveBottle({super.key, required this.bottle});
 
@@ -17,7 +19,7 @@ class _MoveBottleState extends State<MoveBottle> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Déplacer une bouteille"),
+        title: Text(AppLocalizations.of(context)!.moveBottle),
         leading: IconButton(
             icon: const Icon(Icons.close),
             onPressed: () {
