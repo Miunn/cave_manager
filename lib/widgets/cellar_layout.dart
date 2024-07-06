@@ -155,6 +155,7 @@ class _CellarLayoutState extends State<CellarLayout> with SingleTickerProviderSt
             (bottles.isNotEmpty && bottleListIndex < bottles.length)
                 ? bottles[bottleListIndex]
                 : null;
+
         void Function() onTap;
         if (currentBottle != null &&
             currentBottle.clusterY == i &&
@@ -265,6 +266,12 @@ class _CellarLayoutState extends State<CellarLayout> with SingleTickerProviderSt
         rows.add(Row(
           children: rowChildren,
         ));
+      }
+
+      // Go to the next bottle index in the next row
+      while (bottleListIndex < bottles.length &&
+          bottles[bottleListIndex].clusterY == i) {
+        bottleListIndex++;
       }
     }
     return rows;
