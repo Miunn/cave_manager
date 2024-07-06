@@ -6,7 +6,10 @@ import 'package:cave_manager/screens/top_screens/home.dart';
 import 'package:cave_manager/screens/top_screens/take_out_quiz.dart';
 import 'package:cave_manager/screens/top_screens/statistics.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
+
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,6 +27,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Cave Manager',
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en', ''),
+        Locale('fr', ''),
+      ],
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -43,7 +56,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: MyHomePage(title: 'Accueil'),
+      home: MyHomePage(title: "Accueil"),
     );
   }
 }
@@ -93,30 +106,30 @@ class _MyHomePageState extends State<MyHomePage> {
         },
         indicatorColor: Colors.amber,
         selectedIndex: currentPageIndex,
-        destinations: const <Widget>[
+        destinations: <Widget>[
           NavigationDestination(
-            selectedIcon: Icon(Icons.home),
-            icon: Icon(Icons.home_outlined),
-            label: 'Accueil',
+            selectedIcon: const Icon(Icons.home),
+            icon: const Icon(Icons.home_outlined),
+            label: AppLocalizations.of(context)!.home,
           ),
           NavigationDestination(
-            selectedIcon: Icon(Icons.wine_bar),
-            icon: Icon(Icons.wine_bar_outlined),
+            selectedIcon: const Icon(Icons.wine_bar),
+            icon: const Icon(Icons.wine_bar_outlined),
             label: 'Bouteilles',
           ),
           NavigationDestination(
-            selectedIcon: Icon(Icons.storefront),
-            icon: Icon(Icons.storefront_outlined),
+            selectedIcon: const Icon(Icons.storefront),
+            icon: const Icon(Icons.storefront_outlined),
             label: 'Cave',
           ),
           NavigationDestination(
-            selectedIcon: Icon(Icons.show_chart),
-            icon: Icon(Icons.show_chart),
+            selectedIcon: const Icon(Icons.show_chart),
+            icon: const Icon(Icons.show_chart),
             label: 'Statistiques',
           ),
           NavigationDestination(
-              selectedIcon: Icon(Icons.quiz),
-              icon: Icon(Icons.quiz_outlined),
+              selectedIcon: const Icon(Icons.quiz),
+              icon: const Icon(Icons.quiz_outlined),
               label: 'Choisir',
           ),
         ],
