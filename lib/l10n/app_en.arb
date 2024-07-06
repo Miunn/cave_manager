@@ -26,6 +26,7 @@
 	},
 	"bottlesTotal": "{bottles, plural, zero{0 bottles} one{1 bottle} other{{bottles}}}",
 	"bottlesCellar": "{bottles, plural, zero{0 Bottles in cellar} one{1 Bottle in cellar} other{{bottles} Bottles in cellar}}",
+	"bottlesTakenOut": "{bottles, plural, zero{0 Opened bottles} one{1 Opened bottle} other{{bottles} Opened bottles}}",
 	"redWine": "Red wine",
 	"pinkWine": "Pink wine",
 	"whiteWine": "White wine",
