@@ -95,15 +95,6 @@ class _CellarState extends State<Cellar> {
         actions: getActionsList(clusters.isCellarConfigured),
       ),
       body: getCellarLayout(clusters.isCellarConfigured),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute<Bottle>(
-              fullscreenDialog: true,
-              builder: (BuildContext context) => const AddBottleDialog()));
-        },
-        tooltip: "Insert new bottle",
-        child: const Icon(Icons.add),
-      ),
     );
   }
 }
