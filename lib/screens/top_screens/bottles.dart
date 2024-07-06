@@ -12,6 +12,8 @@ import '../../models/area_enum.dart';
 import '../../models/bottle.dart';
 import '../../models/enum_wine_colors.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class Bottles extends StatefulWidget {
   const Bottles({super.key});
 
@@ -91,14 +93,14 @@ class _BottlesState extends State<Bottles> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: const Text("Bouteilles"),
+        title: Text(AppLocalizations.of(context)!.bottles),
         actions: <Widget>[
           IconButton(
               onPressed: () => Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            const Settings(title: "Paramètres")),
+                            Settings(title: AppLocalizations.of(context)!.settings)),
                   ),
               icon: const Icon(Icons.settings))
         ],
@@ -118,7 +120,7 @@ class _BottlesState extends State<Bottles> {
                       controller: controller,
                       padding: const MaterialStatePropertyAll<EdgeInsets>(
                           EdgeInsets.all(8.0)),
-                      hintText: "Rechercher une bouteille",
+                      hintText: AppLocalizations.of(context)!.searchBottle,
                       onTap: () {
                         controller.openView();
                       },
@@ -136,9 +138,9 @@ class _BottlesState extends State<Bottles> {
                     return List.generate(searchSuggest.length, (index) {
                       Bottle item = searchSuggest[index];
                       return ListTile(
-                        title: Text(item.name ?? "No name"),
+                        title: Text(item.name ?? AppLocalizations.of(context)!.noName),
                         onTap: () {
-                          controller.closeView(item.name ?? "No name");
+                          controller.closeView(item.name ?? AppLocalizations.of(context)!.noName);
                           controller.clear();
                           Navigator.of(context).push(
                             MaterialPageRoute<Bottle>(
@@ -155,9 +157,7 @@ class _BottlesState extends State<Bottles> {
                   spacing: 8.0,
                   children: [
                     FilterChip(
-                      label: const Text(
-                        "Rouge",
-                      ),
+                      label: Text(AppLocalizations.of(context)!.red),
                       selected: colorFilters.contains(WineColors.red),
                       onSelected: (bool selected) {
                         setState(() {
@@ -170,9 +170,7 @@ class _BottlesState extends State<Bottles> {
                       },
                     ),
                     FilterChip(
-                      label: const Text(
-                        "Rosé",
-                      ),
+                      label: Text(AppLocalizations.of(context)!.pink),
                       selected: colorFilters.contains(WineColors.pink),
                       onSelected: (bool selected) {
                         setState(() {
@@ -185,9 +183,7 @@ class _BottlesState extends State<Bottles> {
                       },
                     ),
                     FilterChip(
-                      label: const Text(
-                        "Blanc",
-                      ),
+                      label: Text(AppLocalizations.of(context)!.white),
                       selected: colorFilters.contains(WineColors.white),
                       onSelected: (bool selected) {
                         setState(() {
@@ -200,7 +196,7 @@ class _BottlesState extends State<Bottles> {
                       },
                     ),
                     DropdownChip(
-                        label: const Text("Région"),
+                        label: Text(AppLocalizations.of(context)!.region),
                         items: Areas.values
                             .map((area) => (area.value, Text(area.label)))
                             .toList(),
@@ -211,7 +207,7 @@ class _BottlesState extends State<Bottles> {
                         }),
                     ActionChip(
                       avatar: getSortIcon(sortName),
-                      label: const Text("A-Z Nom"),
+                      label: Text(AppLocalizations.of(context)!.sortName),
                       onPressed: () {
                         setState(() {
                           sortName = sortName.next();
@@ -220,7 +216,7 @@ class _BottlesState extends State<Bottles> {
                     ),
                     ActionChip(
                       avatar: getSortIcon(sortDomain),
-                      label: const Text("A-Z Domaine"),
+                      label: Text(AppLocalizations.of(context)!.sortEstate),
                       onPressed: () {
                         setState(() {
                           sortDomain = sortDomain.next();
@@ -229,25 +225,7 @@ class _BottlesState extends State<Bottles> {
                     ),
                   ],
                 ),
-                (closedBottles.length > 1)
-                    ? Text(
-                        "${closedBottles.length} Bouteilles en cave",
-                        style: const TextStyle(fontSize: 15),
-                      )
-                    : Text(
-                        "${closedBottles.length} Bouteille en cave",
-                        style: const TextStyle(fontSize: 15),
-                      ),
-                Visibility(
-                  visible: closedBottles.isEmpty,
-                  child: const Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      "Aucune bouteille en cave",
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
-                  ),
-                ),
+                Text(AppLocalizations.of(context)!.bottlesCellar(closedBottles.length), style: const TextStyle(fontSize: 15)),
                 ListView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
@@ -258,25 +236,7 @@ class _BottlesState extends State<Bottles> {
                 const SizedBox(
                   height: 20,
                 ),
-                (openedBottles.length > 1)
-                    ? Text(
-                        "${openedBottles.length} Bouteilles ouvertes",
-                        style: const TextStyle(fontSize: 15),
-                      )
-                    : Text(
-                        "${openedBottles.length} Bouteille ouverte",
-                        style: const TextStyle(fontSize: 15),
-                      ),
-                Visibility(
-                  visible: openedBottles.isEmpty,
-                  child: const Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      "Aucune bouteille ouverte",
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
-                  ),
-                ),
+                Text(AppLocalizations.of(context)!.bottlesTakenOut(openedBottles.length), style: const TextStyle(fontSize: 15)),
                 ListView.builder(
                     shrinkWrap: true,
                     itemCount: openedBottles.length,
@@ -294,7 +254,7 @@ class _BottlesState extends State<Bottles> {
               fullscreenDialog: true,
               builder: (BuildContext context) => const AddBottleDialog()));
         },
-        tooltip: "Insert new bottle",
+        tooltip: AppLocalizations.of(context)!.insertBottle,
         child: const Icon(Icons.add),
       ),
     );
