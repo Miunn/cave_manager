@@ -33,9 +33,13 @@
   "lastRegisteredBottles": "Dernières bouteilles enregistrées",
   "noLastRegisteredBottles": "Aucune bouteille enregistrée récemment",
   "insertBottle": "Insérer une nouvelle bouteille",
+  "newBottle": "Nouvelle bouteille",
   "noName": "Aucun nom",
   "seeInCellar": "Voir en cave",
   "takeOutBottle": "Sortir la bouteille",
+
+  "bottleInCellar": "{bottle} - En cave",
+
   "searchBottle": "Rechercher une bouteille",
   "red": "Rouge",
   "pink": "Rosé",

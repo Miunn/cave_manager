@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 import '../../models/bottle.dart';
 import '../../widgets/cellar_layout.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class PlaceInCellar extends StatefulWidget {
   const PlaceInCellar({super.key, required this.bottle});
 
@@ -22,7 +24,7 @@ class _PlaceInCellarState extends State<PlaceInCellar> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Nouvelle bouteille"),
+        title: Text(AppLocalizations.of(context)!.newBottle),
         leading: IconButton(
             icon: const Icon(Icons.close),
             onPressed: () {

@@ -33,9 +33,13 @@
 	"lastRegisteredBottles": "Last registered bottles",
 	"noLastRegisteredBottles": "No last registered bottles",
 	"insertBottle": "Insert new bottle",
+	"newBottle": "New bottle",
 	"noName": "No name",
 	"seeInCellar": "See in cellar",
 	"takeOutBottle": "Take out bottle",
+
+	"bottleInCellar": "{bottle} - In cellar",
+
 	"searchBottle": "Search bottle",
 	"red": "Red",
 	"pink": "Pink",

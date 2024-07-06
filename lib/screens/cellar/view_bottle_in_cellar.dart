@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../../models/bottle.dart';
 import '../../widgets/cellar_layout.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class ViewBottleInCellar extends StatefulWidget {
   const ViewBottleInCellar({super.key, required this.bottle});
 
@@ -17,7 +19,7 @@ class _ViewBottleInCellarState extends State<ViewBottleInCellar> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("${widget.bottle.name} - En cave"),
+        title: Text(AppLocalizations.of(context)!.bottleInCellar(widget.bottle.name ?? "")),
         leading: IconButton(
             icon: const Icon(Icons.close),
             onPressed: () {
