@@ -31,6 +31,8 @@
 	"pinkWine": "Pink wine",
 	"whiteWine": "White wine",
 	"lastRegisteredBottles": "Last registered bottles",
+	"noLastRegisteredBottles": "No last registered bottles",
+	"insertBottle": "Insert new bottle",
 	"seeInCellar": "See in cellar",
 	"takeOutBottle": "Take out bottle",
 	"searchBottle": "Search bottle",

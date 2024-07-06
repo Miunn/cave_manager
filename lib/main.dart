@@ -115,22 +115,22 @@ class _MyHomePageState extends State<MyHomePage> {
           NavigationDestination(
             selectedIcon: const Icon(Icons.wine_bar),
             icon: const Icon(Icons.wine_bar_outlined),
-            label: 'Bouteilles',
+            label: AppLocalizations.of(context)!.bottles,
           ),
           NavigationDestination(
             selectedIcon: const Icon(Icons.storefront),
             icon: const Icon(Icons.storefront_outlined),
-            label: 'Cave',
+            label: AppLocalizations.of(context)!.cellar,
           ),
           NavigationDestination(
             selectedIcon: const Icon(Icons.show_chart),
             icon: const Icon(Icons.show_chart),
-            label: 'Statistiques',
+            label: AppLocalizations.of(context)!.statistics,
           ),
           NavigationDestination(
               selectedIcon: const Icon(Icons.quiz),
               icon: const Icon(Icons.quiz_outlined),
-              label: 'Choisir',
+              label: AppLocalizations.of(context)!.choose,
           ),
         ],
       ),

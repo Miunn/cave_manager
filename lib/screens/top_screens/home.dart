@@ -8,6 +8,8 @@ import '../../providers/bottles_provider.dart';
 import '../../widgets/cellar_fillng.dart';
 import '../add_bottle_dialog.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -26,14 +28,14 @@ class _HomeState extends State<Home> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: const Text("Accueil"),
+        title: Text(AppLocalizations.of(context)!.home),
         actions: <Widget>[
           IconButton(
               onPressed: () => Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            const Settings(title: "Paramètres")),
+                            Settings(title: AppLocalizations.of(context)!.settings)),
                   ),
               icon: const Icon(Icons.settings))
         ],
@@ -55,24 +57,24 @@ class _HomeState extends State<Home> {
               return Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Chip(label: Text("${bottles.redCount} Vin rouge")),
-                  Chip(label: Text("${bottles.whiteCount} Vin blanc")),
-                  Chip(label: Text("${bottles.pinkCount} Vin rosé")),
+                  Chip(label: Text("${bottles.redCount} ${AppLocalizations.of(context)!.redWine}")),
+                  Chip(label: Text("${bottles.whiteCount} ${AppLocalizations.of(context)!.whiteWine}")),
+                  Chip(label: Text("${bottles.pinkCount} ${AppLocalizations.of(context)!.pinkWine}")),
                 ],
               );
             }),
             const SizedBox(
               height: 20,
             ),
-            const Text(
-              "Dernières bouteilles enregistrées",
+            Text(
+              AppLocalizations.of(context)!.lastRegisteredBottles,
               style: TextStyle(fontSize: 20),
             ),
             Consumer<BottlesProvider>(
               builder: (context, bottles, child) {
                 return bottles.lastBottles.isEmpty
-                    ? const Center(
-                        child: Text("Aucune bouteille enregistrée récemment"),
+                    ? Center(
+                        child: Text(AppLocalizations.of(context)!.noLastRegisteredBottles),
                       )
                     : Expanded(
                         child: ListView.builder(
@@ -94,7 +96,7 @@ class _HomeState extends State<Home> {
               fullscreenDialog: true,
               builder: (BuildContext context) => const AddBottleDialog()));
         },
-        tooltip: "Insert new bottle",
+        tooltip: AppLocalizations.of(context)!.insertBottle,
         child: const Icon(Icons.add),
       ),
     );

@@ -31,6 +31,8 @@
   "pinkWine": "Vin rosé",
   "whiteWine": "Vin blanc",
   "lastRegisteredBottles": "Dernières bouteilles enregistrées",
+  "noLastRegisteredBottles": "Aucune bouteille enregistrée récemment",
+  "insertBottle": "Insérer une nouvelle bouteille",
   "seeInCellar": "Voir en cave",
   "takeOutBottle": "Sortir la bouteille",
   "searchBottle": "Rechercher une bouteille",
