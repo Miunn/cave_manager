@@ -6,6 +6,7 @@ import 'package:cave_manager/widgets/statistic_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Statistics extends StatefulWidget {
   const Statistics({super.key});
@@ -55,12 +56,12 @@ class _StatisticsState extends State<Statistics> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: const Text("Statistiques"),
+        title: Text(AppLocalizations.of(context)!.statistics),
         actions: <Widget>[
           IconButton(
               onPressed: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const Settings(title: "Paramètres")),
+                MaterialPageRoute(builder: (context) => Settings(title: AppLocalizations.of(context)!.settings)),
               ),
               icon: const Icon(Icons.settings)
           )
@@ -78,23 +79,23 @@ class _StatisticsState extends State<Statistics> {
                   children: <Widget>[
                     CellarFillingShort(
                       bottleAmount: _inCellarBottles,
-                      text: "En cave",
+                      text: AppLocalizations.of(context)!.statisticsInCellar,
                     ),
                     CellarFillingShort(
                       bottleAmount: _redCount,
-                      text: "Vin rouge",
+                      text: AppLocalizations.of(context)!.redWine,
                     ),
                     CellarFillingShort(
                       bottleAmount: _pinkCount,
-                      text: "Vin rosé",
+                      text: AppLocalizations.of(context)!.pinkWine,
                     ),
                     CellarFillingShort(
                       bottleAmount: _whiteCount,
-                      text: "Vin blanc",
+                      text: AppLocalizations.of(context)!.whiteWine,
                     ),
                     CellarFillingShort(
                       bottleAmount: _openedBottles,
-                      text: "Ouvertes",
+                      text: AppLocalizations.of(context)!.statisticsTakenOut(_openedBottles),
                     ),
                   ],
                 ),
@@ -104,9 +105,8 @@ class _StatisticsState extends State<Statistics> {
                 runSpacing: 30.0,
                 spacing: 50.0,
                 children: [
-                  StatisticCard(title: "Bouteilles ouvertes", value: bottlesProvider.openedBottles.length.toString()),
-                  StatisticCard(title: "Millésime le plus ancien", value: "${bottlesProvider.lowestYear ?? "N/A"}"),
-                  StatisticCard(title: "Millésime le plus récent", value: "${bottlesProvider.highestYear ?? "N/A"}"),
+                  StatisticCard(title: AppLocalizations.of(context)!.statisticsOldestVintage, value: "${bottlesProvider.lowestYear ?? "N/A"}"),
+                  StatisticCard(title: AppLocalizations.of(context)!.statisticsNewestVintage, value: "${bottlesProvider.highestYear ?? "N/A"}"),
                 ],
               )
             ],
