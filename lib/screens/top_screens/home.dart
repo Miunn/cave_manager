@@ -66,10 +66,7 @@ class _HomeState extends State<Home> {
             const SizedBox(
               height: 20,
             ),
-            Text(
-              AppLocalizations.of(context)!.lastRegisteredBottles,
-              style: TextStyle(fontSize: 20),
-            ),
+            Text(AppLocalizations.of(context)!.lastRegisteredBottles, style: const TextStyle(fontSize: 20)),
             Consumer<BottlesProvider>(
               builder: (context, bottles, child) {
                 return bottles.lastBottles.isEmpty

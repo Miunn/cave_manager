@@ -6,6 +6,7 @@ import 'package:cave_manager/widgets/statistic_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+
 class Statistics extends StatefulWidget {
   const Statistics({super.key});
 
