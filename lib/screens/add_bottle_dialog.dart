@@ -14,6 +14,8 @@ import '../models/bottle.dart';
 import '../models/enum_wine_colors.dart';
 import '../providers/bottles_provider.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class AddBottleDialog extends StatefulWidget {
   const AddBottleDialog({super.key});
 
@@ -98,7 +100,7 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Nouvelle bouteille"),
+        title: Text(AppLocalizations.of(context)!.newBottle),
         leading: IconButton(
             icon: const Icon(Icons.close),
             onPressed: () {
@@ -186,9 +188,9 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
                 ),
                 TextFormField(
                   controller: signatureController,
-                  decoration: const InputDecoration(
-                    labelText: 'Domaine',
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.estate,
+                    border: const OutlineInputBorder(),
                   ),
                 ),
                 const SizedBox(
@@ -201,9 +203,9 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
                       child: TextFormField(
                         controller: vintageYearController,
                         keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(
-                          labelText: 'Millésime',
-                          border: OutlineInputBorder(),
+                        decoration: InputDecoration(
+                          labelText: AppLocalizations.of(context)!.vintage,
+                          border: const OutlineInputBorder(),
                         ),
                       ),
                     ),
@@ -214,9 +216,9 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
                       child: TextFormField(
                         controller: alcoholLevelController,
                         keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(
-                          labelText: 'Degré',
-                          border: OutlineInputBorder(),
+                        decoration: InputDecoration(
+                          labelText: AppLocalizations.of(context)!.alcoholLevel,
+                          border: const OutlineInputBorder(),
                         ),
                       ),
                     ),
@@ -248,7 +250,7 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
                     ),
                     padding: const EdgeInsets.fromLTRB(12.0, 20.5, 12.0, 20.5),
                     child: Text(
-                      "Pays: ${selectedCountry?.flagEmoji} ${selectedCountry?.displayNameNoCountryCode}",
+                      "${AppLocalizations.of(context)!.country}: ${selectedCountry?.flagEmoji} ${selectedCountry?.displayNameNoCountryCode}",
                       style: const TextStyle(
                         fontSize: 15,
                       ),
@@ -280,9 +282,9 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
                     return TextFormField(
                       controller: textEditingController,
                       focusNode: focusNode,
-                      decoration: const InputDecoration(
-                        labelText: 'Région',
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)!.region,
+                        border: const OutlineInputBorder(),
                       ),
                       onFieldSubmitted: (String value) {
                         onFieldSubmitted();
@@ -312,9 +314,9 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
                       VoidCallback onFieldSubmitted) {
                     return TextFormField(
                       controller: textEditingController,
-                      decoration: const InputDecoration(
-                        labelText: 'Sous-région',
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)!.subRegion,
+                        border: const OutlineInputBorder(),
                       ),
                       onFieldSubmitted: (String value) {
                         onFieldSubmitted();
@@ -327,9 +329,9 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
                 ),
                 TextFormField(
                   controller: grapeVarietyController,
-                  decoration: const InputDecoration(
-                    labelText: 'Cépage',
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.grapeVariety,
+                    border: const OutlineInputBorder(),
                   ),
                 ),
                 const SizedBox(
@@ -388,7 +390,7 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
                 }
               }
             },
-            child: const Text('Placer dans la cave'),
+            child: Text(AppLocalizations.of(context)!.placeInCellar),
           ),
         ),
       ),

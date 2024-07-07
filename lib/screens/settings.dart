@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class Settings extends StatefulWidget {
   const Settings({super.key, required this.title});
 
@@ -56,9 +58,7 @@ class _SettingsState extends State<Settings> {
               builder: (BuildContext context, BottlesProvider bottles, Widget? child) =>
                 CellarFillingShort(
                   bottleAmount: bottles.closedBottles.length,
-                  text: bottles.closedBottles.length > 1
-                      ? 'Bouteilles en cave'
-                      : 'Bouteille en cave',
+                  text: AppLocalizations.of(context)!.bottlesCellar(bottles.closedBottles.length),
                 )
             ),
           ),
@@ -67,8 +67,8 @@ class _SettingsState extends State<Settings> {
               children: <Widget>[
                 ListTile(
                   leading: const Icon(Icons.language),
-                  title: const Text('Langue'),
-                  subtitle: const Text("Language de l'application"),
+                  title: Text(AppLocalizations.of(context)!.language),
+                  subtitle: Text(AppLocalizations.of(context)!.languageDescription),
                   trailing: Text(appLocale.name),
                   onTap: () {
                     showCountryPicker(
@@ -86,8 +86,8 @@ class _SettingsState extends State<Settings> {
                 ),
                 ListTile(
                   leading: const Icon(Icons.public),
-                  title: const Text('Pays par défaut'),
-                  subtitle: const Text("Sélectionné lors de l'ajout d'une bouteille"),
+                  title: Text(AppLocalizations.of(context)!.defaultCountry),
+                  subtitle: Text(AppLocalizations.of(context)!.defaultCountryDescription),
                   trailing: Text(defaultCountry.name),
                   onTap: () {
                     showCountryPicker(
@@ -109,8 +109,8 @@ class _SettingsState extends State<Settings> {
                   },
                   child: ListTile(
                     leading: const Icon(Icons.palette_outlined),
-                    title: const Text("Apparence"),
-                    subtitle: const Text("Thème de l'application"),
+                    title: Text(AppLocalizations.of(context)!.appearance),
+                    subtitle: Text(AppLocalizations.of(context)!.appearanceDescription),
                     trailing: Text(appTheme.label),
                   ),
                 ),
@@ -122,11 +122,11 @@ class _SettingsState extends State<Settings> {
                       ),
                     );
                   },
-                  child: const ListTile(
-                    leading: Icon(Icons.storefront),
-                    title: Text("Cave"),
-                    subtitle: Text("Capacité, Topologie"),
-                    trailing: Icon(Icons.arrow_forward_ios),
+                  child: ListTile(
+                    leading: const Icon(Icons.storefront),
+                    title: Text(AppLocalizations.of(context)!.cellar),
+                    subtitle: Text(AppLocalizations.of(context)!.cellarDescription),
+                    trailing: const Icon(Icons.arrow_forward_ios),
                   ),
                 ),
               ],

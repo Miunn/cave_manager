@@ -24,6 +24,12 @@
 	"@settings": {
 		"description": "The settings page"
 	},
+
+	"undo": "Undo",
+	"unknown": "Unknown",
+	"row": "Row",
+	"column": "Column",
+
 	"bottlesTotal": "{bottles, plural, zero{0 bottles} one{1 bottle} other{{bottles}}}",
 	"bottlesCellar": "{bottles, plural, zero{0 Bottles in cellar} one{1 Bottle in cellar} other{{bottles} Bottles in cellar}}",
 	"bottlesTakenOut": "{bottles, plural, zero{0 Opened bottles} one{1 Opened bottle} other{{bottles} Opened bottles}}",
@@ -39,11 +45,21 @@
 	"takeOutBottle": "Take out bottle",
 
 	"bottleInCellar": "{bottle} - In cellar",
+	"placeInCellar": "Place in cellar",
+	"deletedBottle": "Deleted bottle",
+	"deletedCanceled": "Deleted canceled",
+	"takenOutBottle": "Taken out bottle",
+	"takenOutCanceled": "Taken out canceled",
+	"takenOutDate": "Sortie le",
+	"tasting": "Tasting",
+	"tastingNote": "Tasting note",
+	"tastingNoteEmpty": "No tasting note",
 
 	"searchBottle": "Search bottle",
 	"red": "Red",
 	"pink": "Pink",
 	"white": "White",
+	"unknownColor": "Unknown color",
 	"sortName": "A-Z Name",
 	"sortEstate": "A-Z Estate",
 	"noEstate": "No estate",

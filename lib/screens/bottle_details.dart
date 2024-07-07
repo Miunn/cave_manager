@@ -15,6 +15,8 @@ import '../models/bottle.dart';
 import '../models/enum_wine_colors.dart';
 import '../widgets/open_bottle_dialog.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class BottleDetails extends StatefulWidget {
   const BottleDetails({super.key, required this.bottleId});
 
@@ -46,15 +48,13 @@ class _BottleDetailState extends State<BottleDetails> {
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       key: scaffoldKey,
-      content: const Text('Bouteille supprimée'),
+      content: Text(AppLocalizations.of(context)!.deletedBottle),
       action: SnackBarAction(
-        label: 'Annuler',
+        label: AppLocalizations.of(context)!.undo,
         onPressed: () {
           scaffoldKey.currentContext?.read<BottlesProvider>().addBottle(bottle);
           ScaffoldMessenger.of(scaffoldKey.currentContext ?? context)
-              .showSnackBar(const SnackBar(
-            content: Text('Suppression annulée'),
-          ));
+              .showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.deletedCanceled)));
         },
       ),
     ));
@@ -68,9 +68,9 @@ class _BottleDetailState extends State<BottleDetails> {
     context.read<BottlesProvider>().updateBottle(bottle);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       key: scaffoldKey,
-      content: const Text('Bouteille sortie de cave'),
+      content: Text(AppLocalizations.of(context)!.takenOutBottle),
       action: SnackBarAction(
-        label: 'Annuler',
+        label: AppLocalizations.of(context)!.undo,
         onPressed: () {
           bottle.isOpen = false;
           bottle.tastingNote = null;
@@ -78,9 +78,7 @@ class _BottleDetailState extends State<BottleDetails> {
               ?.read<BottlesProvider>()
               .updateBottle(bottle);
           ScaffoldMessenger.of(scaffoldKey.currentContext ?? context)
-              .showSnackBar(const SnackBar(
-            content: Text('Bouteille remise en cave'),
-          ));
+              .showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.takenOutCanceled)));
         },
       ),
     ));
@@ -94,8 +92,8 @@ class _BottleDetailState extends State<BottleDetails> {
     Country? bottleCountry =
         (bottle.country == null) ? null : Country.tryParse(bottle.country!);
     String cellarPositionFormatted = (bottle.clusterId == null)
-        ? "Non renseigné"
-        : "Ligne ${bottle.clusterY! + 1} Colonne ${bottle.clusterX! + 1}";
+        ? AppLocalizations.of(context)!.unknown
+        : "${AppLocalizations.of(context)!.row} ${bottle.clusterY! + 1} ${AppLocalizations.of(context)!.column} ${bottle.clusterX! + 1}";
 
     switch (WineColors.values.firstWhere((e) => e.value == bottle.color)) {
       case WineColors.red:
@@ -115,7 +113,7 @@ class _BottleDetailState extends State<BottleDetails> {
         break;
 
       default:
-        colorText = "Couleur non renseigné";
+        colorText = AppLocalizations.of(context)!.unknownColor;
     }
 
     String inCellarString = "";
@@ -237,7 +235,7 @@ class _BottleDetailState extends State<BottleDetails> {
                         Text(
                           (bottle.signature == null ||
                                   bottle.signature!.isEmpty)
-                              ? "Aucun domaine"
+                              ? AppLocalizations.of(context)!.noEstate
                               : "${bottle.signature}",
                           style: TextStyle(
                               fontStyle: (bottle.signature == null ||
@@ -250,7 +248,7 @@ class _BottleDetailState extends State<BottleDetails> {
                           children: [
                             Text(
                               (bottle.vintageYear == null)
-                                  ? "Aucun millésime"
+                                  ? AppLocalizations.of(context)!.noVintage
                                   : "${bottle.vintageYear}",
                               style: TextStyle(
                                   fontStyle: (bottle.vintageYear == null)
@@ -293,7 +291,7 @@ class _BottleDetailState extends State<BottleDetails> {
                                   .updateBottle(updatedBottle);
                             }
                           },
-                          child: const Text("Déplacer"),
+                          child: Text(AppLocalizations.of(context)!.move),
                         ),
                       ),
                       const SizedBox(width: 15),
@@ -310,7 +308,7 @@ class _BottleDetailState extends State<BottleDetails> {
                               openBottle(context, bottle);
                             }
                           },
-                          child: const Text("Sortir de cave"),
+                          child: Text(AppLocalizations.of(context)!.takeOutBottle),
                         ),
                       ),
                     ],
@@ -323,7 +321,7 @@ class _BottleDetailState extends State<BottleDetails> {
                   height: 15,
                 ),
               ),
-              const Text("SPECIFICATIONS"),
+              Text(AppLocalizations.of(context)!.specifications),
               Container(
                 decoration: BoxDecoration(
                     border: Border.all(
@@ -336,7 +334,7 @@ class _BottleDetailState extends State<BottleDetails> {
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: <Widget>[
-                          const Text("Couleur"),
+                          Text(AppLocalizations.of(context)!.color),
                           const Spacer(),
                           Text(colorText),
                         ],
@@ -351,11 +349,11 @@ class _BottleDetailState extends State<BottleDetails> {
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: <Widget>[
-                          const Text("Degré"),
+                          Text(AppLocalizations.of(context)!.alcoholLevel),
                           const Spacer(),
                           Text(
                             bottle.alcoholLevel == null
-                                ? "Non renseigné"
+                                ? AppLocalizations.of(context)!.unknown
                                 : "${bottle.alcoholLevel} %",
                             style: TextStyle(
                                 fontStyle: bottle.alcoholLevel == null
@@ -374,12 +372,12 @@ class _BottleDetailState extends State<BottleDetails> {
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: <Widget>[
-                          const Text("Cépage"),
+                          Text(AppLocalizations.of(context)!.grapeVariety),
                           const Spacer(),
                           Text(
                             (bottle.grapeVariety == null ||
                                     bottle.grapeVariety!.isEmpty)
-                                ? "Non renseigné"
+                                ? AppLocalizations.of(context)!.unknown
                                 : "${bottle.grapeVariety}",
                             style: TextStyle(
                                 fontStyle: (bottle.grapeVariety == null ||
@@ -401,7 +399,7 @@ class _BottleDetailState extends State<BottleDetails> {
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           children: <Widget>[
-                            const Text("En cave depuis"),
+                            Text(AppLocalizations.of(context)!.inCellarSince),
                             const Spacer(),
                             Text(inCellarString),
                           ],
@@ -429,14 +427,9 @@ class _BottleDetailState extends State<BottleDetails> {
                               Text(clusters.cellarType.label),
                               const Spacer(),
                               Text(
-                                clusters
-                                            .getClusterById(bottle.clusterId!)
-                                            ?.name! ==
-                                        null
-                                    ? "Non renseigné"
-                                    : clusters
-                                        .getClusterById(bottle.clusterId!)!
-                                        .name!,
+                                clusters.getClusterById(bottle.clusterId!)?.name! == null
+                                    ? AppLocalizations.of(context)!.unknown
+                                    : clusters.getClusterById(bottle.clusterId!)!.name!,
                                 style: TextStyle(
                                   fontStyle: bottle.clusterId == null
                                       ? FontStyle.italic
@@ -467,7 +460,7 @@ class _BottleDetailState extends State<BottleDetails> {
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             children: <Widget>[
-                              const Text("Emplacement"),
+                              Text(AppLocalizations.of(context)!.location),
                               const Spacer(),
                               Text(
                                 cellarPositionFormatted,
@@ -508,7 +501,7 @@ class _BottleDetailState extends State<BottleDetails> {
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           children: <Widget>[
-                            const Text("Sortie le"),
+                            Text(AppLocalizations.of(context)!.takenOutDate),
                             const Spacer(),
                             Text(
                                 // Test to be able to perform null operator
@@ -524,12 +517,8 @@ class _BottleDetailState extends State<BottleDetails> {
                   ],
                 ),
               ),
-              const SizedBox(
-                height: 20,
-              ),
-              const Text(
-                "ORIGINE",
-              ),
+              const SizedBox(height: 20),
+              Text(AppLocalizations.of(context)!.origin),
               Container(
                 decoration: BoxDecoration(
                     border: Border.all(
@@ -542,11 +531,11 @@ class _BottleDetailState extends State<BottleDetails> {
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: <Widget>[
-                          const Text("Pays"),
+                          Text(AppLocalizations.of(context)!.country),
                           const Spacer(),
                           Text(
                             bottle.country == null
-                                ? "Non renseigné"
+                                ? AppLocalizations.of(context)!.unknown
                                 : "${bottleCountry?.flagEmoji} ${bottleCountry?.displayNameNoCountryCode}",
                             style: TextStyle(
                                 fontStyle: bottle.country == null
@@ -565,11 +554,11 @@ class _BottleDetailState extends State<BottleDetails> {
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: <Widget>[
-                          const Text("Région"),
+                          Text(AppLocalizations.of(context)!.region),
                           const Spacer(),
                           Text(
                             (bottle.area == null || bottle.area!.isEmpty)
-                                ? "Non renseignée"
+                                ? AppLocalizations.of(context)!.unknown
                                 : "${bottle.area}",
                             style: TextStyle(
                                 fontStyle: (bottle.area == null ||
@@ -589,11 +578,11 @@ class _BottleDetailState extends State<BottleDetails> {
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: <Widget>[
-                          const Text("Sous-région"),
+                          Text(AppLocalizations.of(context)!.subRegion),
                           const Spacer(),
                           Text(
                             (bottle.subArea == null || bottle.subArea!.isEmpty)
-                                ? "Non renseignée"
+                                ? AppLocalizations.of(context)!.unknown
                                 : "${bottle.subArea}",
                             style: TextStyle(
                                 fontStyle: (bottle.subArea == null ||
@@ -614,7 +603,7 @@ class _BottleDetailState extends State<BottleDetails> {
                   visible: bottle.isOpen! ||
                       (bottle.tastingNote != null &&
                           bottle.tastingNote!.isNotEmpty),
-                  child: const Text('DEGUSTATION')),
+                  child: Text(AppLocalizations.of(context)!.tasting)),
               Visibility(
                 visible: bottle.isOpen! ||
                     (bottle.tastingNote != null &&
@@ -631,7 +620,7 @@ class _BottleDetailState extends State<BottleDetails> {
                     child: Text(
                       (bottle.tastingNote == null ||
                               bottle.tastingNote!.isEmpty)
-                          ? "Aucune note"
+                          ? AppLocalizations.of(context)!.tastingNoteEmpty
                           : bottle.tastingNote!,
                       style: TextStyle(
                         fontStyle: (bottle.tastingNote == null ||
