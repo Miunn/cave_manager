@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 
 import '../../models/enum_cellar_type.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class CellarTypeSelector extends StatefulWidget {
   const CellarTypeSelector({super.key});
 
@@ -18,7 +20,7 @@ class _CellarTypeSelectorState extends State<CellarTypeSelector> {
 
     return Column(
       children: [
-        const Text("Sélectionnez la topologie de votre cave", style: TextStyle(fontSize: 15)),
+        Text(AppLocalizations.of(context)!.cellarTopologySelection, style: const TextStyle(fontSize: 15)),
         const SizedBox(height: 20),
         Wrap(
           verticalDirection: VerticalDirection.up,
@@ -37,17 +39,17 @@ class _CellarTypeSelectorState extends State<CellarTypeSelector> {
               clipBehavior: Clip.hardEdge,
               child: InkWell(
                 onTap: () => clusters.setCellarType(CellarType.bags),
-                child: const SizedBox(
+                child: SizedBox(
                   width: 140,
                   height: 140,
                   child: Padding(
-                    padding: EdgeInsets.all(22.0),
+                    padding: const EdgeInsets.all(22.0),
                     child: Column(children: <Widget>[
-                      SizedBox(
+                      const SizedBox(
                         height: 60,
                         child: Icon(Icons.shopping_bag),
                       ),
-                      Text("Contenants"),
+                      Text(AppLocalizations.of(context)!.clusterNameContainers),
                     ]),
                   ),
                 ),
@@ -64,17 +66,17 @@ class _CellarTypeSelectorState extends State<CellarTypeSelector> {
               clipBehavior: Clip.hardEdge,
               child: InkWell(
                 onTap: () => clusters.setCellarType(CellarType.fridge),
-                child: const SizedBox(
+                child: SizedBox(
                   width: 140,
                   height: 140,
                   child: Padding(
-                    padding: EdgeInsets.all(22.0),
+                    padding: const EdgeInsets.all(22.0),
                     child: Column(children: <Widget>[
-                      SizedBox(
+                      const SizedBox(
                         height: 60,
                         child: Icon(Icons.kitchen_outlined),
                       ),
-                      Text("Frigo"),
+                      Text(AppLocalizations.of(context)!.clusterNameFridge),
                     ]),
                   ),
                 ),
@@ -91,17 +93,17 @@ class _CellarTypeSelectorState extends State<CellarTypeSelector> {
               clipBehavior: Clip.hardEdge,
               child: InkWell(
                 onTap: () => clusters.setCellarType(CellarType.holder),
-                child: const SizedBox(
+                child: SizedBox(
                   width: 140,
                   height: 140,
                   child: Padding(
-                    padding: EdgeInsets.all(18.0),
+                    padding: const EdgeInsets.all(18.0),
                     child: Column(children: <Widget>[
-                      SizedBox(
+                      const SizedBox(
                           height: 60,
                           child: Icon(Icons.align_vertical_bottom_outlined)),
-                      SizedBox(height: 10),
-                      Text("Porte-Bouteilles"),
+                      const SizedBox(height: 10),
+                      Text(AppLocalizations.of(context)!.clusterNameWineRack),
                     ]),
                   ),
                 ),

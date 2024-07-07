@@ -6,6 +6,8 @@ import '../models/bottle.dart';
 import '../providers/bottles_provider.dart';
 import '../screens/bottle_details.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class BottleListCard extends StatefulWidget {
   const BottleListCard({super.key, required this.bottleId});
 
@@ -55,7 +57,7 @@ class _BottleListCardState extends State<BottleListCard> {
               title: Text('${bottle.name}'),
               subtitle: Text(
                 (bottle.signature == null || bottle.signature!.isEmpty)
-                    ? "Aucun domaine"
+                    ? AppLocalizations.of(context)!.noEstate
                     : '${bottle.signature}',
                 style: TextStyle(
                   fontStyle:
@@ -89,7 +91,7 @@ class _BottleListCardState extends State<BottleListCard> {
                           const SizedBox(width: 16),
                           Text(
                             (bottle.vintageYear == null)
-                                ? "Non millésimé"
+                                ? AppLocalizations.of(context)!.noVintage
                                 : '${bottle.vintageYear}',
                             style: TextStyle(
                               fontStyle: (bottle.vintageYear == null)
@@ -107,7 +109,7 @@ class _BottleListCardState extends State<BottleListCard> {
                           const SizedBox(width: 16),
                           Text(
                             (bottle.area == null || bottle.area!.isEmpty)
-                                ? "Aucune région"
+                                ? AppLocalizations.of(context)!.noRegion
                                 : '${bottle.area}',
                             style: TextStyle(
                               fontStyle:
@@ -127,7 +129,7 @@ class _BottleListCardState extends State<BottleListCard> {
                           Text(
                             (bottle.grapeVariety == null ||
                                     bottle.grapeVariety!.isEmpty)
-                                ? "Cépage inconnu"
+                                ? AppLocalizations.of(context)!.noGrape
                                 : '${bottle.grapeVariety}',
                             style: TextStyle(
                               fontStyle: (bottle.grapeVariety == null ||
@@ -146,7 +148,7 @@ class _BottleListCardState extends State<BottleListCard> {
                           const SizedBox(width: 16),
                           Text(
                             (bottle.subArea == null || bottle.subArea!.isEmpty)
-                                ? "Aucune sous-région"
+                                ? AppLocalizations.of(context)!.noSubRegion
                                 : '${bottle.subArea}',
                             style: TextStyle(
                               fontStyle: (bottle.subArea == null ||

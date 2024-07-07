@@ -8,6 +8,8 @@ import 'package:provider/provider.dart';
 
 import '../providers/bottles_provider.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class BottleCard extends StatelessWidget {
   const BottleCard({super.key, required this.bottleId});
 
@@ -22,15 +24,15 @@ class BottleCard extends StatelessWidget {
     context.read<BottlesProvider>().updateBottle(bottle);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       key: scaffoldKey,
-      content: const Text('Bouteille sortie de cave'),
+      content: Text(AppLocalizations.of(context)!.takenOutBottle),
       action: SnackBarAction(
-        label: 'Annuler',
+        label: AppLocalizations.of(context)!.undo,
         onPressed: () {
           bottle.isOpen = false;
           bottle.tastingNote = null;
           scaffoldKey.currentContext?.read<BottlesProvider>().updateBottle(bottle);
-          ScaffoldMessenger.of(scaffoldKey.currentContext ?? context).showSnackBar(const SnackBar(
-            content: Text('Bouteille remise en cave'),
+          ScaffoldMessenger.of(scaffoldKey.currentContext ?? context).showSnackBar(SnackBar(
+            content: Text(AppLocalizations.of(context)!.takenOutCanceled),
           ));
         },
       ),
@@ -44,15 +46,15 @@ class BottleCard extends StatelessWidget {
 
     switch (WineColors.values.firstWhere((e) => e.value == bottle.color)) {
       case WineColors.red:
-        colorText = "Vin ${WineColors.red.label}";
+        colorText = AppLocalizations.of(context)!.redWine;
         break;
 
       case WineColors.pink:
-        colorText = "Vin ${WineColors.pink.label}";
+        colorText = AppLocalizations.of(context)!.pinkWine;
         break;
 
       case WineColors.white:
-        colorText = "Vin ${WineColors.white.label}";
+        colorText = AppLocalizations.of(context)!.whiteWine;
         break;
 
       case WineColors.other:
@@ -60,7 +62,7 @@ class BottleCard extends StatelessWidget {
         break;
 
       default:
-        colorText = "Couleur non renseigné";
+        colorText = AppLocalizations.of(context)!.unknownColor;
     }
 
     return Card(
@@ -100,9 +102,9 @@ class BottleCard extends StatelessWidget {
                         ),
                       );
                     },
-                    child: const Text("Voir en cave")),
+                    child: Text(AppLocalizations.of(context)!.seeInCellar)),
                 TextButton(
-                    child: const Text("Sortir la bouteille"),
+                    child: Text(AppLocalizations.of(context)!.takenOutBottle),
                     onPressed: () async {
                       bool? open = await showDialog<bool>(
                         context: context,

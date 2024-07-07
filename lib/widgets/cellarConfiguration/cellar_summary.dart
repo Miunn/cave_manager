@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 import '../../models/enum_cellar_type.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class CellarSummary extends StatelessWidget {
   const CellarSummary(
       {super.key,
@@ -14,39 +16,21 @@ class CellarSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String clusterLabel = 'Nombre de Porte Bouteilles';
-    String cellarWidthLabel = 'Nombre de colonnes';
-    String cellarHeightLabel = 'Nombre de lignes';
+    String clusterLabel = AppLocalizations.of(context)!.clusterNameAmount(cellarType);
+    String cellarWidthLabel = AppLocalizations.of(context)!.clusterRackWidth;
+    String cellarHeightLabel = AppLocalizations.of(context)!.clusterRackHeight;
 
     switch (cellarType) {
       case CellarType.holder:
-        clusterLabel = 'Nombre de Porte Bouteilles';
+        cellarWidthLabel = AppLocalizations.of(context)!.clusterRackWidth;
         break;
 
       case CellarType.bags:
-        clusterLabel = "";
+        cellarWidthLabel = AppLocalizations.of(context)!.clusterContainersWidth;
         break;
 
       case CellarType.fridge:
-        clusterLabel = "Nombre de frigo";
-        break;
-
-      default:
-        clusterLabel = "";
-        break;
-    }
-
-    switch (cellarType) {
-      case CellarType.holder:
-        cellarWidthLabel = 'Nombre de colonnes';
-        break;
-
-      case CellarType.bags:
-        cellarWidthLabel = "Capacité d'un contenant";
-        break;
-
-      case CellarType.fridge:
-        cellarWidthLabel = "Capacité d'un niveau";
+        cellarWidthLabel = AppLocalizations.of(context)!.clusterFridgeWidth;
         break;
       default:
         cellarWidthLabel = "";
@@ -55,15 +39,15 @@ class CellarSummary extends StatelessWidget {
 
     switch (cellarType) {
       case CellarType.holder:
-        cellarHeightLabel = 'Nombre de lignes';
+        cellarHeightLabel = AppLocalizations.of(context)!.clusterRackHeight;
         break;
 
       case CellarType.bags:
-        cellarHeightLabel = "Nombre de contenant";
+        cellarHeightLabel = AppLocalizations.of(context)!.clusterContainersHeight;
         break;
 
       case CellarType.fridge:
-        cellarHeightLabel = "Nombre de niveaux";
+        cellarHeightLabel = AppLocalizations.of(context)!.clusterFridgeHeight;
         break;
       default:
         cellarHeightLabel = "";
@@ -96,9 +80,7 @@ class CellarSummary extends StatelessWidget {
             children: <Widget>[
               Text(cellarWidthLabel),
               const Spacer(),
-              Text(((cluster.width ?? 0) <= 1)
-                  ? "${cluster.width} bouteille"
-                  : "${cluster.width} bouteilles"),
+              Text(AppLocalizations.of(context)!.bottlesTotal(cluster.width ?? 0)),
             ],
           ),
         ),
@@ -113,9 +95,7 @@ class CellarSummary extends StatelessWidget {
             children: <Widget>[
               Text(cellarHeightLabel),
               const Spacer(),
-              Text(((cluster.height ?? 0) <= 1)
-                  ? "${cluster.height} bouteille"
-                  : "${cluster.height} bouteilles"),
+              Text(AppLocalizations.of(context)!.bottlesTotal(cluster.height ?? 0)),
             ],
           ),
         ),
@@ -128,8 +108,7 @@ class CellarSummary extends StatelessWidget {
 
     return Column(
       children: [
-        const Text("Résumé de votre configuration",
-            style: TextStyle(fontSize: 15)),
+        Text(AppLocalizations.of(context)!.cellarSummary, style: const TextStyle(fontSize: 15)),
         const SizedBox(height: 20),
         Container(
           decoration: BoxDecoration(
@@ -144,7 +123,7 @@ class CellarSummary extends StatelessWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
-                    const Text("Type de cave"),
+                    Text(AppLocalizations.of(context)!.cellarType),
                     const Spacer(),
                     Text(
                       cellarType.label,
@@ -184,17 +163,9 @@ class CellarSummary extends StatelessWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
-                    const Text(
-                      "Capacité totale",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
+                    Text(AppLocalizations.of(context)!.cellarTotalCapacity, style: const TextStyle(fontWeight: FontWeight.bold)),
                     const Spacer(),
-                    Text(
-                      (capacity <= 1)
-                          ? "$capacity bouteille"
-                          : "$capacity bouteilles",
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
+                    Text(AppLocalizations.of(context)!.bottlesTotal(capacity), style: const TextStyle(fontWeight: FontWeight.bold)),
                   ],
                 ),
               ),

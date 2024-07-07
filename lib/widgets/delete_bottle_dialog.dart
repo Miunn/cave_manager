@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../models/bottle.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class DeleteBottleDialog extends StatelessWidget {
   const DeleteBottleDialog({super.key, required this.bottle});
 
@@ -11,16 +13,16 @@ class DeleteBottleDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       icon: const Icon(Icons.delete_outline),
-      title: const Text("Supprimer la bouteille ?"),
-      content: Text("${bottle.name}sera définitivement supprimée"),
+      title: Text(AppLocalizations.of(context)!.deleteBottleConfirmationTitle),
+      content: Text(AppLocalizations.of(context)!.deleteBottleConfirmationMessage(bottle.name ?? '')),
       actions: <Widget>[
         TextButton(
           onPressed: () => Navigator.pop(context, false),
-          child: const Text('Annuler'),
+          child: Text(AppLocalizations.of(context)!.cancel),
         ),
         TextButton(
           onPressed: () => Navigator.pop(context, true),
-          child: const Text('Supprimer'),
+          child: Text(AppLocalizations.of(context)!.delete),
         ),
       ],
     );

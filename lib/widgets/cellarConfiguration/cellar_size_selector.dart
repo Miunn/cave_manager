@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 
 import '../../models/cluster.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class CellarSizeSelector extends StatefulWidget {
   const CellarSizeSelector(
       {super.key,
@@ -42,20 +44,20 @@ class _CellarSizeSelectorState extends State<CellarSizeSelector> {
     widthController.text = (widget.clusterConfiguration.width ?? "").toString();
     heightController.text = (widget.clusterConfiguration.height ?? "").toString();
 
-    String widthLabel = 'Nombre de colonnes';
-    String heightLabel = 'Nombre de lignes';
+    String widthLabel = AppLocalizations.of(context)!.clusterRackWidth;
+    String heightLabel = AppLocalizations.of(context)!.clusterRackHeight;
 
     switch (clusters.cellarType) {
       case CellarType.holder:
-        widthLabel = 'Nombre de colonnes';
+        widthLabel = AppLocalizations.of(context)!.clusterRackWidth;
         break;
 
       case CellarType.bags:
-        widthLabel = "Capacité d'un contenant";
+        widthLabel = AppLocalizations.of(context)!.clusterContainersWidth;
         break;
 
       case CellarType.fridge:
-        widthLabel = "Capacité d'un niveau";
+        widthLabel = AppLocalizations.of(context)!.clusterFridgeWidth;
         break;
 
       default:
@@ -65,15 +67,15 @@ class _CellarSizeSelectorState extends State<CellarSizeSelector> {
 
     switch (clusters.cellarType) {
       case CellarType.holder:
-        heightLabel = 'Nombre de lignes';
+        heightLabel = AppLocalizations.of(context)!.clusterRackHeight;
         break;
 
       case CellarType.bags:
-        heightLabel = 'Nombre de contenants';
+        heightLabel = AppLocalizations.of(context)!.clusterContainersHeight;
         break;
 
       case CellarType.fridge:
-        heightLabel = 'Nombre de niveaux';
+        heightLabel = AppLocalizations.of(context)!.clusterFridgeHeight;
         break;
 
       default:
@@ -87,8 +89,8 @@ class _CellarSizeSelectorState extends State<CellarSizeSelector> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            const Text("Définissez les dimensions de votre cave",
-                style: TextStyle(fontSize: 15)),
+            Text(AppLocalizations.of(context)!.cellarConfigurationTitle2,
+                style: const TextStyle(fontSize: 15)),
             const SizedBox(height: 20),
             Visibility(
                 visible: widget.totalClusterStep > 1,
@@ -101,7 +103,7 @@ class _CellarSizeSelectorState extends State<CellarSizeSelector> {
               controller: nameController,
               autofocus: true,
               decoration: InputDecoration(
-                labelText: 'Nom du ${clusters.cellarType.label}',
+                labelText: AppLocalizations.of(context)!.clusterTypeName(clusters.cellarType.label),
               ),
               onChanged: (value) {
                 widget.clusterConfiguration.name = value;
@@ -115,7 +117,7 @@ class _CellarSizeSelectorState extends State<CellarSizeSelector> {
               keyboardType: TextInputType.number,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Veuillez renseigner une valeur';
+                  return AppLocalizations.of(context)!.enterValueWarning;
                 }
                 return null;
               },
@@ -131,7 +133,7 @@ class _CellarSizeSelectorState extends State<CellarSizeSelector> {
               keyboardType: TextInputType.number,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Veuillez renseigner une valeur';
+                  return AppLocalizations.of(context)!.enterValueWarning;
                 }
                 return null;
               },

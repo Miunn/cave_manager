@@ -1,6 +1,7 @@
 import 'package:cave_manager/widgets/Ring/animated_ring.dart';
 import 'package:flutter/cupertino.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CellarFilling extends StatefulWidget {
   const CellarFilling({super.key, required this.bottleAmount});
@@ -26,18 +27,11 @@ class _CellarFillingState extends State<CellarFilling> {
               fillPercentage: widget.bottleAmount/50 * 100,
               strokeWidth: 15,
             ),
-            Text(
-              "${widget.bottleAmount}",
-              style: const TextStyle(
-                fontSize: 30
-              ),
-            ),
+            Text("${widget.bottleAmount}", style: const TextStyle(fontSize: 30)),
           ],
         ),
         const SizedBox(width: 20,),
-        Text(
-          widget.bottleAmount > 1 ?
-          '${widget.bottleAmount} bouteilles' : '${widget.bottleAmount} bouteille',
+        Text(AppLocalizations.of(context)!.bottlesTotal(widget.bottleAmount),
           style: const TextStyle(fontSize: 30),
         ),
       ],

@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 
 import '../../models/enum_cellar_type.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class CellarClusterSelector extends StatefulWidget {
   const CellarClusterSelector(
       {super.key,
@@ -41,9 +43,9 @@ class _CellarClusterSelectorState extends State<CellarClusterSelector> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text("Définissez les dimensions de votre cave", style: TextStyle(fontSize: 15)),
+        Text(AppLocalizations.of(context)!.cellarConfigurationTitle2, style: const TextStyle(fontSize: 15)),
         const SizedBox(height: 70,),
-        Text(clusterLabel),
+        Text(AppLocalizations.of(context)!.clusterNameAmount(clusters.cellarType)),
         Slider(
           label: widget.clusterValue.round().toString(),
           value: widget.clusterValue,
@@ -55,7 +57,7 @@ class _CellarClusterSelectorState extends State<CellarClusterSelector> {
           max: 10,
           divisions: 9,
         ),
-        const SizedBox(height: 50,),
+        const SizedBox(height: 50),
       ],
     );
   }

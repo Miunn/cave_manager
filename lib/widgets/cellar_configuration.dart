@@ -9,6 +9,8 @@ import 'package:provider/provider.dart';
 
 import 'cellarConfiguration/cellar_type_selector.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class CellarConfiguration extends StatefulWidget {
   const CellarConfiguration({super.key});
 
@@ -77,14 +79,14 @@ class _CellarConfigurationState extends State<CellarConfiguration> {
 
     switch (currentStep) {
       case 0:
-        sectionTitle = "Sélectionnez la topologie de votre cave";
+        sectionTitle = AppLocalizations.of(context)!.cellarConfigurationTitle1;
         break;
       case 1:
       case 2:
-        sectionTitle = "Définissez les dimensions de votre cave";
+        sectionTitle = AppLocalizations.of(context)!.cellarConfigurationTitle2;
         break;
       case 3:
-        sectionTitle = "Résumé de votre configuration";
+        sectionTitle = AppLocalizations.of(context)!.cellarSummary;
         break;
     }
 
@@ -124,15 +126,15 @@ class _CellarConfigurationState extends State<CellarConfiguration> {
                     onPressed: (currentStep > 0)
                         ? () => previousStep(clusters.cellarType)
                         : null,
-                    child: const Text("Retour")),
+                    child: Text(AppLocalizations.of(context)!.back)),
                 FilledButton(
                     onPressed: (currentStep < CellarConfiguration.MAX_STEP)
                         ? () => nextStep(clusters.cellarType)
                         : () => clusters
                             .setCellarConfiguration(cellarConfiguration),
                     child: Text((currentStep < CellarConfiguration.MAX_STEP)
-                        ? "Suivant"
-                        : "Terminer")),
+                        ? AppLocalizations.of(context)!.next
+                        : AppLocalizations.of(context)!.finish)),
               ],
             ),
           ],

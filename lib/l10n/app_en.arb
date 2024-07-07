@@ -25,10 +25,16 @@
 		"description": "The settings page"
 	},
 
+	"cancel": "Cancel",
 	"undo": "Undo",
 	"unknown": "Unknown",
+	"enterValueWarning": "Please enter a value",
 	"row": "Row",
 	"column": "Column",
+	"back": "Back",
+	"next": "Next",
+	"finish": "Finish",
+	"delete": "Delete",
 
 	"bottlesTotal": "{bottles, plural, zero{0 bottles} one{1 bottle} other{{bottles}}}",
 	"bottlesCellar": "{bottles, plural, zero{0 Bottles in cellar} one{1 Bottle in cellar} other{{bottles} Bottles in cellar}}",
@@ -42,6 +48,7 @@
 	"newBottle": "New bottle",
 	"noName": "No name",
 	"seeInCellar": "See in cellar",
+	"takeOut": "Take out",
 	"takeOutBottle": "Take out bottle",
 
 	"bottleInCellar": "{bottle} - In cellar",
@@ -55,6 +62,23 @@
 	"tastingNote": "Tasting note",
 	"tastingNoteEmpty": "No tasting note",
 
+	"cellarTopologySelection": "Cellar topology selection",
+	"clusterNameWineRack": "Wine Rack",
+	"clusterNameFridge": "Fridge",
+	"clusterNameContainers": "Containers",
+	"clusterRackWidth": "Column amount",
+	"clusterRackHeight": "Row amount",
+	"clusterFridgeWidth": "Level capacity",
+	"clusterFridgeHeight": "Level amount",
+	"clusterContainersWidth": "Container capacity",
+	"clusterContainersHeight": "Container amount",
+	"clusterTypeName": "{clusterType} name",
+
+	"clusterNameAmount": "Number of {clusterName}",
+	"clusterAmount": "{clusterAmount, plural, zero{0 clusters} one{1 cluster} other{{clusterAmount} clusters}}",
+	"cellarConfigurationTitle1": "Sélectionnez la topologie de votre cave",
+	"cellarConfigurationTitle2": "Define your cellar size",
+
 	"searchBottle": "Search bottle",
 	"red": "Red",
 	"pink": "Pink",
@@ -66,6 +90,7 @@
 	"noVintage": "No vintage",
 	"noCountry": "No country",
 	"noRegion": "No region",
+	"noSubRegion": "No sub region",
 	"noAppellation": "No appellation",
 	"noGrape": "No grape",
 	"specifications": "Specifications",
@@ -84,6 +109,11 @@
 	"move": "Move",
 	"moveBottle": "Move bottle",
 	"updateCellar": "Update cellar",
+	"takeOutBottleConfirmationTitle": "Take out bottle ?",
+	"takeOutBottleConfirmationMessage": "{bottleName} will be taken out of the cellar. It will always be available in the 'Bottles' section.",
+	"takeOutBottleTastingNoteHint": "What's the occasion for this bottle ? (optional)",
+	"deleteBottleConfirmationTitle": "Delete bottle ?",
+	"deleteBottleConfirmationMessage": "{bottleName} will be permanently deleted",
 
 	"statisticsInCellar": "In cellar",
 	"statisticsTakenOut": "Taken out",
@@ -96,7 +126,7 @@
 	"cellarColumnAmount": "Column amount",
 	"cellarRowAmount": "Row amount",
 	"cellarTotalCapacity": "Total capacity",
-	"delete": "Delete",
+
 	"language": "Language",
 	"languageDescription": "App language",
 	"defaultCountry": "Default country",

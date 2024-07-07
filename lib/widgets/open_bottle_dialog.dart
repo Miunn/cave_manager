@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../models/bottle.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class OpenBottleDialog extends StatefulWidget {
   const OpenBottleDialog({super.key, required this.bottle});
 
@@ -20,13 +22,11 @@ class _OpenBottleDialogState extends State<OpenBottleDialog> {
     final TextEditingController tastingNoteController = TextEditingController();
 
     return AlertDialog(
-      title: const Text('Sortir la bouteille ?'),
+      title: Text(AppLocalizations.of(context)!.takeOutBottleConfirmationTitle),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            "${widget.bottle.name} sera retiré de la cave. Elle sera toujours consultable via l'onglet 'Mes bouteilles'"
-          ),
+          Text(AppLocalizations.of(context)!.takeOutBottleConfirmationMessage(widget.bottle.name ?? '')),
           const SizedBox(height: 20,),
           /*TextButton.icon(
             onPressed: () {
@@ -42,10 +42,10 @@ class _OpenBottleDialogState extends State<OpenBottleDialog> {
             visible: writeDescription,
             child: TextField(
               controller: tastingNoteController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Pour quelle occasion sortir cette bouteille ? (facultatif)',
-                hintStyle: TextStyle(fontWeight: FontWeight.w400, fontSize: 15)
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                hintText: AppLocalizations.of(context)!.takeOutBottleTastingNoteHint,
+                hintStyle: const TextStyle(fontWeight: FontWeight.w400, fontSize: 15)
               ),
               style: const TextStyle(fontSize: 15),
               maxLines: 4,
@@ -56,14 +56,14 @@ class _OpenBottleDialogState extends State<OpenBottleDialog> {
       actions: <Widget>[
         TextButton(
           onPressed: () => Navigator.pop(context, false),
-          child: const Text('Annuler'),
+          child: Text(AppLocalizations.of(context)!.cancel),
         ),
         TextButton(
           onPressed: () {
             widget.bottle.tastingNote = tastingNoteController.text;
             Navigator.pop(context, true);
           },
-          child: const Text('Sortir'),
+          child: Text(AppLocalizations.of(context)!.takeOut),
         ),
       ],
     );
