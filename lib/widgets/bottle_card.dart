@@ -104,7 +104,7 @@ class BottleCard extends StatelessWidget {
                     },
                     child: Text(AppLocalizations.of(context)!.seeInCellar)),
                 TextButton(
-                    child: Text(AppLocalizations.of(context)!.takenOutBottle),
+                    child: Text(AppLocalizations.of(context)!.takeOutBottle),
                     onPressed: () async {
                       bool? open = await showDialog<bool>(
                         context: context,
