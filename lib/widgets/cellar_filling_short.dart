@@ -15,7 +15,7 @@ class _CellarFillingShortState extends State<CellarFillingShort> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 130,
+      width: 150,
       child: Column(
         children: [
           Stack(

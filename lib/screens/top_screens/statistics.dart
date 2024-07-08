@@ -75,7 +75,8 @@ class _StatisticsState extends State<Statistics> {
               Center(
                 child: Wrap(
                   runSpacing: 30.0,
-                  spacing: 50.0,
+                  spacing: 30.0,
+                  crossAxisAlignment: WrapCrossAlignment.center,
                   children: <Widget>[
                     CellarFillingShort(
                       bottleAmount: _inCellarBottles,
@@ -93,22 +94,12 @@ class _StatisticsState extends State<Statistics> {
                       bottleAmount: _whiteCount,
                       text: AppLocalizations.of(context)!.whiteWine,
                     ),
-                    CellarFillingShort(
-                      bottleAmount: _openedBottles,
-                      text: AppLocalizations.of(context)!.statisticsTakenOut(_openedBottles),
-                    ),
+                    StatisticCard(title: AppLocalizations.of(context)!.statisticsOldestVintage, value: "${bottlesProvider.lowestYear ?? "N/A"}"),
+                    StatisticCard(title: AppLocalizations.of(context)!.statisticsNewestVintage, value: "${bottlesProvider.highestYear ?? "N/A"}"),
+                    StatisticCard(title: AppLocalizations.of(context)!.statisticsTakenOut(_openedBottles), value: "$_openedBottles"),
                   ],
                 ),
               ),
-              const SizedBox(height: 30.0),
-              Wrap(
-                runSpacing: 30.0,
-                spacing: 50.0,
-                children: [
-                  StatisticCard(title: AppLocalizations.of(context)!.statisticsOldestVintage, value: "${bottlesProvider.lowestYear ?? "N/A"}"),
-                  StatisticCard(title: AppLocalizations.of(context)!.statisticsNewestVintage, value: "${bottlesProvider.highestYear ?? "N/A"}"),
-                ],
-              )
             ],
           ),
         ),

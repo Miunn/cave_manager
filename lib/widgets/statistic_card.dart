@@ -9,8 +9,11 @@ class StatisticCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card.filled(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.0),
+      ),
       child: SizedBox(
-        width: 140,
+        width: 150,
         height: 170,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
