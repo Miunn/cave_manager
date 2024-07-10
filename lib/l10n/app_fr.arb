@@ -28,6 +28,7 @@
 	"cancel": "Annuler",
 	"undo": "Annuler",
 	"unknown": "Non renseigné",
+	"enterValueWarning": "Renseignez une valeur",
 	"row": "Ligne",
 	"column": "Colonne",
 	"back": "Retour",
@@ -110,7 +111,7 @@
 
 	"takeOutBottleConfirmationTitle": "Sortir la bouteille ?",
 	"takeOutBottleConfirmationMessage": "{bottleName} sera retiré de la cave. Elle sera toujours consultable via l'onglet 'Mes bouteilles'",
-	"takeOutBottleOccasionHint": "Pour quelle occasion sortir cette bouteille ? (facultatif)",
+	"takeOutBottleTastingNoteHint": "Pour quelle occasion sortir cette bouteille ? (facultatif)",
 	"deleteBottleConfirmationTitle": "Supprimer la bouteille ?",
 	"deleteBottleConfirmationMessage": "{bottleName} will be permanently deleted",
 	"statisticsInCellar": "En cave",

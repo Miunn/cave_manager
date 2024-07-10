@@ -1,5 +1,4 @@
 import 'package:cave_manager/widgets/pick_up_quiz/quiz_choice_card.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 

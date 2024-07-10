@@ -16,29 +16,32 @@ class _CellarFillingShortState extends State<CellarFillingShort> {
   Widget build(BuildContext context) {
     return SizedBox(
       width: 150,
-      child: Column(
-        children: [
-          Stack(
-            alignment: Alignment.center,
-            children: <Widget>[
-              AnimatedSemiRing(
-                color: const Color.fromARGB(100, 0, 200, 0),
-                radius: 45,
-                fillPercentage: widget.bottleAmount / 50 * 100,
-                strokeWidth: 15,
-              ),
-              Text(
-                "${widget.bottleAmount}",
-                style: const TextStyle(fontSize: 30),
-              ),
-            ],
-          ),
-          Text(
-            widget.text,
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 18),
-          )
-        ],
+      height: 170,
+      child: Center(
+        child: Column(
+          children: [
+            Stack(
+              alignment: Alignment.center,
+              children: <Widget>[
+                AnimatedSemiRing(
+                  color: const Color.fromARGB(100, 0, 200, 0),
+                  radius: 45,
+                  fillPercentage: widget.bottleAmount / 50 * 100,
+                  strokeWidth: 15,
+                ),
+                Text(
+                  "${widget.bottleAmount}",
+                  style: const TextStyle(fontSize: 30),
+                ),
+              ],
+            ),
+            Text(
+              widget.text,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 18),
+            )
+          ],
+        ),
       ),
     );
   }
