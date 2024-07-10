@@ -121,22 +121,13 @@ class _BottleDetailState extends State<BottleDetails> {
     int years = inCellarSince.inDays ~/ 365;
     int extraDaysInYears = inCellarSince.inDays % 365;
 
+    debugPrint("Years: $years, extra days: $extraDaysInYears");
     if (inCellarSince.inDays == 0) {
-      inCellarString = "Aujourd'hui";
+      inCellarString = AppLocalizations.of(context)!.today;
     } else if (inCellarSince.inDays == 1) {
-      inCellarString = "Hier";
-    } else if (inCellarSince.inDays < 365) {
-      inCellarString = "${inCellarSince.inDays} jours";
-    } else if (inCellarSince.inDays == 365) {
-      inCellarString = "1 an";
-    } else if (years == 1 && extraDaysInYears == 1) {
-      inCellarString = "1 an 1 jour";
-    } else if (years == 1) {
-      inCellarString = "1 an $extraDaysInYears jours";
-    } else if (extraDaysInYears == 1) {
-      inCellarString = "$years ans 1 jour";
+      inCellarString = AppLocalizations.of(context)!.yesterday;
     } else {
-      inCellarString = "$years ans $extraDaysInYears jours";
+      inCellarString = AppLocalizations.of(context)!.xYearsXDays(extraDaysInYears, years);
     }
 
     registerNewPicture() async {
