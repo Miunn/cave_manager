@@ -1,8 +1,6 @@
 // A screen that allows users to take a picture using a given camera.
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_mobile_vision_2/flutter_mobile_vision_2.dart';
 
 class TakePictureScreen extends StatefulWidget {
   const TakePictureScreen({super.key, required this.camera});
