@@ -54,7 +54,9 @@ class _BottleDetailState extends State<BottleDetails> {
         onPressed: () {
           scaffoldKey.currentContext?.read<BottlesProvider>().addBottle(bottle);
           ScaffoldMessenger.of(scaffoldKey.currentContext ?? context)
-              .showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.deletedCanceled)));
+              .showSnackBar(SnackBar(
+                  content:
+                      Text(AppLocalizations.of(context)!.deletedCanceled)));
         },
       ),
     ));
@@ -78,7 +80,9 @@ class _BottleDetailState extends State<BottleDetails> {
               ?.read<BottlesProvider>()
               .updateBottle(bottle);
           ScaffoldMessenger.of(scaffoldKey.currentContext ?? context)
-              .showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.takenOutCanceled)));
+              .showSnackBar(SnackBar(
+                  content:
+                      Text(AppLocalizations.of(context)!.takenOutCanceled)));
         },
       ),
     ));
@@ -127,7 +131,8 @@ class _BottleDetailState extends State<BottleDetails> {
     } else if (inCellarSince.inDays == 1) {
       inCellarString = AppLocalizations.of(context)!.yesterday;
     } else {
-      inCellarString = AppLocalizations.of(context)!.xYearsXDays(extraDaysInYears, years);
+      inCellarString =
+          AppLocalizations.of(context)!.xYearsXDays(extraDaysInYears, years);
     }
 
     registerNewPicture() async {
@@ -198,17 +203,15 @@ class _BottleDetailState extends State<BottleDetails> {
                     child: SizedBox(
                       height: 160,
                       child: (bottle.imageUri == null)
-                          ? Padding(
+                          ? IconButton(
                               padding: const EdgeInsets.all(8.0),
-                              child: IconButton(
-                                icon: Image.asset(
-                                  'assets/wine-bottle.png',
-                                  width: 70,
-                                  height: 70,
-                                ),
-                                iconSize: 70,
-                                onPressed: registerNewPicture,
+                              icon: Image.asset(
+                                'assets/wine-bottle.png',
+                                width: 70,
+                                height: 70,
                               ),
+                              iconSize: 70,
+                              onPressed: registerNewPicture,
                             )
                           : IconButton(
                               icon: Image.file(File(bottle.imageUri!)),
@@ -299,7 +302,8 @@ class _BottleDetailState extends State<BottleDetails> {
                               openBottle(context, bottle);
                             }
                           },
-                          child: Text(AppLocalizations.of(context)!.takeOutBottle),
+                          child:
+                              Text(AppLocalizations.of(context)!.takeOutBottle),
                         ),
                       ),
                     ],
@@ -418,9 +422,14 @@ class _BottleDetailState extends State<BottleDetails> {
                               Text(clusters.cellarType.label),
                               const Spacer(),
                               Text(
-                                clusters.getClusterById(bottle.clusterId!)?.name! == null
+                                clusters
+                                            .getClusterById(bottle.clusterId!)
+                                            ?.name! ==
+                                        null
                                     ? AppLocalizations.of(context)!.unknown
-                                    : clusters.getClusterById(bottle.clusterId!)!.name!,
+                                    : clusters
+                                        .getClusterById(bottle.clusterId!)!
+                                        .name!,
                                 style: TextStyle(
                                   fontStyle: bottle.clusterId == null
                                       ? FontStyle.italic
