@@ -312,7 +312,7 @@ class _BottleDetailState extends State<BottleDetails> {
                   height: 15,
                 ),
               ),
-              Text(AppLocalizations.of(context)!.specifications),
+              Text(AppLocalizations.of(context)!.specifications.toUpperCase()),
               Container(
                 decoration: BoxDecoration(
                     border: Border.all(
@@ -509,7 +509,7 @@ class _BottleDetailState extends State<BottleDetails> {
                 ),
               ),
               const SizedBox(height: 20),
-              Text(AppLocalizations.of(context)!.origin),
+              Text(AppLocalizations.of(context)!.origin.toUpperCase()),
               Container(
                 decoration: BoxDecoration(
                     border: Border.all(
