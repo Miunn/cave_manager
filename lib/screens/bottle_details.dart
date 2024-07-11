@@ -17,6 +17,8 @@ import '../widgets/open_bottle_dialog.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'ViewImage.dart';
+
 class BottleDetails extends StatefulWidget {
   const BottleDetails({super.key, required this.bottleId});
 
@@ -125,7 +127,6 @@ class _BottleDetailState extends State<BottleDetails> {
     int years = inCellarSince.inDays ~/ 365;
     int extraDaysInYears = inCellarSince.inDays % 365;
 
-    debugPrint("Years: $years, extra days: $extraDaysInYears");
     if (inCellarSince.inDays == 0) {
       inCellarString = AppLocalizations.of(context)!.today;
     } else if (inCellarSince.inDays == 1) {
@@ -215,7 +216,13 @@ class _BottleDetailState extends State<BottleDetails> {
                             )
                           : IconButton(
                               icon: Image.file(File(bottle.imageUri!)),
-                              onPressed: registerNewPicture,
+                              onPressed: () => Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => ViewImage(
+                                    imagePath: bottle.imageUri!,
+                                  ),
+                                ),
+                              ),
                             ),
                     ),
                   ),
