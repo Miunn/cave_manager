@@ -7,7 +7,9 @@ import 'package:cave_manager/screens/cellar/move_bottle.dart';
 import 'package:cave_manager/screens/take_picture.dart';
 import 'package:cave_manager/widgets/delete_bottle_dialog.dart';
 import 'package:country_picker/country_picker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -216,12 +218,52 @@ class _BottleDetailState extends State<BottleDetails> {
                             )
                           : IconButton(
                               icon: Image.file(File(bottle.imageUri!)),
-                              onPressed: () => Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => ViewImage(
-                                    imagePath: bottle.imageUri!,
-                                  ),
-                                ),
+                              onPressed: () => showModalBottomSheet<void>(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return SizedBox(
+                                    height: 250,
+                                    child: Column(
+                                      children: [
+                                        const SizedBox(width: 75, child: Divider(thickness: 4)),
+                                        Flexible(
+                                          child: ListView(
+                                            shrinkWrap: true,
+                                            children: <Widget>[
+                                              ListTile(
+                                                leading: const Icon(Icons.remove_red_eye),
+                                                title: Text(AppLocalizations.of(context)!.viewImage),
+                                                onTap: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) => ViewImage(imagePath: bottle.imageUri!),
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                              ListTile(
+                                                leading: const Icon(Icons.camera_alt),
+                                                title: Text(AppLocalizations.of(context)!.takePicture),
+                                                onTap: registerNewPicture,
+                                              ),
+                                              ListTile(
+                                                leading: const Icon(Icons.image),
+                                                title: Text(AppLocalizations.of(context)!.choosePicture),
+                                                onTap: registerNewPicture,
+                                              ),
+                                              ListTile(
+                                                leading: const Icon(Icons.delete_forever),
+                                                title: Text(AppLocalizations.of(context)!.deletePicture),
+                                                onTap: registerNewPicture,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
                               ),
                             ),
                     ),

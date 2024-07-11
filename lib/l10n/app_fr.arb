@@ -133,6 +133,11 @@
 	"appearanceDescription": "Thème de l'application",
 	"cellarDescription": "Capacité, Topologie",
 
+	"viewImage": "Voir l'image",
+	"takePicture": "Prendre une photo",
+	"choosePicture": "Choisir une photo",
+	"deletePicture": "Supprimer l'image",
+
 	"today": "Aujourd'hui",
 	"yesterday": "Hier",
 	"xYearsXDays": "{years, plural, zero{} one{1 an,} other{{years} ans,}} {days, plural, zero{0 jour} one{1 jour} other{{days} jours}}"
