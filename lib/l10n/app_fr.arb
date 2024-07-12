@@ -78,9 +78,12 @@
 	"cellarConfigurationTitle2": "Définissez les dimensions de votre cave",
 
 	"searchBottle": "Rechercher une bouteille",
-	"red": "Rouge",
-	"pink": "Rosé",
-	"white": "Blanc",
+	"wineColors": "{choice, select, red {Rouge} pink {Rosé} white {Blanc} other {Inconnu}}",
+	"@wineColors": {
+		"placeholders": {
+			"choice": {}
+		}
+	},
 	"unknownColor": "Couleur non renseignée",
 	"sortName": "A-Z Nom",
 	"sortEstate": "A-Z Domaine",

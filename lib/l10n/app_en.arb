@@ -80,9 +80,12 @@
 	"cellarConfigurationTitle2": "Define your cellar size",
 
 	"searchBottle": "Search bottle",
-	"red": "Red",
-	"pink": "Pink",
-	"white": "White",
+	"wineColors": "{choice, select, red {Red} pink {Pink} white {White} other {Unknown}}",
+	"@wineColors": {
+		"placeholders": {
+			"choice": {}
+		}
+	},
 	"unknownColor": "Unknown color",
 	"sortName": "A-Z Name",
 	"sortEstate": "A-Z Estate",

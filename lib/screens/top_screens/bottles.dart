@@ -157,7 +157,7 @@ class _BottlesState extends State<Bottles> {
                   spacing: 8.0,
                   children: [
                     FilterChip(
-                      label: Text(AppLocalizations.of(context)!.red),
+                      label: Text(AppLocalizations.of(context)!.wineColors(WineColors.red.value)),
                       selected: colorFilters.contains(WineColors.red),
                       onSelected: (bool selected) {
                         setState(() {
@@ -170,7 +170,7 @@ class _BottlesState extends State<Bottles> {
                       },
                     ),
                     FilterChip(
-                      label: Text(AppLocalizations.of(context)!.pink),
+                      label: Text(AppLocalizations.of(context)!.wineColors(WineColors.pink.value)),
                       selected: colorFilters.contains(WineColors.pink),
                       onSelected: (bool selected) {
                         setState(() {
@@ -183,7 +183,7 @@ class _BottlesState extends State<Bottles> {
                       },
                     ),
                     FilterChip(
-                      label: Text(AppLocalizations.of(context)!.white),
+                      label: Text(AppLocalizations.of(context)!.wineColors(WineColors.white.value)),
                       selected: colorFilters.contains(WineColors.white),
                       onSelected: (bool selected) {
                         setState(() {

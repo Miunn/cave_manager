@@ -145,17 +145,17 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
                   segments: <ButtonSegment<WineColors>>[
                     ButtonSegment<WineColors>(
                       value: WineColors.red,
-                      label: Text(WineColors.red.label),
+                      label: Text(AppLocalizations.of(context)!.wineColors(WineColors.red.value)),
                       icon: const Icon(Icons.wine_bar),
                     ),
                     ButtonSegment<WineColors>(
                       value: WineColors.pink,
-                      label: Text(WineColors.pink.label),
+                      label: Text(AppLocalizations.of(context)!.wineColors(WineColors.pink.value)),
                       icon: const Icon(Icons.wine_bar),
                     ),
                     ButtonSegment<WineColors>(
                       value: WineColors.white,
-                      label: Text(WineColors.white.label),
+                      label: Text(AppLocalizations.of(context)!.wineColors(WineColors.white.value)),
                       icon: const Icon(Icons.wine_bar),
                     ),
                   ],
