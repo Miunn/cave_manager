@@ -7,7 +7,9 @@ import 'package:cave_manager/screens/cellar/move_bottle.dart';
 import 'package:cave_manager/screens/take_picture.dart';
 import 'package:cave_manager/widgets/delete_bottle_dialog.dart';
 import 'package:country_picker/country_picker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -16,6 +18,8 @@ import '../models/enum_wine_colors.dart';
 import '../widgets/open_bottle_dialog.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'ViewImage.dart';
 
 class BottleDetails extends StatefulWidget {
   const BottleDetails({super.key, required this.bottleId});
@@ -54,7 +58,9 @@ class _BottleDetailState extends State<BottleDetails> {
         onPressed: () {
           scaffoldKey.currentContext?.read<BottlesProvider>().addBottle(bottle);
           ScaffoldMessenger.of(scaffoldKey.currentContext ?? context)
-              .showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.deletedCanceled)));
+              .showSnackBar(SnackBar(
+                  content:
+                      Text(AppLocalizations.of(context)!.deletedCanceled)));
         },
       ),
     ));
@@ -78,7 +84,9 @@ class _BottleDetailState extends State<BottleDetails> {
               ?.read<BottlesProvider>()
               .updateBottle(bottle);
           ScaffoldMessenger.of(scaffoldKey.currentContext ?? context)
-              .showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.takenOutCanceled)));
+              .showSnackBar(SnackBar(
+                  content:
+                      Text(AppLocalizations.of(context)!.takenOutCanceled)));
         },
       ),
     ));
@@ -122,21 +130,12 @@ class _BottleDetailState extends State<BottleDetails> {
     int extraDaysInYears = inCellarSince.inDays % 365;
 
     if (inCellarSince.inDays == 0) {
-      inCellarString = "Aujourd'hui";
+      inCellarString = AppLocalizations.of(context)!.today;
     } else if (inCellarSince.inDays == 1) {
-      inCellarString = "Hier";
-    } else if (inCellarSince.inDays < 365) {
-      inCellarString = "${inCellarSince.inDays} jours";
-    } else if (inCellarSince.inDays == 365) {
-      inCellarString = "1 an";
-    } else if (years == 1 && extraDaysInYears == 1) {
-      inCellarString = "1 an 1 jour";
-    } else if (years == 1) {
-      inCellarString = "1 an $extraDaysInYears jours";
-    } else if (extraDaysInYears == 1) {
-      inCellarString = "$years ans 1 jour";
+      inCellarString = AppLocalizations.of(context)!.yesterday;
     } else {
-      inCellarString = "$years ans $extraDaysInYears jours";
+      inCellarString =
+          AppLocalizations.of(context)!.xYearsXDays(extraDaysInYears, years);
     }
 
     registerNewPicture() async {
@@ -207,21 +206,65 @@ class _BottleDetailState extends State<BottleDetails> {
                     child: SizedBox(
                       height: 160,
                       child: (bottle.imageUri == null)
-                          ? Padding(
+                          ? IconButton(
                               padding: const EdgeInsets.all(8.0),
-                              child: IconButton(
-                                icon: Image.asset(
-                                  'assets/wine-bottle.png',
-                                  width: 70,
-                                  height: 70,
-                                ),
-                                iconSize: 70,
-                                onPressed: registerNewPicture,
+                              icon: Image.asset(
+                                'assets/wine-bottle.png',
+                                width: 70,
+                                height: 70,
                               ),
+                              iconSize: 70,
+                              onPressed: registerNewPicture,
                             )
                           : IconButton(
                               icon: Image.file(File(bottle.imageUri!)),
-                              onPressed: registerNewPicture,
+                              onPressed: () => showModalBottomSheet<void>(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return SizedBox(
+                                    height: 250,
+                                    child: Column(
+                                      children: [
+                                        const SizedBox(width: 75, child: Divider(thickness: 4)),
+                                        Flexible(
+                                          child: ListView(
+                                            shrinkWrap: true,
+                                            children: <Widget>[
+                                              ListTile(
+                                                leading: const Icon(Icons.remove_red_eye),
+                                                title: Text(AppLocalizations.of(context)!.viewImage),
+                                                onTap: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) => ViewImage(imagePath: bottle.imageUri!),
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                              ListTile(
+                                                leading: const Icon(Icons.camera_alt),
+                                                title: Text(AppLocalizations.of(context)!.takePicture),
+                                                onTap: registerNewPicture,
+                                              ),
+                                              ListTile(
+                                                leading: const Icon(Icons.image),
+                                                title: Text(AppLocalizations.of(context)!.choosePicture),
+                                                onTap: registerNewPicture,
+                                              ),
+                                              ListTile(
+                                                leading: const Icon(Icons.delete_forever),
+                                                title: Text(AppLocalizations.of(context)!.deletePicture),
+                                                onTap: registerNewPicture,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
                             ),
                     ),
                   ),
@@ -308,7 +351,8 @@ class _BottleDetailState extends State<BottleDetails> {
                               openBottle(context, bottle);
                             }
                           },
-                          child: Text(AppLocalizations.of(context)!.takeOutBottle),
+                          child:
+                              Text(AppLocalizations.of(context)!.takeOutBottle),
                         ),
                       ),
                     ],
@@ -321,7 +365,7 @@ class _BottleDetailState extends State<BottleDetails> {
                   height: 15,
                 ),
               ),
-              Text(AppLocalizations.of(context)!.specifications),
+              Text(AppLocalizations.of(context)!.specifications.toUpperCase()),
               Container(
                 decoration: BoxDecoration(
                     border: Border.all(
@@ -427,9 +471,14 @@ class _BottleDetailState extends State<BottleDetails> {
                               Text(clusters.cellarType.label),
                               const Spacer(),
                               Text(
-                                clusters.getClusterById(bottle.clusterId!)?.name! == null
+                                clusters
+                                            .getClusterById(bottle.clusterId!)
+                                            ?.name! ==
+                                        null
                                     ? AppLocalizations.of(context)!.unknown
-                                    : clusters.getClusterById(bottle.clusterId!)!.name!,
+                                    : clusters
+                                        .getClusterById(bottle.clusterId!)!
+                                        .name!,
                                 style: TextStyle(
                                   fontStyle: bottle.clusterId == null
                                       ? FontStyle.italic
@@ -518,7 +567,7 @@ class _BottleDetailState extends State<BottleDetails> {
                 ),
               ),
               const SizedBox(height: 20),
-              Text(AppLocalizations.of(context)!.origin),
+              Text(AppLocalizations.of(context)!.origin.toUpperCase()),
               Container(
                 decoration: BoxDecoration(
                     border: Border.all(

@@ -28,6 +28,7 @@
 	"cancel": "Annuler",
 	"undo": "Annuler",
 	"unknown": "Non renseigné",
+	"enterValueWarning": "Renseignez une valeur",
 	"row": "Ligne",
 	"column": "Colonne",
 	"back": "Retour",
@@ -113,7 +114,7 @@
 
 	"takeOutBottleConfirmationTitle": "Sortir la bouteille ?",
 	"takeOutBottleConfirmationMessage": "{bottleName} sera retiré de la cave. Elle sera toujours consultable via l'onglet 'Mes bouteilles'",
-	"takeOutBottleOccasionHint": "Pour quelle occasion sortir cette bouteille ? (facultatif)",
+	"takeOutBottleTastingNoteHint": "Pour quelle occasion sortir cette bouteille ? (facultatif)",
 	"deleteBottleConfirmationTitle": "Supprimer la bouteille ?",
 	"deleteBottleConfirmationMessage": "{bottleName} will be permanently deleted",
 	"statisticsInCellar": "En cave",
@@ -133,5 +134,14 @@
 	"defaultCountryDescription": "Sélectionné lors de l'ajout d'une bouteille",
 	"appearance": "Apparence",
 	"appearanceDescription": "Thème de l'application",
-	"cellarDescription": "Capacité, Topologie"
+	"cellarDescription": "Capacité, Topologie",
+
+	"viewImage": "Voir l'image",
+	"takePicture": "Prendre une photo",
+	"choosePicture": "Choisir une photo",
+	"deletePicture": "Supprimer l'image",
+
+	"today": "Aujourd'hui",
+	"yesterday": "Hier",
+	"xYearsXDays": "{years, plural, zero{} one{1 an,} other{{years} ans,}} {days, plural, zero{0 jour} one{1 jour} other{{days} jours}}"
 }

@@ -49,70 +49,59 @@ class _StatisticsState extends State<Statistics> {
     BottlesProvider bottlesProvider = context.watch<BottlesProvider>();
 
     return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(AppLocalizations.of(context)!.statistics),
-        actions: <Widget>[
-          IconButton(
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Settings(title: AppLocalizations.of(context)!.settings)),
-              ),
-              icon: const Icon(Icons.settings)
-          )
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
-          child: Column(
-            children: <Widget>[
-              Center(
-                child: Wrap(
-                  runSpacing: 30.0,
-                  spacing: 50.0,
-                  children: <Widget>[
-                    CellarFillingShort(
-                      bottleAmount: _inCellarBottles,
-                      text: AppLocalizations.of(context)!.statisticsInCellar,
+        appBar: AppBar(
+          // TRY THIS: Try changing the color here to a specific color (to
+          // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
+          // change color while the other colors stay the same.
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          // Here we take the value from the MyHomePage object that was created by
+          // the App.build method, and use it to set our appbar title.
+          title: Text(AppLocalizations.of(context)!.statistics),
+          actions: <Widget>[
+            IconButton(
+                onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Settings(
+                              title: AppLocalizations.of(context)!.settings)),
                     ),
-                    CellarFillingShort(
-                      bottleAmount: _redCount,
-                      text: AppLocalizations.of(context)!.redWine,
-                    ),
-                    CellarFillingShort(
-                      bottleAmount: _pinkCount,
-                      text: AppLocalizations.of(context)!.pinkWine,
-                    ),
-                    CellarFillingShort(
-                      bottleAmount: _whiteCount,
-                      text: AppLocalizations.of(context)!.whiteWine,
-                    ),
-                    CellarFillingShort(
-                      bottleAmount: _openedBottles,
-                      text: AppLocalizations.of(context)!.statisticsTakenOut(_openedBottles),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 30.0),
-              Wrap(
-                runSpacing: 30.0,
-                spacing: 50.0,
-                children: [
-                  StatisticCard(title: AppLocalizations.of(context)!.statisticsOldestVintage, value: "${bottlesProvider.lowestYear ?? "N/A"}"),
-                  StatisticCard(title: AppLocalizations.of(context)!.statisticsNewestVintage, value: "${bottlesProvider.highestYear ?? "N/A"}"),
-                ],
-              )
-            ],
-          ),
+                icon: const Icon(Icons.settings))
+          ],
         ),
-      ),
-    );
+        body: GridView.count(
+          padding: const EdgeInsets.all(20.0),
+          crossAxisCount:(MediaQuery.of(context).size.width ~/ 170).toInt(),
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+          childAspectRatio: 150/170,
+          children: <Widget>[
+            CellarFillingShort(
+              bottleAmount: _inCellarBottles,
+              text: AppLocalizations.of(context)!.statisticsInCellar,
+            ),
+            CellarFillingShort(
+              bottleAmount: _redCount,
+              text: AppLocalizations.of(context)!.redWine,
+            ),
+            CellarFillingShort(
+              bottleAmount: _pinkCount,
+              text: AppLocalizations.of(context)!.pinkWine,
+            ),
+            CellarFillingShort(
+              bottleAmount: _whiteCount,
+              text: AppLocalizations.of(context)!.whiteWine,
+            ),
+            StatisticCard(
+                title: AppLocalizations.of(context)!.statisticsOldestVintage,
+                value: "${bottlesProvider.lowestYear ?? "N/A"}"),
+            StatisticCard(
+                title: AppLocalizations.of(context)!.statisticsNewestVintage,
+                value: "${bottlesProvider.highestYear ?? "N/A"}"),
+            StatisticCard(
+                title: AppLocalizations.of(context)!
+                    .statisticsTakenOut(_openedBottles),
+                value: "$_openedBottles"),
+          ],
+        ));
   }
 }

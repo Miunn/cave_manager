@@ -36,7 +36,7 @@
 	"finish": "Finish",
 	"delete": "Delete",
 
-	"bottlesTotal": "{bottles, plural, zero{0 bottles} one{1 bottle} other{{bottles}}}",
+	"bottlesTotal": "{bottles, plural, zero{0 bottles} one{1 bottle} other{{bottles} bottles}}",
 	"bottlesCellar": "{bottles, plural, zero{0 Bottles in cellar} one{1 Bottle in cellar} other{{bottles} Bottles in cellar}}",
 	"bottlesTakenOut": "{bottles, plural, zero{0 Opened bottles} one{1 Opened bottle} other{{bottles} Opened bottles}}",
 	"redWine": "Red wine",
@@ -136,5 +136,14 @@
 	"defaultCountryDescription": "Default country for new bottles",
 	"appearance": "Appearance",
 	"appearanceDescription": "App theme",
-	"cellarDescription": "Capacity, topology"
+	"cellarDescription": "Capacity, topology",
+
+	"viewImage": "View image",
+	"takePicture": "Take picture",
+	"choosePicture": "Choose picture",
+	"deletePicture": "Delete picture",
+
+	"today": "Today",
+	"yesterday": "Yesterday",
+	"xYearsXDays": "{years, plural, zero{} one{1 year,} other{{years} years,}} {days, plural, zero{0 days} one{1 day} other{{days} days}}"
 }
