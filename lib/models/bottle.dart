@@ -120,4 +120,11 @@ class Bottle {
 
     imageUri = '$path/${image.name}';
   }
+
+  deleteImage() async {
+    if (imageUri != null) {
+      await File(imageUri!).delete();
+      imageUri = null;
+    }
+  }
 }

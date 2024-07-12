@@ -7,9 +7,7 @@ import 'package:cave_manager/screens/cellar/move_bottle.dart';
 import 'package:cave_manager/screens/take_picture.dart';
 import 'package:cave_manager/widgets/delete_bottle_dialog.dart';
 import 'package:country_picker/country_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -105,23 +103,23 @@ class _BottleDetailState extends State<BottleDetails> {
 
     switch (WineColors.values.firstWhere((e) => e.value == bottle.color)) {
       case WineColors.red:
-        colorText = WineColors.red.label;
+        colorText = AppLocalizations.of(context)!.wineColors(WineColors.red.value);
         break;
 
       case WineColors.pink:
-        colorText = WineColors.pink.label;
+        colorText = AppLocalizations.of(context)!.wineColors(WineColors.pink.value);
         break;
 
       case WineColors.white:
-        colorText = WineColors.white.label;
+        colorText = AppLocalizations.of(context)!.wineColors(WineColors.white.value);
         break;
 
       case WineColors.other:
-        colorText = WineColors.other.label;
+        colorText = AppLocalizations.of(context)!.wineColors(WineColors.other.value);
         break;
 
       default:
-        colorText = AppLocalizations.of(context)!.unknownColor;
+        colorText = AppLocalizations.of(context)!.wineColors('other');
     }
 
     String inCellarString = "";
@@ -158,6 +156,7 @@ class _BottleDetailState extends State<BottleDetails> {
       context.read<BottlesProvider>().updateBottle(bottle);
     }
 
+    debugPrint("Bottle uri: ${bottle.imageUri}");
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -233,8 +232,11 @@ class _BottleDetailState extends State<BottleDetails> {
                                               ListTile(
                                                 leading: const Icon(Icons.remove_red_eye),
                                                 title: Text(AppLocalizations.of(context)!.viewImage),
-                                                onTap: () {
-                                                  Navigator.push(
+                                                onTap: () async {
+                                                  if (context.mounted) {
+                                                    Navigator.of(context).pop();
+                                                  }
+                                                  await Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
                                                       builder: (context) => ViewImage(imagePath: bottle.imageUri!),
@@ -255,7 +257,17 @@ class _BottleDetailState extends State<BottleDetails> {
                                               ListTile(
                                                 leading: const Icon(Icons.delete_forever),
                                                 title: Text(AppLocalizations.of(context)!.deletePicture),
-                                                onTap: registerNewPicture,
+                                                onTap: () async {
+                                                  await bottle.deleteImage();
+                                                  debugPrint("Deleted image: ${bottle.imageUri}");
+                                                  if (context.mounted) {
+                                                    debugPrint("Update");
+                                                    await context.read<BottlesProvider>().updateBottle(bottle);
+                                                  }
+                                                  if (context.mounted) {
+                                                    Navigator.pop(context);
+                                                  }
+                                                },
                                               ),
                                             ],
                                           ),
