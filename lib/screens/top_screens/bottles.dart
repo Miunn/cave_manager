@@ -225,6 +225,7 @@ class _BottlesState extends State<Bottles> {
                     ),
                   ],
                 ),
+                const SizedBox(height: 20),
                 Text(AppLocalizations.of(context)!.bottlesCellar(closedBottles.length), style: const TextStyle(fontSize: 15)),
                 ListView.builder(
                     shrinkWrap: true,
@@ -233,9 +234,7 @@ class _BottlesState extends State<Bottles> {
                     itemBuilder: (BuildContext context, int index) {
                       return BottleListCard(bottleId: closedBottles[index].id!);
                     }),
-                const SizedBox(
-                  height: 20,
-                ),
+                const SizedBox(height: 20),
                 Text(AppLocalizations.of(context)!.bottlesTakenOut(openedBottles.length), style: const TextStyle(fontSize: 15)),
                 ListView.builder(
                     shrinkWrap: true,
