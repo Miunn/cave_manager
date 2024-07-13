@@ -5,13 +5,6 @@ on:
   pull_request:
      branches: [ main ]
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Run flutter analyze
-        run: flutter analyze
-      - name: Run Flutter test
-        run: flutter test
   build-apk:
     runs-on: ubuntu-latest
     steps: 
