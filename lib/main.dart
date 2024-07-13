@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cave_manager/providers/bottles_provider.dart';
 import 'package:cave_manager/providers/clusters_provider.dart';
 import 'package:cave_manager/screens/top_screens/bottles.dart';
@@ -10,9 +12,18 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  if (Platform.isWindows || Platform.isLinux) {
+    // Initialize FFI
+    sqfliteFfiInit();
+  }
+
+  databaseFactory = databaseFactoryFfi;
+
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) => BottlesProvider()),
     ChangeNotifierProvider(create: (context) => ClustersProvider()),

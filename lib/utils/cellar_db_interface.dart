@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../models/bottle.dart';
@@ -38,7 +39,7 @@ class CellarDatabaseInterface {
   }
 
   _initDatabase() async {
-    String path = join(await getDatabasesPath(), databaseName);
+    String path = join((await getApplicationDocumentsDirectory()).path, 'databases', databaseName);
     var db = await openDatabase(
       path,
       version: versionNumber,

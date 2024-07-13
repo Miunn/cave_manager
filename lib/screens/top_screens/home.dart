@@ -34,57 +34,60 @@ class _HomeState extends State<Home> {
               onPressed: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            Settings(title: AppLocalizations.of(context)!.settings)),
+                        builder: (context) => Settings(
+                            title: AppLocalizations.of(context)!.settings)),
                   ),
               icon: const Icon(Icons.settings))
         ],
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Consumer<BottlesProvider>(
-              builder: (context, bottles, child) {
-                return CellarFilling(bottleAmount: bottles.closedBottles.length);
-              },
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Consumer<BottlesProvider>(builder: (context, bottles, child) {
-              return Row(
+        child: Consumer<BottlesProvider>(
+          builder:
+              (BuildContext context, BottlesProvider bottles, Widget? child) =>
+                  Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              CellarFilling(bottleAmount: bottles.closedBottles.length),
+              const SizedBox(
+                height: 20,
+              ),
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Chip(label: Text("${bottles.redCount} ${AppLocalizations.of(context)!.redWine}")),
-                  Chip(label: Text("${bottles.whiteCount} ${AppLocalizations.of(context)!.whiteWine}")),
-                  Chip(label: Text("${bottles.pinkCount} ${AppLocalizations.of(context)!.pinkWine}")),
+                  Chip(
+                      label: Text(
+                          "${bottles.redCount} ${AppLocalizations.of(context)!.redWine}")),
+                  Chip(
+                      label: Text(
+                          "${bottles.whiteCount} ${AppLocalizations.of(context)!.whiteWine}")),
+                  Chip(
+                      label: Text(
+                          "${bottles.pinkCount} ${AppLocalizations.of(context)!.pinkWine}")),
                 ],
-              );
-            }),
-            const SizedBox(
-              height: 20,
-            ),
-            Text(AppLocalizations.of(context)!.lastRegisteredBottles, style: const TextStyle(fontSize: 20)),
-            Consumer<BottlesProvider>(
-              builder: (context, bottles, child) {
-                return bottles.lastBottles.isEmpty
-                    ? Center(
-                        child: Text(AppLocalizations.of(context)!.noLastRegisteredBottles),
-                      )
-                    : Expanded(
-                        child: ListView.builder(
-                          itemCount: bottles.lastBottles.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return BottleCard(
-                                bottleId: bottles.lastBottles[index].id!);
-                          },
-                        ),
-                      );
-              },
-            ),
-          ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Text(AppLocalizations.of(context)!.lastRegisteredBottles,
+                  style: const TextStyle(fontSize: 20)),
+              bottles.lastBottles.isEmpty
+                  ? Center(
+                      child: Text(AppLocalizations.of(context)!
+                          .noLastRegisteredBottles),
+                    )
+                  : Expanded(
+                      child: ListView.builder(
+                        itemCount: bottles.lastBottles.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return BottleCard(
+                              bottleId: bottles.lastBottles[index].id!);
+                        },
+                      ),
+                    ),
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(

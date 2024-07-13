@@ -1,6 +1,7 @@
 import 'package:cave_manager/models/cluster.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../models/bottle.dart';
@@ -52,8 +53,9 @@ class BottleDatabaseInterface {
     // Set the path to the database. Note: Using the `join` function from the
     // `path` package is best practice to ensure the path is correctly
     // constructed for each platform.
-    String path = join(await getDatabasesPath(), databaseName);
+    String path = join((await getApplicationDocumentsDirectory()).path, 'databases', databaseName);
     // When the database is first created, create a table to store Notes.
+    debugPrint(path);
     var db = await openDatabase(
       path,
       version: versionNumber,
