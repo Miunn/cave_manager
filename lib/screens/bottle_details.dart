@@ -472,10 +472,13 @@ class _BottleDetailState extends State<BottleDetails> {
                       mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
                         Consumer<ClustersProvider>(
-                          builder: (BuildContext context, ClustersProvider clusters, Widget? child) =>
+                          builder: (BuildContext context,
+                                  ClustersProvider clusters, Widget? child) =>
                               Text((clusters.isCellarConfigured)
-                                  ? AppLocalizations.of(context)!.outsideOfCellarWarning
-                                  : AppLocalizations.of(context)!.configureCellarToRegisterThisBottle),
+                                  ? AppLocalizations.of(context)!
+                                      .outsideOfCellarWarning
+                                  : AppLocalizations.of(context)!
+                                      .configureCellarToRegisterThisBottle),
                         ),
                       ],
                     ),
