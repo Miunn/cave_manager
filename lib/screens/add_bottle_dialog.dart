@@ -66,6 +66,45 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
     _camera = cameras.first;
   }
 
+  saveBottle(BuildContext context, bool askForCellar) async {
+    // Validate returns true if the form is valid, or false otherwise.
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+
+    Bottle bottle = Bottle(nameController.text, DateTime.now(), false,
+        imageUri: bottleImageUri,
+        color: selectedColor.value,
+        signature: signatureController.text,
+        vintageYear: int.tryParse(vintageYearController.text),
+        alcoholLevel: double.tryParse(alcoholLevelController.text),
+        country: selectedCountry?.countryCode,
+        area: area,
+        subArea: subArea,
+        grapeVariety: grapeVarietyController.text);
+    if (!context.read<ClustersProvider>().isCellarConfigured || !askForCellar) {
+      context.read<BottlesProvider>().addBottle(bottle);
+    } else {
+      Bottle? bottlePosition = await Navigator.of(context).push(
+        MaterialPageRoute<Bottle>(
+          fullscreenDialog: true,
+          builder: (context) => PlaceInCellar(bottle: bottle),
+        ),
+      );
+
+      if (bottlePosition != null) {
+        bottle = bottlePosition;
+      }
+
+      if (context.mounted) {
+        await context.read<BottlesProvider>().addBottle(bottle);
+      }
+      setState(() {
+        _save = true;
+      });
+    }
+  }
+
   @override
   void dispose() {
     // Delete picture if no save
@@ -107,11 +146,11 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
               Navigator.of(context).pop();
             }),
       ),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(15, 20, 15, 70),
-        child: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
+      body: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(15, 20, 15, 70),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
@@ -145,17 +184,20 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
                   segments: <ButtonSegment<WineColors>>[
                     ButtonSegment<WineColors>(
                       value: WineColors.red,
-                      label: Text(AppLocalizations.of(context)!.wineColors(WineColors.red.value)),
+                      label: Text(AppLocalizations.of(context)!
+                          .wineColors(WineColors.red.value)),
                       icon: const Icon(Icons.wine_bar),
                     ),
                     ButtonSegment<WineColors>(
                       value: WineColors.pink,
-                      label: Text(AppLocalizations.of(context)!.wineColors(WineColors.pink.value)),
+                      label: Text(AppLocalizations.of(context)!
+                          .wineColors(WineColors.pink.value)),
                       icon: const Icon(Icons.wine_bar),
                     ),
                     ButtonSegment<WineColors>(
                       value: WineColors.white,
-                      label: Text(AppLocalizations.of(context)!.wineColors(WineColors.white.value)),
+                      label: Text(AppLocalizations.of(context)!
+                          .wineColors(WineColors.white.value)),
                       icon: const Icon(Icons.wine_bar),
                     ),
                   ],
@@ -269,9 +311,11 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
                     if (textEditingValue.text == '') {
                       return const Iterable<String>.empty();
                     }
-                    return Areas.values.where((element) => element.label
-                        .toLowerCase()
-                        .contains(textEditingValue.text.toLowerCase())).map((e) => e.label);
+                    return Areas.values
+                        .where((element) => element.label
+                            .toLowerCase()
+                            .contains(textEditingValue.text.toLowerCase()))
+                        .map((e) => e.label);
                   },
                   fieldViewBuilder: (
                     BuildContext context,
@@ -304,9 +348,11 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
                     if (textEditingValue.text == '') {
                       return const Iterable<String>.empty();
                     }
-                    return Areas.values.where((element) => element.label
-                        .toLowerCase()
-                        .contains(textEditingValue.text.toLowerCase())).map((e) => e.label);
+                    return Areas.values
+                        .where((element) => element.label
+                            .toLowerCase()
+                            .contains(textEditingValue.text.toLowerCase()))
+                        .map((e) => e.label);
                   },
                   fieldViewBuilder: (BuildContext context,
                       TextEditingController textEditingController,
@@ -342,59 +388,44 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
           ),
         ),
       ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0),
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          height: 45,
-          child: ElevatedButton(
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Offstage(
+            offstage: !context.read<ClustersProvider>().isCellarConfigured,
+            child: FloatingActionButton.small(
+              onPressed: () async {
+                if (_formKey.currentState!.validate()) {
+                  await saveBottle(context, false);
+                }
+
+                if (context.mounted) {
+                  Navigator.of(context).pop();
+                }
+              },
+              child: const Icon(Icons.save),
+            ),
+          ),
+          const SizedBox(height: 24),
+          FloatingActionButton.extended(
             onPressed: () async {
-              // Validate returns true if the form is valid, or false otherwise.
-              if (!_formKey.currentState!.validate()) {
-                return;
+              if (_formKey.currentState!.validate()) {
+                await saveBottle(context, context.read<ClustersProvider>().isCellarConfigured);
               }
 
-              _save = true;
-
-              Bottle bottle = Bottle(nameController.text, DateTime.now(), false,
-                  imageUri: bottleImageUri,
-                  color: selectedColor.value,
-                  signature: signatureController.text,
-                  vintageYear: int.tryParse(vintageYearController.text),
-                  alcoholLevel: double.tryParse(alcoholLevelController.text),
-                  country: selectedCountry?.countryCode,
-                  area: area,
-                  subArea: subArea,
-                  grapeVariety: grapeVarietyController.text);
-              if (!context.read<ClustersProvider>().isCellarConfigured) {
-                context.read<BottlesProvider>().addBottle(bottle);
-                Navigator.of(context).pop(bottle);
-              } else {
-                Bottle? bottlePosition = await Navigator.of(context).push(
-                  MaterialPageRoute<Bottle>(
-                    fullscreenDialog: true,
-                    builder: (context) => PlaceInCellar(bottle: bottle),
-                  ),
-                );
-
-                if (bottlePosition != null) {
-                  bottle = bottlePosition;
-                }
-
-                if (context.mounted) {
-                  await context.read<BottlesProvider>().addBottle(bottle);
-                }
-
-                if (context.mounted) {
-                  Navigator.of(context).pop(bottle);
-                }
+              if (context.mounted) {
+                Navigator.of(context).pop();
               }
             },
-            child: Text(AppLocalizations.of(context)!.placeInCellar),
+            icon: Icon((context.read<ClustersProvider>().isCellarConfigured) ? Icons.storefront : Icons.save),
+            label: Text((context.read<ClustersProvider>().isCellarConfigured)
+                ? AppLocalizations.of(context)!.placeInCellar
+                : AppLocalizations.of(context)!.saveOutOfCellar
+            ),
           ),
-        ),
+        ],
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

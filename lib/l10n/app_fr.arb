@@ -57,6 +57,7 @@
 	"takeOutBottle": "Sortir la bouteille",
 	"bottleInCellar": "{bottle} - En cave",
 	"placeInCellar": "Placer en cave",
+	"saveOutOfCellar": "Sauvegarder hors cave",
 	"deletedBottle": "Bouteille supprimée",
 	"deletedCanceled": "Suppression annulée",
 	"takenOutBottle": "Bouteille sortie de cave",

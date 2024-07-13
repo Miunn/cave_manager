@@ -58,6 +58,7 @@
 
 	"bottleInCellar": "{bottle} - In cellar",
 	"placeInCellar": "Place in cellar",
+	"saveOutOfCellar": "Save out of cellar",
 	"deletedBottle": "Deleted bottle",
 	"deletedCanceled": "Deleted canceled",
 	"takenOutBottle": "Taken out bottle",
