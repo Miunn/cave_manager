@@ -145,5 +145,9 @@
 
 	"today": "Today",
 	"yesterday": "Yesterday",
-	"xYearsXDays": "{years, plural, zero{} one{1 year,} other{{years} years,}} {days, plural, zero{0 days} one{1 day} other{{days} days}}"
+	"xYearsXDays": "{years, plural, zero{} one{1 year,} other{{years} years,}} {days, plural, zero{0 days} one{1 day} other{{days} days}}",
+
+	"deleteBottleCoverTitle": "Delete bottle cover ?",
+	"deleteBottleCoverMessage": "Are you sure you want to delete the cover of the bottle {bottleName} ? The cover will be permanently deleted, this action is irreversible.",
+	"deleteBottleCoverConfirmation": "Cover deleted"
 }

@@ -6,6 +6,7 @@ import 'package:cave_manager/providers/clusters_provider.dart';
 import 'package:cave_manager/screens/cellar/move_bottle.dart';
 import 'package:cave_manager/screens/take_picture.dart';
 import 'package:cave_manager/widgets/delete_bottle_dialog.dart';
+import 'package:cave_manager/widgets/dialogs/delete_cover.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -156,7 +157,6 @@ class _BottleDetailState extends State<BottleDetails> {
       context.read<BottlesProvider>().updateBottle(bottle);
     }
 
-    debugPrint("Bottle uri: ${bottle.imageUri}");
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -255,17 +255,30 @@ class _BottleDetailState extends State<BottleDetails> {
                                                 onTap: registerNewPicture,
                                               ),
                                               ListTile(
-                                                leading: const Icon(Icons.delete_forever),
-                                                title: Text(AppLocalizations.of(context)!.deletePicture),
+                                                leading: Icon(Icons.delete_forever, color: Theme.of(context).colorScheme.error),
+                                                title: Text(AppLocalizations.of(context)!.deletePicture, style: TextStyle(color: Theme.of(context).colorScheme.error)),
                                                 onTap: () async {
+                                                  // Confirmation dialog
+                                                  bool? shouldDelete = await showDialog<bool>(
+                                                    context: context,
+                                                    builder: (BuildContext context) => DeleteBottleCoverDialog(bottle: bottle));
+
+                                                  if (!(shouldDelete ?? false)) {
+                                                    return;
+                                                  }
+
                                                   await bottle.deleteImage();
-                                                  debugPrint("Deleted image: ${bottle.imageUri}");
                                                   if (context.mounted) {
-                                                    debugPrint("Update");
                                                     await context.read<BottlesProvider>().updateBottle(bottle);
                                                   }
                                                   if (context.mounted) {
                                                     Navigator.pop(context);
+                                                    // Confirmation snack bar
+                                                    final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+                                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                                      key: scaffoldKey,
+                                                      content: Text(AppLocalizations.of(context)!.deleteBottleCoverConfirmation),
+                                                    ));
                                                   }
                                                 },
                                               ),
