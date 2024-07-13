@@ -13,7 +13,7 @@ class BottleDatabaseInterface {
 
   static const String databaseName = "bottles_database.db";
 
-  static const int versionNumber = 20;
+  static const int versionNumber = 21;
 
   static const String tableBottles = 'Bottles';
 
@@ -90,29 +90,8 @@ class BottleDatabaseInterface {
 
   _onUpgrade(Database db, int oldVersion, int newVersion) async {
     await db.execute("DROP TABLE IF EXISTS $tableBottles");
-    await db.execute("CREATE TABLE IF NOT EXISTS $tableBottles ("
-        " $colId INTEGER PRIMARY KEY AUTOINCREMENT, "
-        " $colName TEXT NOT NULL, "
-        " $colSignature TEXT, "
-        " $colVintageYear INTEGER, "
-        " $colColor TEXT, "
-        " $colAlcoholLevel REAL, "
-        " $colGrapeVariety TEXT, "
-        " $colCountry TEXT, "
-        " $colArea TEXT, "
-        " $colSubArea TEXT, "
-        " $colImageUri TEXT, "
-        " $colIsInCellar INTEGER DEFAULT TRUE, "
-        " $colIsOpen INTEGER DEFAULT FALSE, "
-        " $colClusterId INTEGER, "
-        " $colClusterY INTEGER, "
-        " $colClusterX INTEGER, "
-        " $colCreatedAt INTEGER, "
-        " $colRegisteredInCellarAt INTEGER, "
-        " $colOpenedAt INTEGER, "
-        " $colTastingNote TEXT "
-        ")");
-    await db.setVersion(1);
+    _onCreate(db, newVersion);
+    //await db.setVersion(1);
   }
 
   Future<List<Bottle>> getAll() async {

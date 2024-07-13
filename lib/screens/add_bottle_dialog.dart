@@ -395,6 +395,7 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
           Offstage(
             offstage: !context.read<ClustersProvider>().isCellarConfigured,
             child: FloatingActionButton.small(
+              heroTag: 'save',
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
                   await saveBottle(context, false);
@@ -409,6 +410,7 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
           ),
           const SizedBox(height: 24),
           FloatingActionButton.extended(
+            heroTag: 'placeInCellar',
             onPressed: () async {
               if (_formKey.currentState!.validate()) {
                 await saveBottle(context, context.read<ClustersProvider>().isCellarConfigured);

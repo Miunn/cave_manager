@@ -132,7 +132,7 @@
 	"takeOutBottleConfirmationMessage": "{bottleName} sera retiré de la cave. Elle sera toujours consultable via l'onglet 'Mes bouteilles'",
 	"takeOutBottleTastingNoteHint": "Pour quelle occasion sortir cette bouteille ? (facultatif)",
 	"deleteBottleConfirmationTitle": "Supprimer la bouteille ?",
-	"deleteBottleConfirmationMessage": "{bottleName} will be permanently deleted",
+	"deleteBottleConfirmationMessage": "{bottleName} sera supprimée de la cave. Cette action est irréversible",
 	"statisticsInCellar": "En cave",
 	"statisticsTakenOut": "{opened, plural, zero{Ouverte} one{1 Ouverte} other{Ouvertes}}",
 	"statisticsOldestVintage": "Millésime le plus ancien",

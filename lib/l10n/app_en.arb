@@ -132,7 +132,7 @@
 	"takeOutBottleConfirmationMessage": "{bottleName} will be taken out of the cellar. It will always be available in the 'Bottles' section.",
 	"takeOutBottleTastingNoteHint": "What's the occasion for this bottle ? (optional)",
 	"deleteBottleConfirmationTitle": "Delete bottle ?",
-	"deleteBottleConfirmationMessage": "{bottleName} will be permanently deleted",
+	"deleteBottleConfirmationMessage": "{bottleName} will be permanently deleted. This action is irreversible.",
 
 	"statisticsInCellar": "In cellar",
 	"statisticsTakenOut": "Taken out",
