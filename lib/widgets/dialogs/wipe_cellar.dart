@@ -7,6 +7,7 @@ class WipeCellarDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      icon: const Icon(Icons.delete_forever),
       title: Text(AppLocalizations.of(context)!.wipeCellarConfirmationTitle),
       content: Text(AppLocalizations.of(context)!.wipeCellarConfirmationMessage),
       actions: <Widget>[

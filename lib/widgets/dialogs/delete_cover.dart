@@ -12,6 +12,7 @@ class DeleteBottleCoverDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      icon: const Icon(Icons.delete_outline),
       title: Text(AppLocalizations.of(context)!.deleteBottleCoverTitle),
       content: Text(AppLocalizations.of(context)!.deleteBottleCoverMessage(bottle.name ?? '')),
       actions: <Widget>[
