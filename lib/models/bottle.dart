@@ -18,6 +18,7 @@ class Bottle {
   int? clusterId;
   int? clusterY;
   int? clusterX;
+  bool? isInCellar;
   bool? isOpen;
   DateTime? createdAt;
   DateTime? registeredInCellarAt;
@@ -26,6 +27,7 @@ class Bottle {
 
   Bottle(this.name, this.createdAt, this.isOpen,
       {this.id,
+      this.isInCellar,
       this.signature,
       this.vintageYear,
       this.color,
@@ -55,6 +57,7 @@ class Bottle {
       'area': area,
       'subArea': subArea,
       'imageUri': imageUri,
+      'isInCellar': (isInCellar != null && isInCellar!),
       'isOpen': (isOpen != null && isOpen!) ? 1 : 0,
       'clusterId': clusterId,
       'clusterY': clusterY,
@@ -78,6 +81,7 @@ class Bottle {
     area = map['area'];
     subArea = map['subArea'];
     imageUri = map['imageUri'];
+    isInCellar = map['isInCellar'] == 1 ? true : false;
     isOpen = map['isOpen'] == 1 ? true : false;
     clusterId = map['clusterId'];
     clusterY = map['clusterY'];
@@ -106,6 +110,7 @@ class Bottle {
         'area: $area, '
         'subArea: $subArea, '
         'imageUri: $imageUri, '
+        'isInCellar: $isInCellar, '
         'isOpen: $isOpen, '
         'clusterId: $clusterId, '
         'clusterY: $clusterY, '

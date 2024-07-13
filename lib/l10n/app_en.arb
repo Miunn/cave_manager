@@ -55,6 +55,7 @@
 	"seeInCellar": "See in cellar",
 	"takeOut": "Take out",
 	"takeOutBottle": "Take out bottle",
+	"openBottle": "Open bottle",
 
 	"bottleInCellar": "{bottle} - In cellar",
 	"placeInCellar": "Place in cellar",
@@ -102,6 +103,8 @@
 	"noSubRegion": "No sub region",
 	"noAppellation": "No appellation",
 	"noGrape": "No grape",
+	"configureCellarToRegisterThisBottle": "Configure your cellar to register this bottle",
+	"outsideOfCellarWarning": "This bottle is not in the cellar",
 	"specifications": "Specifications",
 	"appellation": "Appellation",
 	"estate": "Estate",

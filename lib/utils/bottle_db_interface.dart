@@ -28,6 +28,7 @@ class BottleDatabaseInterface {
   static const String colArea = 'area';
   static const String colSubArea = 'subArea';
   static const String colImageUri = 'imageUri';
+  static const String colIsInCellar = 'isInCellar';
   static const String colIsOpen = "isOpen";
   static const String colClusterId = "clusterId";
   static const String colClusterY = "clusterY";
@@ -75,6 +76,7 @@ class BottleDatabaseInterface {
         " $colArea TEXT, "
         " $colSubArea TEXT, "
         " $colImageUri TEXT, "
+        " $colIsInCellar INTEGER DEFAULT TRUE, "
         " $colIsOpen INTEGER DEFAULT FALSE, "
         " $colClusterId INTEGER, "
         " $colClusterY INTEGER, "
@@ -100,6 +102,7 @@ class BottleDatabaseInterface {
         " $colArea TEXT, "
         " $colSubArea TEXT, "
         " $colImageUri TEXT, "
+        " $colIsInCellar INTEGER DEFAULT TRUE, "
         " $colIsOpen INTEGER DEFAULT FALSE, "
         " $colClusterId INTEGER, "
         " $colClusterY INTEGER, "

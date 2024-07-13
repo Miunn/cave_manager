@@ -4,11 +4,14 @@ import 'package:camera/camera.dart';
 import 'package:cave_manager/providers/bottles_provider.dart';
 import 'package:cave_manager/providers/clusters_provider.dart';
 import 'package:cave_manager/screens/cellar/move_bottle.dart';
+import 'package:cave_manager/screens/cellar/place_in_cellar.dart';
 import 'package:cave_manager/screens/take_picture.dart';
 import 'package:cave_manager/widgets/delete_bottle_dialog.dart';
 import 'package:cave_manager/widgets/dialogs/delete_cover.dart';
 import 'package:country_picker/country_picker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -388,26 +391,43 @@ class _BottleDetailState extends State<BottleDetails> {
                     mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Expanded(
-                        child: OutlinedButton(
-                          onPressed: () async {
-                            Bottle? updatedBottle =
-                                await Navigator.of(context).push<Bottle?>(
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      MoveBottle(bottle: bottle)),
-                            );
+                      Consumer<ClustersProvider>(
+                        builder: (BuildContext context,
+                                ClustersProvider clusters, Widget? child) =>
+                            Visibility(
+                          visible: clusters.isCellarConfigured,
+                          child: Expanded(
+                            child: OutlinedButton(
+                              onPressed: () async {
+                                Bottle? updatedBottle =
+                                    await Navigator.of(context).push<Bottle?>(
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          (bottle.isInCellar ?? false)
+                                              ? MoveBottle(bottle: bottle)
+                                              : PlaceInCellar(bottle: bottle)),
+                                );
 
-                            if (updatedBottle != null && context.mounted) {
-                              context
-                                  .read<BottlesProvider>()
-                                  .updateBottle(updatedBottle);
-                            }
-                          },
-                          child: Text(AppLocalizations.of(context)!.move),
+                                if (updatedBottle != null && context.mounted) {
+                                  context
+                                      .read<BottlesProvider>()
+                                      .updateBottle(updatedBottle);
+                                }
+                              },
+                              child: Text((bottle.isInCellar ?? false)
+                                  ? AppLocalizations.of(context)!.move
+                                  : AppLocalizations.of(context)!
+                                      .placeInCellar),
+                            ),
+                          ),
                         ),
                       ),
-                      const SizedBox(width: 15),
+                      Consumer<ClustersProvider>(
+                          builder: (BuildContext context,
+                                  ClustersProvider clusters, Widget? child) =>
+                              Visibility(
+                                  visible: clusters.isCellarConfigured,
+                                  child: const SizedBox(width: 15))),
                       Expanded(
                         child: FilledButton(
                           onPressed: () async {
@@ -421,8 +441,11 @@ class _BottleDetailState extends State<BottleDetails> {
                               openBottle(context, bottle);
                             }
                           },
-                          child:
-                              Text(AppLocalizations.of(context)!.takeOutBottle),
+                          child: Text(
+                            (bottle.isInCellar ?? false)
+                                ? AppLocalizations.of(context)!.takeOutBottle
+                                : AppLocalizations.of(context)!.openBottle,
+                          ),
                         ),
                       ),
                     ],
@@ -434,6 +457,34 @@ class _BottleDetailState extends State<BottleDetails> {
                 child: const SizedBox(
                   height: 15,
                 ),
+              ),
+              Offstage(
+                offstage: bottle.isInCellar ?? false,
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                        color: const Color.fromARGB(255, 220, 220, 220)),
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        Consumer<ClustersProvider>(
+                          builder: (BuildContext context, ClustersProvider clusters, Widget? child) =>
+                              Text((clusters.isCellarConfigured)
+                                  ? AppLocalizations.of(context)!.outsideOfCellarWarning
+                                  : AppLocalizations.of(context)!.configureCellarToRegisterThisBottle),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Offstage(
+                offstage: bottle.isInCellar ?? false,
+                child: const SizedBox(height: 15),
               ),
               Text(AppLocalizations.of(context)!.specifications.toUpperCase()),
               Container(
@@ -507,7 +558,7 @@ class _BottleDetailState extends State<BottleDetails> {
                       color: Color.fromARGB(255, 220, 220, 220),
                     ),
                     Offstage(
-                      offstage: bottle.isOpen!,
+                      offstage: !(bottle.isInCellar ?? false),
                       child: Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Row(
@@ -521,7 +572,7 @@ class _BottleDetailState extends State<BottleDetails> {
                       ),
                     ),
                     Offstage(
-                      offstage: bottle.isOpen!,
+                      offstage: !(bottle.isInCellar ?? false),
                       child: const Divider(
                         height: 1,
                         color: Color.fromARGB(255, 220, 220, 220),
@@ -599,7 +650,7 @@ class _BottleDetailState extends State<BottleDetails> {
                           ),
                         )),
                     Offstage(
-                      offstage: !bottle.isOpen!,
+                      offstage: !(bottle.isInCellar ?? false),
                       child: Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Row(
@@ -607,7 +658,8 @@ class _BottleDetailState extends State<BottleDetails> {
                           children: <Widget>[
                             Text(AppLocalizations.of(context)!.inCellarSince),
                             const Spacer(),
-                            Text(DateFormat.yMMMd().format(bottle.createdAt!))
+                            Text(DateFormat.yMMMd().format(
+                                bottle.registeredInCellarAt ?? DateTime.now())),
                           ],
                         ),
                       ),
@@ -648,8 +700,7 @@ class _BottleDetailState extends State<BottleDetails> {
                           const Spacer(),
                           Text(
                               // Test to be able to perform null operator
-                              ((bottle.isOpen ?? false) &&
-                                      bottle.createdAt != null)
+                              (bottle.createdAt != null)
                                   ? DateFormat.yMMMd().format(bottle.createdAt!)
                                   : AppLocalizations.of(context)!.unknown),
                         ],
