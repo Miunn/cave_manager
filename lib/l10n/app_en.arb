@@ -24,6 +24,10 @@
 	"@settings": {
 		"description": "The settings page"
 	},
+	"settingsCellarConfiguration": "Cellar configuration",
+	"@settingsCellarConfiguration": {
+		"description": "The cellar configuration settings page"
+	},
 
 	"cancel": "Cancel",
 	"undo": "Undo",
@@ -35,6 +39,7 @@
 	"next": "Next",
 	"finish": "Finish",
 	"delete": "Delete",
+	"wipe": "Wipe",
 
 	"bottlesTotal": "{bottles, plural, zero{0 bottles} one{1 bottle} other{{bottles} bottles}}",
 	"bottlesCellar": "{bottles, plural, zero{0 Bottles in cellar} one{1 Bottle in cellar} other{{bottles} Bottles in cellar}}",
@@ -149,5 +154,8 @@
 
 	"deleteBottleCoverTitle": "Delete bottle cover ?",
 	"deleteBottleCoverMessage": "Are you sure you want to delete the cover of the bottle {bottleName} ? The cover will be permanently deleted, this action is irreversible.",
-	"deleteBottleCoverConfirmation": "Cover deleted"
+	"deleteBottleCoverConfirmation": "Cover deleted",
+
+	"wipeCellarConfirmationTitle": "Wipe cellar ?",
+	"wipeCellarConfirmationMessage": "Bottles won't be deleted, but the cellar configuration will be reset. This action is irreversible."
 }

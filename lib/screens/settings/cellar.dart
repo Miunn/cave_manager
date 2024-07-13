@@ -2,6 +2,9 @@ import 'package:cave_manager/providers/clusters_provider.dart';
 import 'package:cave_manager/widgets/cellarConfiguration/cellar_summary.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../../widgets/dialogs/wipe_cellar.dart';
 
 class SettingsCellar extends StatefulWidget {
   const SettingsCellar({super.key});
@@ -20,7 +23,7 @@ class _SettingsCellarState extends State<SettingsCellar> {
             icon: const Icon(Icons.arrow_back),
             onPressed: () => Navigator.pop(context),
           ),
-          title: const Text('Configuration de la cave'),
+          title: Text(AppLocalizations.of(context)!.settingsCellarConfiguration),
         ),
         body: Padding(
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
@@ -37,9 +40,16 @@ class _SettingsCellarState extends State<SettingsCellar> {
                 width: double.infinity,
                 child: FilledButton(
                   onPressed: () {
-
+                    showDialog<bool>(
+                      context: context,
+                      builder: (BuildContext context) => const WipeCellarDialog(),
+                    ).then((bool? result) {
+                      if (result != null && result) {
+                        // Provider.of<ClustersProvider>(context, listen: false).wipe();
+                      }
+                    });
                   },
-                  child: const Text("Supprimer"),
+                  child: Text(AppLocalizations.of(context)!.wipe),
                 ),
               )
             ],

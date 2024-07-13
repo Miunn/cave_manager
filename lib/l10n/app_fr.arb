@@ -24,6 +24,10 @@
 	"@settings": {
 		"description": "Page de paramètres"
 	},
+	"settingsCellarConfiguration": "Configuration de la cave",
+	"@settingsCellarConfiguration": {
+		"description": "Page de configuration de la cave"
+	},
 
 	"cancel": "Annuler",
 	"undo": "Annuler",
@@ -35,6 +39,7 @@
 	"next": "Suivant",
 	"finish": "Terminer",
 	"delete": "Supprimer",
+	"wipe": "Réinitialiser",
 
 	"bottlesTotal": "{bottles, plural, zero{0 bouteille} one{1 bouteille} other{{bottles} bouteilles}}",
 	"bottlesCellar": "{bottles, plural, zero{Aucune bouteille en cave} one{1 Bouteille en cave} other{{bottles} Bouteilles en cave}}",
@@ -147,5 +152,8 @@
 
 	"deleteBottleCoverTitle": "Supprimer la photo de la bouteille ?",
 	"deleteBottleCoverMessage": "Êtes-vous sûr de vouloir supprimer la photo de la bouteille {bottleName} ? La photo sera supprimée définitivement, cette action est irréversible",
-	"deleteBottleCoverConfirmation": "Photo supprimée"
+	"deleteBottleCoverConfirmation": "Photo supprimée",
+
+	"wipeCellarConfirmationTitle": "Réinitialiser la cave ?",
+	"wipeCellarConfirmationMessage": "Êtes-vous sûr de vouloir réinitialiser votre cave ? Vos bouteilles ne seront pas supprimées, mais leur emplacement sera perdu. Cette action est irréversible"
 }
