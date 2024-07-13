@@ -7,7 +7,6 @@
 import 'dart:io';
 
 import 'package:cave_manager/providers/bottles_provider.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:cave_manager/main.dart';
 import 'package:provider/provider.dart';
