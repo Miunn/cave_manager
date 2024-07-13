@@ -10,9 +10,7 @@ import 'package:cave_manager/widgets/bottle_detail_line.dart';
 import 'package:cave_manager/widgets/delete_bottle_dialog.dart';
 import 'package:cave_manager/widgets/dialogs/delete_cover.dart';
 import 'package:country_picker/country_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -22,7 +20,7 @@ import '../widgets/open_bottle_dialog.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'ViewImage.dart';
+import 'view_image.dart';
 
 class BottleDetails extends StatefulWidget {
   const BottleDetails({super.key, required this.bottleId});
@@ -146,10 +144,6 @@ class _BottleDetailState extends State<BottleDetails> {
     }
 
     registerNewPicture() async {
-      if (!context.mounted) {
-        return;
-      }
-
       XFile? capturedImage = await Navigator.push<XFile?>(
         context,
         MaterialPageRoute(
@@ -162,7 +156,9 @@ class _BottleDetailState extends State<BottleDetails> {
 
       await bottle.setImage(capturedImage);
 
-      context.read<BottlesProvider>().updateBottle(bottle);
+      if (context.mounted) {
+        context.read<BottlesProvider>().updateBottle(bottle);
+      }
     }
 
     return Scaffold(

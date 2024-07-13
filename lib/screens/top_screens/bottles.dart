@@ -118,7 +118,7 @@ class _BottlesState extends State<Bottles> {
                       (BuildContext context, SearchController controller) {
                     return SearchBar(
                       controller: controller,
-                      padding: const MaterialStatePropertyAll<EdgeInsets>(
+                      padding: const WidgetStatePropertyAll<EdgeInsets>(
                           EdgeInsets.all(8.0)),
                       hintText: AppLocalizations.of(context)!.searchBottle,
                       onTap: () {

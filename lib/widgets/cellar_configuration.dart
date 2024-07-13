@@ -14,7 +14,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class CellarConfiguration extends StatefulWidget {
   const CellarConfiguration({super.key});
 
-  static const MAX_STEP = 3;
+  static const maxStep = 3;
 
   @override
   State<CellarConfiguration> createState() => _CellarConfigurationState();
@@ -128,11 +128,11 @@ class _CellarConfigurationState extends State<CellarConfiguration> {
                         : null,
                     child: Text(AppLocalizations.of(context)!.back)),
                 FilledButton(
-                    onPressed: (currentStep < CellarConfiguration.MAX_STEP)
+                    onPressed: (currentStep < CellarConfiguration.maxStep)
                         ? () => nextStep(clusters.cellarType)
                         : () => clusters
                             .setCellarConfiguration(cellarConfiguration),
-                    child: Text((currentStep < CellarConfiguration.MAX_STEP)
+                    child: Text((currentStep < CellarConfiguration.maxStep)
                         ? AppLocalizations.of(context)!.next
                         : AppLocalizations.of(context)!.finish)),
               ],
