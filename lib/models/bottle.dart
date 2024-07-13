@@ -20,6 +20,7 @@ class Bottle {
   int? clusterX;
   bool? isOpen;
   DateTime? createdAt;
+  DateTime? registeredInCellarAt;
   DateTime? openedAt;
   String? tastingNote;
 
@@ -37,6 +38,7 @@ class Bottle {
       this.clusterId,
       this.clusterY,
       this.clusterX,
+      this.registeredInCellarAt,
       this.openedAt,
       this.tastingNote});
 
@@ -58,6 +60,7 @@ class Bottle {
       'clusterY': clusterY,
       'clusterX': clusterX,
       'createdAt': createdAt?.millisecondsSinceEpoch,
+      'registeredInCellarAt': registeredInCellarAt?.millisecondsSinceEpoch,
       'openedAt': openedAt?.millisecondsSinceEpoch,
       'tastingNote': tastingNote
     };
@@ -80,6 +83,9 @@ class Bottle {
     clusterY = map['clusterY'];
     clusterX = map['clusterX'];
     createdAt = DateTime.fromMillisecondsSinceEpoch(map['createdAt']);
+    registeredInCellarAt = (map['registeredInCellarAt'] != null)
+        ? DateTime.fromMillisecondsSinceEpoch(map['registeredInCellarAt'])
+        : null;
     openedAt = (map['openedAt'] != null)
         ? DateTime.fromMillisecondsSinceEpoch(map['openedAt'])
         : null;
@@ -105,6 +111,7 @@ class Bottle {
         'clusterY: $clusterY, '
         'clusterX: $clusterX, '
         'createdAt: $createdAt, '
+        'registeredInCellarAt: $registeredInCellarAt, '
         'openedAt: $openedAt, '
         'tastingNote: $tastingNote}';
   }

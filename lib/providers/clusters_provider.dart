@@ -3,9 +3,11 @@ import 'package:cave_manager/models/enum_cellar_type.dart';
 import 'package:cave_manager/models/cluster.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/cellar_db_interface.dart';
+import 'bottles_provider.dart';
 
 class ClustersProvider extends ChangeNotifier {
   CellarDatabaseInterface cellarDatabase = CellarDatabaseInterface.instance;
@@ -84,6 +86,18 @@ class ClustersProvider extends ChangeNotifier {
 
   void updateClustersRowConfiguration(int clusterId, int row, int customWidth) {
     cellarDatabase.updateClusterRowConfiguration(clusterId, row, customWidth);
+    loadClustersRowConfiguration();
+  }
+
+  Future<void> wipe(BuildContext context) async {
+    // Remove bottles cluster associations
+    await Provider.of<BottlesProvider>(context, listen: false).wipeClusterAssociations();
+
+    // Wipe clusters
+    await cellarDatabase.wipe();
+
+    // Reload empty configuration
+    loadClusters();
     loadClustersRowConfiguration();
   }
 }

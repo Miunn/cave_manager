@@ -13,7 +13,7 @@ class BottleDatabaseInterface {
 
   static const String databaseName = "bottles_database.db";
 
-  static const int versionNumber = 19;
+  static const int versionNumber = 20;
 
   static const String tableBottles = 'Bottles';
 
@@ -33,6 +33,7 @@ class BottleDatabaseInterface {
   static const String colClusterY = "clusterY";
   static const String colClusterX = "clusterX";
   static const String colCreatedAt = "createdAt";
+  static const String colRegisteredInCellarAt = "registeredInCellarAt";
   static const String colOpenedAt = "openedAt";
   static const String colTastingNote = "tastingNote";
 
@@ -79,15 +80,14 @@ class BottleDatabaseInterface {
         " $colClusterY INTEGER, "
         " $colClusterX INTEGER, "
         " $colCreatedAt INTEGER, "
+        " $colRegisteredInCellarAt INTEGER, "
         " $colOpenedAt INTEGER, "
         " $colTastingNote TEXT "
         ")");
   }
 
   _onUpgrade(Database db, int oldVersion, int newVersion) async {
-    debugPrint("Upgrade db old: $oldVersion, new: $newVersion");
     await db.execute("DROP TABLE IF EXISTS $tableBottles");
-    debugPrint("Dropped");
     await db.execute("CREATE TABLE IF NOT EXISTS $tableBottles ("
         " $colId INTEGER PRIMARY KEY AUTOINCREMENT, "
         " $colName TEXT NOT NULL, "
@@ -105,10 +105,10 @@ class BottleDatabaseInterface {
         " $colClusterY INTEGER, "
         " $colClusterX INTEGER, "
         " $colCreatedAt INTEGER, "
+        " $colRegisteredInCellarAt INTEGER, "
         " $colOpenedAt INTEGER, "
         " $colTastingNote TEXT "
         ")");
-    debugPrint("Created");
     await db.setVersion(1);
   }
 

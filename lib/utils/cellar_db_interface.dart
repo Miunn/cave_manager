@@ -170,4 +170,10 @@ class CellarDatabaseInterface {
 
     return CellarCluster.fromMap(result);
   }
+
+  Future<void> wipe() async {
+    final Database db = await database;
+    await db.delete(tableCluster);
+    await db.delete(tableRowConfiguration);
+  }
 }

@@ -109,6 +109,7 @@
 	"alcoholLevel": "Alcohol level",
 	"grapeVariety": "Grape",
 	"inCellarSince": "In cellar since",
+	"bottleCreatedAt": "Bottle created at",
 	"location": "Location",
 	"origin": "Origin",
 	"country": "Country",

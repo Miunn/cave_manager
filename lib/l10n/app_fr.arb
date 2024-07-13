@@ -108,6 +108,7 @@
 	"alcoholLevel": "Degré",
 	"grapeVariety": "Cépage",
 	"inCellarSince": "En cave depuis",
+	"bottleCreatedAt": "Enregistrée le",
 	"location": "Emplacement",
 	"origin": "Origine",
 	"country": "Pays",

@@ -104,19 +104,23 @@ class _BottleDetailState extends State<BottleDetails> {
 
     switch (WineColors.values.firstWhere((e) => e.value == bottle.color)) {
       case WineColors.red:
-        colorText = AppLocalizations.of(context)!.wineColors(WineColors.red.value);
+        colorText =
+            AppLocalizations.of(context)!.wineColors(WineColors.red.value);
         break;
 
       case WineColors.pink:
-        colorText = AppLocalizations.of(context)!.wineColors(WineColors.pink.value);
+        colorText =
+            AppLocalizations.of(context)!.wineColors(WineColors.pink.value);
         break;
 
       case WineColors.white:
-        colorText = AppLocalizations.of(context)!.wineColors(WineColors.white.value);
+        colorText =
+            AppLocalizations.of(context)!.wineColors(WineColors.white.value);
         break;
 
       case WineColors.other:
-        colorText = AppLocalizations.of(context)!.wineColors(WineColors.other.value);
+        colorText =
+            AppLocalizations.of(context)!.wineColors(WineColors.other.value);
         break;
 
       default:
@@ -224,14 +228,19 @@ class _BottleDetailState extends State<BottleDetails> {
                                     height: 250,
                                     child: Column(
                                       children: [
-                                        const SizedBox(width: 75, child: Divider(thickness: 4)),
+                                        const SizedBox(
+                                            width: 75,
+                                            child: Divider(thickness: 4)),
                                         Flexible(
                                           child: ListView(
                                             shrinkWrap: true,
                                             children: <Widget>[
                                               ListTile(
-                                                leading: const Icon(Icons.remove_red_eye),
-                                                title: Text(AppLocalizations.of(context)!.viewImage),
+                                                leading: const Icon(
+                                                    Icons.remove_red_eye),
+                                                title: Text(AppLocalizations.of(
+                                                        context)!
+                                                    .viewImage),
                                                 onTap: () async {
                                                   if (context.mounted) {
                                                     Navigator.of(context).pop();
@@ -239,45 +248,81 @@ class _BottleDetailState extends State<BottleDetails> {
                                                   await Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
-                                                      builder: (context) => ViewImage(imagePath: bottle.imageUri!),
+                                                      builder: (context) =>
+                                                          ViewImage(
+                                                              imagePath: bottle
+                                                                  .imageUri!),
                                                     ),
                                                   );
                                                 },
                                               ),
                                               ListTile(
-                                                leading: const Icon(Icons.camera_alt),
-                                                title: Text(AppLocalizations.of(context)!.takePicture),
+                                                leading: const Icon(
+                                                    Icons.camera_alt),
+                                                title: Text(AppLocalizations.of(
+                                                        context)!
+                                                    .takePicture),
                                                 onTap: registerNewPicture,
                                               ),
                                               ListTile(
-                                                leading: const Icon(Icons.image),
-                                                title: Text(AppLocalizations.of(context)!.choosePicture),
+                                                leading:
+                                                    const Icon(Icons.image),
+                                                title: Text(AppLocalizations.of(
+                                                        context)!
+                                                    .choosePicture),
                                                 onTap: registerNewPicture,
                                               ),
                                               ListTile(
-                                                leading: Icon(Icons.delete_forever, color: Theme.of(context).colorScheme.error),
-                                                title: Text(AppLocalizations.of(context)!.deletePicture, style: TextStyle(color: Theme.of(context).colorScheme.error)),
+                                                leading: Icon(
+                                                    Icons.delete_forever,
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .error),
+                                                title: Text(
+                                                    AppLocalizations.of(
+                                                            context)!
+                                                        .deletePicture,
+                                                    style: TextStyle(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .error)),
                                                 onTap: () async {
                                                   // Confirmation dialog
-                                                  bool? shouldDelete = await showDialog<bool>(
-                                                    context: context,
-                                                    builder: (BuildContext context) => DeleteBottleCoverDialog(bottle: bottle));
+                                                  bool? shouldDelete =
+                                                      await showDialog<bool>(
+                                                          context: context,
+                                                          builder: (BuildContext
+                                                                  context) =>
+                                                              DeleteBottleCoverDialog(
+                                                                  bottle:
+                                                                      bottle));
 
-                                                  if (!(shouldDelete ?? false)) {
+                                                  if (!(shouldDelete ??
+                                                      false)) {
                                                     return;
                                                   }
 
                                                   await bottle.deleteImage();
                                                   if (context.mounted) {
-                                                    await context.read<BottlesProvider>().updateBottle(bottle);
+                                                    await context
+                                                        .read<BottlesProvider>()
+                                                        .updateBottle(bottle);
                                                   }
                                                   if (context.mounted) {
                                                     Navigator.pop(context);
                                                     // Confirmation snack bar
-                                                    final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-                                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                                    final GlobalKey<
+                                                            ScaffoldState>
+                                                        scaffoldKey = GlobalKey<
+                                                            ScaffoldState>();
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(SnackBar(
                                                       key: scaffoldKey,
-                                                      content: Text(AppLocalizations.of(context)!.deleteBottleCoverConfirmation),
+                                                      content: Text(
+                                                          AppLocalizations.of(
+                                                                  context)!
+                                                              .deleteBottleCoverConfirmation),
                                                     ));
                                                   }
                                                 },
@@ -482,10 +527,13 @@ class _BottleDetailState extends State<BottleDetails> {
                         color: Color.fromARGB(255, 220, 220, 220),
                       ),
                     ),
-                    Consumer<ClustersProvider>(
-                      builder: (BuildContext context, ClustersProvider clusters,
-                              Widget? child) =>
-                          Offstage(
+                    Consumer<ClustersProvider>(builder: (BuildContext context,
+                        ClustersProvider clusters, Widget? child) {
+                      if (bottle.clusterId == null) {
+                        return const SizedBox();
+                      }
+
+                      return Offstage(
                         offstage:
                             (bottle.isOpen! && clusters.clusters.length <= 1),
                         child: Padding(
@@ -513,22 +561,25 @@ class _BottleDetailState extends State<BottleDetails> {
                             ],
                           ),
                         ),
-                      ),
-                    ),
-                    Consumer<ClustersProvider>(
-                      builder: (BuildContext context, ClustersProvider clusters,
-                              Widget? child) =>
-                          Offstage(
+                      );
+                    }),
+                    Consumer<ClustersProvider>(builder: (BuildContext context,
+                        ClustersProvider clusters, Widget? child) {
+                      if (bottle.clusterId == null) {
+                        return const SizedBox();
+                      }
+                      return Offstage(
                         offstage:
-                            (bottle.isOpen! && clusters.clusters.length <= 1),
+                            (bottle.isOpen! && clusters.clusters.length <= 1) ||
+                                bottle.clusterId == null,
                         child: const Divider(
                           height: 1,
                           color: Color.fromARGB(255, 220, 220, 220),
                         ),
-                      ),
-                    ),
+                      );
+                    }),
                     Offstage(
-                        offstage: bottle.isOpen!,
+                        offstage: bottle.isOpen! || bottle.clusterId == null,
                         child: Padding(
                           padding: const EdgeInsets.all(12.0),
                           child: Row(
@@ -554,7 +605,7 @@ class _BottleDetailState extends State<BottleDetails> {
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           children: <Widget>[
-                            const Text("Mise en cave le"),
+                            Text(AppLocalizations.of(context)!.inCellarSince),
                             const Spacer(),
                             Text(DateFormat.yMMMd().format(bottle.createdAt!))
                           ],
@@ -583,11 +634,27 @@ class _BottleDetailState extends State<BottleDetails> {
                                         bottle.openedAt != null)
                                     ? DateFormat.yMMMd()
                                         .format(bottle.openedAt!)
-                                    : "Aucune donnée"),
+                                    : AppLocalizations.of(context)!.unknown),
                           ],
                         ),
                       ),
-                    )
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: <Widget>[
+                          Text(AppLocalizations.of(context)!.bottleCreatedAt),
+                          const Spacer(),
+                          Text(
+                              // Test to be able to perform null operator
+                              ((bottle.isOpen ?? false) &&
+                                      bottle.createdAt != null)
+                                  ? DateFormat.yMMMd().format(bottle.createdAt!)
+                                  : AppLocalizations.of(context)!.unknown),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),

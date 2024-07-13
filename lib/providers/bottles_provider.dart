@@ -93,4 +93,13 @@ class BottlesProvider extends ChangeNotifier {
   List<Bottle> searchBottles(String query) {
     return _bottles.where((bottle) => bottle.name!.toLowerCase().contains(query.toLowerCase())).toList();
   }
+
+  Future<void> wipeClusterAssociations() async {
+    for (Bottle bottle in _bottles) {
+      bottle.clusterId = null;
+      bottle.clusterX = null;
+      bottle.clusterY = null;
+      await updateBottle(bottle);
+    }
+  }
 }

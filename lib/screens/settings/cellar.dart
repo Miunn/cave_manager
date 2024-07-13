@@ -45,7 +45,7 @@ class _SettingsCellarState extends State<SettingsCellar> {
                       builder: (BuildContext context) => const WipeCellarDialog(),
                     ).then((bool? result) {
                       if (result != null && result) {
-                        // Provider.of<ClustersProvider>(context, listen: false).wipe();
+                        Provider.of<ClustersProvider>(context, listen: false).wipe(context);
                       }
                     });
                   },
