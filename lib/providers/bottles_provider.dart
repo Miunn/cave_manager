@@ -99,6 +99,8 @@ class BottlesProvider extends ChangeNotifier {
       bottle.clusterId = null;
       bottle.clusterX = null;
       bottle.clusterY = null;
+      bottle.isInCellar = false;
+      bottle.registeredInCellarAt = null;
       await updateBottle(bottle);
     }
   }
