@@ -6,6 +6,7 @@ import 'package:cave_manager/providers/clusters_provider.dart';
 import 'package:cave_manager/screens/cellar/move_bottle.dart';
 import 'package:cave_manager/screens/cellar/place_in_cellar.dart';
 import 'package:cave_manager/screens/take_picture.dart';
+import 'package:cave_manager/widgets/bottle_detail_line.dart';
 import 'package:cave_manager/widgets/delete_bottle_dialog.dart';
 import 'package:cave_manager/widgets/dialogs/delete_cover.dart';
 import 'package:country_picker/country_picker.dart';
@@ -497,89 +498,51 @@ class _BottleDetailState extends State<BottleDetails> {
                     borderRadius: BorderRadius.circular(15.0)),
                 child: Column(
                   children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: <Widget>[
-                          Text(AppLocalizations.of(context)!.color),
-                          const Spacer(),
-                          Text(colorText),
-                        ],
-                      ),
+                    BottleDetailLine(
+                      leftSideText: AppLocalizations.of(context)!.color,
+                      rightSideText: colorText,
+                    ),
+                    const Divider(
+                        height: 1, color: Color.fromARGB(255, 220, 220, 220)),
+                    BottleDetailLine(
+                      leftSideText: AppLocalizations.of(context)!.alcoholLevel,
+                      rightSideText: bottle.alcoholLevel == null
+                          ? AppLocalizations.of(context)!.unknown
+                          : "${bottle.alcoholLevel} %",
+                      rightSideTextStyle: TextStyle(
+                          fontStyle: bottle.alcoholLevel == null
+                              ? FontStyle.italic
+                              : FontStyle.normal),
                     ),
                     const Divider(
                       height: 1,
                       color: Color.fromARGB(255, 220, 220, 220),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: <Widget>[
-                          Text(AppLocalizations.of(context)!.alcoholLevel),
-                          const Spacer(),
-                          Text(
-                            bottle.alcoholLevel == null
-                                ? AppLocalizations.of(context)!.unknown
-                                : "${bottle.alcoholLevel} %",
-                            style: TextStyle(
-                                fontStyle: bottle.alcoholLevel == null
-                                    ? FontStyle.italic
-                                    : FontStyle.normal),
-                          ),
-                        ],
-                      ),
+                    BottleDetailLine(
+                      leftSideText: AppLocalizations.of(context)!.grapeVariety,
+                      rightSideText: (bottle.grapeVariety == null ||
+                              bottle.grapeVariety!.isEmpty)
+                          ? AppLocalizations.of(context)!.unknown
+                          : "${bottle.grapeVariety}",
+                      rightSideTextStyle: TextStyle(
+                          fontStyle: (bottle.grapeVariety == null ||
+                                  bottle.grapeVariety!.isEmpty)
+                              ? FontStyle.italic
+                              : FontStyle.normal),
                     ),
                     const Divider(
-                      height: 1,
-                      color: Color.fromARGB(255, 220, 220, 220),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: <Widget>[
-                          Text(AppLocalizations.of(context)!.grapeVariety),
-                          const Spacer(),
-                          Text(
-                            (bottle.grapeVariety == null ||
-                                    bottle.grapeVariety!.isEmpty)
-                                ? AppLocalizations.of(context)!.unknown
-                                : "${bottle.grapeVariety}",
-                            style: TextStyle(
-                                fontStyle: (bottle.grapeVariety == null ||
-                                        bottle.grapeVariety!.isEmpty)
-                                    ? FontStyle.italic
-                                    : FontStyle.normal),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const Divider(
-                      height: 1,
-                      color: Color.fromARGB(255, 220, 220, 220),
-                    ),
+                        height: 1, color: Color.fromARGB(255, 220, 220, 220)),
                     Offstage(
                       offstage: !(bottle.isInCellar ?? false),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: <Widget>[
-                            Text(AppLocalizations.of(context)!.inCellarSince),
-                            const Spacer(),
-                            Text(inCellarString),
-                          ],
-                        ),
-                      ),
+                      child: BottleDetailLine(
+                          leftSideText:
+                              AppLocalizations.of(context)!.inCellarSince,
+                          rightSideText: inCellarString),
                     ),
                     Offstage(
                       offstage: !(bottle.isInCellar ?? false),
                       child: const Divider(
-                        height: 1,
-                        color: Color.fromARGB(255, 220, 220, 220),
-                      ),
+                          height: 1, color: Color.fromARGB(255, 220, 220, 220)),
                     ),
                     Consumer<ClustersProvider>(builder: (BuildContext context,
                         ClustersProvider clusters, Widget? child) {
@@ -590,29 +553,21 @@ class _BottleDetailState extends State<BottleDetails> {
                       return Offstage(
                         offstage:
                             (bottle.isOpen! && clusters.clusters.length <= 1),
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              Text(clusters.cellarType.label),
-                              const Spacer(),
-                              Text(
-                                clusters
-                                            .getClusterById(bottle.clusterId!)
-                                            ?.name! ==
-                                        null
-                                    ? AppLocalizations.of(context)!.unknown
-                                    : clusters
-                                        .getClusterById(bottle.clusterId!)!
-                                        .name!,
-                                style: TextStyle(
-                                  fontStyle: bottle.clusterId == null
-                                      ? FontStyle.italic
-                                      : FontStyle.normal,
-                                ),
-                              ),
-                            ],
+                        child: BottleDetailLine(
+                          leftSideText: AppLocalizations.of(context)!
+                              .cellarTypes(clusters.cellarType.value),
+                          rightSideText: clusters
+                                      .getClusterById(bottle.clusterId!)
+                                      ?.name! ==
+                                  null
+                              ? AppLocalizations.of(context)!.unknown
+                              : clusters
+                                  .getClusterById(bottle.clusterId!)!
+                                  .name!,
+                          rightSideTextStyle: TextStyle(
+                            fontStyle: bottle.clusterId == null
+                                ? FontStyle.italic
+                                : FontStyle.normal,
                           ),
                         ),
                       );
@@ -627,44 +582,29 @@ class _BottleDetailState extends State<BottleDetails> {
                             (bottle.isOpen! && clusters.clusters.length <= 1) ||
                                 bottle.clusterId == null,
                         child: const Divider(
-                          height: 1,
-                          color: Color.fromARGB(255, 220, 220, 220),
-                        ),
+                            height: 1,
+                            color: Color.fromARGB(255, 220, 220, 220)),
                       );
                     }),
                     Offstage(
-                        offstage: bottle.isOpen! || bottle.clusterId == null,
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: <Widget>[
-                              Text(AppLocalizations.of(context)!.location),
-                              const Spacer(),
-                              Text(
-                                cellarPositionFormatted,
-                                style: TextStyle(
-                                  fontStyle: bottle.clusterId == null
-                                      ? FontStyle.italic
-                                      : FontStyle.normal,
-                                ),
-                              ),
-                            ],
-                          ),
-                        )),
+                      offstage: bottle.isOpen! || bottle.clusterId == null,
+                      child: BottleDetailLine(
+                        leftSideText: AppLocalizations.of(context)!.location,
+                        rightSideText: cellarPositionFormatted,
+                        rightSideTextStyle: TextStyle(
+                          fontStyle: bottle.clusterId == null
+                              ? FontStyle.italic
+                              : FontStyle.normal,
+                        ),
+                      ),
+                    ),
                     Offstage(
                       offstage: !(bottle.isInCellar ?? false),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: <Widget>[
-                            Text(AppLocalizations.of(context)!.inCellarSince),
-                            const Spacer(),
-                            Text(DateFormat.yMMMd().format(
-                                bottle.registeredInCellarAt ?? DateTime.now())),
-                          ],
-                        ),
+                      child: BottleDetailLine(
+                        leftSideText:
+                            AppLocalizations.of(context)!.inCellarSince,
+                        rightSideText: DateFormat.yMMMd().format(
+                            bottle.registeredInCellarAt ?? DateTime.now()),
                       ),
                     ),
                     Offstage(
@@ -676,39 +616,21 @@ class _BottleDetailState extends State<BottleDetails> {
                     ),
                     Offstage(
                       offstage: !bottle.isOpen!,
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: <Widget>[
-                            Text(AppLocalizations.of(context)!.takenOutDate),
-                            const Spacer(),
-                            Text(
-                                // Test to be able to perform null operator
-                                ((bottle.isOpen ?? false) &&
-                                        bottle.openedAt != null)
-                                    ? DateFormat.yMMMd()
-                                        .format(bottle.openedAt!)
-                                    : AppLocalizations.of(context)!.unknown),
-                          ],
-                        ),
+                      child: BottleDetailLine(
+                        leftSideText:
+                            AppLocalizations.of(context)!.takenOutDate,
+                        rightSideText: ((bottle.isOpen ?? false) &&
+                                bottle.openedAt != null)
+                            ? DateFormat.yMMMd().format(bottle.openedAt!)
+                            : AppLocalizations.of(context)!.unknown,
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: <Widget>[
-                          Text(AppLocalizations.of(context)!.bottleCreatedAt),
-                          const Spacer(),
-                          Text(
-                              // Test to be able to perform null operator
-                              (bottle.createdAt != null)
-                                  ? DateFormat.yMMMd().format(bottle.createdAt!)
-                                  : AppLocalizations.of(context)!.unknown),
-                        ],
-                      ),
-                    ),
+                    BottleDetailLine(
+                        leftSideText:
+                            AppLocalizations.of(context)!.bottleCreatedAt,
+                        rightSideText: (bottle.createdAt != null)
+                            ? DateFormat.yMMMd().format(bottle.createdAt!)
+                            : AppLocalizations.of(context)!.unknown),
                   ],
                 ),
               ),
@@ -721,72 +643,45 @@ class _BottleDetailState extends State<BottleDetails> {
                     borderRadius: BorderRadius.circular(15.0)),
                 child: Column(
                   children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: <Widget>[
-                          Text(AppLocalizations.of(context)!.country),
-                          const Spacer(),
-                          Text(
-                            bottle.country == null
-                                ? AppLocalizations.of(context)!.unknown
-                                : "${bottleCountry?.flagEmoji} ${bottleCountry?.displayNameNoCountryCode}",
-                            style: TextStyle(
-                                fontStyle: bottle.country == null
-                                    ? FontStyle.italic
-                                    : FontStyle.normal),
-                          ),
-                        ],
-                      ),
+                    BottleDetailLine(
+                      leftSideText: AppLocalizations.of(context)!.country,
+                      rightSideText: bottle.country == null
+                          ? AppLocalizations.of(context)!.unknown
+                          : "${bottleCountry?.flagEmoji} ${bottleCountry?.displayNameNoCountryCode}",
+                      rightSideTextStyle: TextStyle(
+                          fontStyle: bottle.country == null
+                              ? FontStyle.italic
+                              : FontStyle.normal),
+                    ),
+                    const Divider(
+                        height: 1, color: Color.fromARGB(255, 220, 220, 220)),
+                    BottleDetailLine(
+                      leftSideText: AppLocalizations.of(context)!.region,
+                      rightSideText:
+                          (bottle.area == null || bottle.area!.isEmpty)
+                              ? AppLocalizations.of(context)!.unknown
+                              : "${bottle.area}",
+                      rightSideTextStyle: TextStyle(
+                          fontStyle:
+                              (bottle.area == null || bottle.area!.isEmpty)
+                                  ? FontStyle.italic
+                                  : FontStyle.normal),
                     ),
                     const Divider(
                       height: 1,
                       color: Color.fromARGB(255, 220, 220, 220),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: <Widget>[
-                          Text(AppLocalizations.of(context)!.region),
-                          const Spacer(),
-                          Text(
-                            (bottle.area == null || bottle.area!.isEmpty)
-                                ? AppLocalizations.of(context)!.unknown
-                                : "${bottle.area}",
-                            style: TextStyle(
-                                fontStyle: (bottle.area == null ||
-                                        bottle.area!.isEmpty)
-                                    ? FontStyle.italic
-                                    : FontStyle.normal),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const Divider(
-                      height: 1,
-                      color: Color.fromARGB(255, 220, 220, 220),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: <Widget>[
-                          Text(AppLocalizations.of(context)!.subRegion),
-                          const Spacer(),
-                          Text(
-                            (bottle.subArea == null || bottle.subArea!.isEmpty)
-                                ? AppLocalizations.of(context)!.unknown
-                                : "${bottle.subArea}",
-                            style: TextStyle(
-                                fontStyle: (bottle.subArea == null ||
-                                        bottle.subArea!.isEmpty)
-                                    ? FontStyle.italic
-                                    : FontStyle.normal),
-                          ),
-                        ],
-                      ),
+                    BottleDetailLine(
+                      leftSideText: AppLocalizations.of(context)!.subRegion,
+                      rightSideText:
+                          (bottle.subArea == null || bottle.subArea!.isEmpty)
+                              ? AppLocalizations.of(context)!.unknown
+                              : "${bottle.subArea}",
+                      rightSideTextStyle: TextStyle(
+                          fontStyle: (bottle.subArea == null ||
+                                  bottle.subArea!.isEmpty)
+                              ? FontStyle.italic
+                              : FontStyle.normal),
                     ),
                   ],
                 ),

@@ -92,6 +92,12 @@
 			"choice": {}
 		}
 	},
+	"cellarTypes": "{choice, select, wineRack {Porte bouteilles} fridge {Frigo} containers {Contenants} none {Aucun} other {Inconnu}}",
+	"@cellarTypes": {
+		"placeholders": {
+			"choice": {}
+		}
+	},
 	"unknownColor": "Couleur non renseignée",
 	"sortName": "A-Z Nom",
 	"sortEstate": "A-Z Domaine",

@@ -93,6 +93,12 @@
 			"choice": {}
 		}
 	},
+	"cellarTypes": "{choice, select, wineRack {Wine rack} fridge {Fridge} containers {Containers} none {None} other {Unknown}}",
+	"@cellarTypes": {
+		"placeholders": {
+			"choice": {}
+		}
+	},
 	"unknownColor": "Unknown color",
 	"sortName": "A-Z Name",
 	"sortEstate": "A-Z Estate",

@@ -1,6 +1,6 @@
 enum CellarType {
-  holder('Porte Bouteilles', 'holder'),
-  bags('Contenants', 'bags'),
+  holder('Porte Bouteilles', 'wineRack'),
+  bags('Contenants', 'containers'),
   fridge('Frigo', 'fridge'),
   none('None', 'none');
 
