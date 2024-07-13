@@ -1,3 +1,6 @@
+import 'dart:ffi';
+
+import 'package:animations/animations.dart';
 import 'package:cave_manager/screens/settings.dart';
 import 'package:cave_manager/widgets/bottle_card.dart';
 import 'package:flutter/material.dart';
@@ -90,14 +93,24 @@ class _HomeState extends State<Home> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute<Bottle>(
-              fullscreenDialog: true,
-              builder: (BuildContext context) => const AddBottleDialog()));
-        },
-        tooltip: AppLocalizations.of(context)!.insertBottle,
-        child: const Icon(Icons.add),
+      floatingActionButton: OpenContainer(
+        closedElevation: 6,
+        closedShape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(15)),
+        ),
+        transitionDuration: const Duration(milliseconds: 400),
+        closedBuilder: (BuildContext context, VoidCallback action) => FloatingActionButton(
+          onPressed: () {
+            /*Navigator.of(context).push(MaterialPageRoute<Bottle>(
+                fullscreenDialog: true,
+                builder: (BuildContext context) => const AddBottleDialog()));*/
+            action();
+          },
+          tooltip: AppLocalizations.of(context)!.insertBottle,
+          child: const Icon(Icons.add),
+        ),
+        openBuilder: (BuildContext context, VoidCallback action) => const AddBottleDialog(),
+        tappable: false,
       ),
     );
   }

@@ -51,6 +51,7 @@ dependencies:
   sqlite3_flutter_libs: ^0.5.24
   sqlite3: ^2.4.4
   sqflite_common: ^2.5.4
+  animations: ^2.0.11
   #get_storage: ^2.0.0
 
 dev_dependencies:

@@ -213,7 +213,7 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
                 ),
                 TextFormField(
                   controller: nameController,
-                  autofocus: true,
+                  /*autofocus: true,*/
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Appellation requise';
