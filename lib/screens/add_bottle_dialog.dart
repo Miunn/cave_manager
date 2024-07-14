@@ -393,7 +393,7 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Offstage(
-            offstage: !context.read<ClustersProvider>().isCellarConfigured,
+            offstage: !context.read<ClustersProvider>().isCellarConfigured || MediaQuery.of(context).viewInsets.bottom != 0.0,
             child: FloatingActionButton.small(
               heroTag: 'save',
               onPressed: () async {
@@ -409,21 +409,24 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
             ),
           ),
           const SizedBox(height: 24),
-          FloatingActionButton.extended(
-            heroTag: 'placeInCellar',
-            onPressed: () async {
-              if (_formKey.currentState!.validate()) {
-                await saveBottle(context, context.read<ClustersProvider>().isCellarConfigured);
-              }
+          Visibility(
+            visible: MediaQuery.of(context).viewInsets.bottom == 0.0,
+            child: FloatingActionButton.extended(
+              heroTag: 'placeInCellar',
+              onPressed: () async {
+                if (_formKey.currentState!.validate()) {
+                  await saveBottle(context, context.read<ClustersProvider>().isCellarConfigured);
+                }
 
-              if (context.mounted) {
-                Navigator.of(context).pop();
-              }
-            },
-            icon: Icon((context.read<ClustersProvider>().isCellarConfigured) ? Icons.storefront : Icons.save),
-            label: Text((context.read<ClustersProvider>().isCellarConfigured)
-                ? AppLocalizations.of(context)!.placeInCellar
-                : AppLocalizations.of(context)!.saveOutOfCellar
+                if (context.mounted) {
+                  Navigator.of(context).pop();
+                }
+              },
+              icon: Icon((context.read<ClustersProvider>().isCellarConfigured) ? Icons.storefront : Icons.save),
+              label: Text((context.read<ClustersProvider>().isCellarConfigured)
+                  ? AppLocalizations.of(context)!.placeInCellar
+                  : AppLocalizations.of(context)!.saveOutOfCellar
+              ),
             ),
           ),
         ],
