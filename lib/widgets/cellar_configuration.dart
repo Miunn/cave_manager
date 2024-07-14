@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:cave_manager/models/enum_cellar_type.dart';
 import 'package:cave_manager/models/cluster.dart';
 import 'package:cave_manager/providers/clusters_provider.dart';
@@ -22,14 +23,16 @@ class CellarConfiguration extends StatefulWidget {
 
 class _CellarConfigurationState extends State<CellarConfiguration> {
   final _formKey = GlobalKey<FormState>();
-  String sectionTitle = "Sélectionnez la topologie de votre cave";
+  String sectionTitle = "";
   int currentStep = 0;
+  bool animationReverse = false;
   int clusterStep = 1;
   double cellarClusterController = 1;
   List<CellarCluster> cellarConfiguration = [];
 
   previousStep(CellarType cellarType) {
     setState(() {
+      animationReverse = true;
       if (currentStep == 2 && clusterStep > 1) {
         clusterStep--;
       } else {
@@ -50,6 +53,7 @@ class _CellarConfigurationState extends State<CellarConfiguration> {
 
   nextStep(CellarType cellarType) {
     setState(() {
+      animationReverse = false;
       if (currentStep == 2 && clusterStep < cellarClusterController.round()) {
         clusterStep++;
       } else {
@@ -76,6 +80,25 @@ class _CellarConfigurationState extends State<CellarConfiguration> {
   @override
   Widget build(BuildContext context) {
     ClustersProvider clusters = context.read<ClustersProvider>();
+    List<Widget> configurationScreens = [
+      const CellarTypeSelector(),
+      CellarClusterSelector(
+          clusterSliderCallback: (double value) {
+            setState(() {
+              cellarClusterController = value;
+            });
+          },
+          clusterValue: cellarClusterController),
+      CellarSizeSelector(
+        clusterStep: clusterStep,
+        totalClusterStep: cellarClusterController.round(),
+        clusterConfiguration: getCurrentCellarCluster(),
+      ),
+      CellarSummary(
+        cellarType: clusters.cellarType,
+        clustersConfiguration: cellarConfiguration,
+      ),
+    ];
 
     switch (currentStep) {
       case 0:
@@ -97,25 +120,21 @@ class _CellarConfigurationState extends State<CellarConfiguration> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            [
-              const CellarTypeSelector(),
-              CellarClusterSelector(
-                  clusterSliderCallback: (double value) {
-                    setState(() {
-                      cellarClusterController = value;
-                    });
-                  },
-                  clusterValue: cellarClusterController),
-              CellarSizeSelector(
-                clusterStep: clusterStep,
-                totalClusterStep: cellarClusterController.round(),
-                clusterConfiguration: getCurrentCellarCluster(),
-              ),
-              CellarSummary(
-                cellarType: clusters.cellarType,
-                clustersConfiguration: cellarConfiguration,
-              ),
-            ][currentStep],
+            PageTransitionSwitcher(
+              reverse: animationReverse,
+              transitionBuilder: (
+                  Widget child,
+                  Animation<double> primaryAnimation,
+                  Animation<double> secondaryAnimation) {
+                return SharedAxisTransition(
+                  animation: primaryAnimation,
+                  secondaryAnimation: secondaryAnimation,
+                  transitionType: SharedAxisTransitionType.horizontal,
+                  child: child,
+                );
+              },
+              child: configurationScreens[currentStep],
+            ),
             const SizedBox(
               height: 20,
             ),
