@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:cave_manager/models/bottle.dart';
 import 'package:cave_manager/models/enum_wine_colors.dart';
 import 'package:cave_manager/screens/bottle_details.dart';
@@ -67,58 +68,56 @@ class BottleCard extends StatelessWidget {
 
     return Card(
       clipBehavior: Clip.hardEdge,
-      child: InkWell(
-        splashColor: Colors.blue.withAlpha(30),
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => BottleDetails(bottleId: bottle.id!)),
-          );
-        },
-        child: Column(
-          children: <Widget>[
-            ListTile(
-              leading: const Icon(Icons.wine_bar),
-              title: Text("${bottle.name}"),
-              subtitle: Text(
-                colorText,
-                style: TextStyle(
-                  fontStyle: bottle.color == null
-                      ? FontStyle.italic
-                      : FontStyle.normal,
+      child: OpenContainer(
+        closedBuilder: (BuildContext context, void Function() action) => InkWell(
+          splashColor: Colors.blue.withAlpha(30),
+          onTap: action,
+          child: Column(
+            children: <Widget>[
+              ListTile(
+                leading: const Icon(Icons.wine_bar),
+                title: Text("${bottle.name}"),
+                subtitle: Text(
+                  colorText!,
+                  style: TextStyle(
+                    fontStyle: bottle.color == null
+                        ? FontStyle.italic
+                        : FontStyle.normal,
+                  ),
                 ),
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ViewBottleInCellar(bottle: bottle),
-                        ),
-                      );
-                    },
-                    child: Text(AppLocalizations.of(context)!.seeInCellar)),
-                TextButton(
-                    child: Text(AppLocalizations.of(context)!.takeOutBottle),
-                    onPressed: () async {
-                      bool? open = await showDialog<bool>(
-                        context: context,
-                        builder: (BuildContext context) =>
-                            OpenBottleDialog(bottle: bottle),
-                      );
-                      if (open != null && open && context.mounted) {
-                        openBottle(context);
-                      }
-                    }),
-              ],
-            )
-          ],
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ViewBottleInCellar(bottle: bottle),
+                          ),
+                        );
+                      },
+                      child: Text(AppLocalizations.of(context)!.seeInCellar)),
+                  TextButton(
+                      child: Text(AppLocalizations.of(context)!.takeOutBottle),
+                      onPressed: () async {
+                        bool? open = await showDialog<bool>(
+                          context: context,
+                          builder: (BuildContext context) =>
+                              OpenBottleDialog(bottle: bottle),
+                        );
+                        if (open != null && open && context.mounted) {
+                          openBottle(context);
+                        }
+                      }),
+                ],
+              )
+            ],
+          ),
         ),
+        openBuilder: (BuildContext context, void Function({Object? returnValue}) action) => BottleDetails(bottleId: bottle.id!),
+        tappable: false,
       ),
     );
   }
