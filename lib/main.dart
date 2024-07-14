@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:animations/animations.dart';
+import 'package:cave_manager/models/regions_by_country.dart';
 import 'package:cave_manager/providers/bottles_provider.dart';
 import 'package:cave_manager/providers/clusters_provider.dart';
 import 'package:cave_manager/screens/add_bottle_dialog.dart';
@@ -97,6 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint(RegionsByCountry.of(context)!.regionsByCountry("France").toString());
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
