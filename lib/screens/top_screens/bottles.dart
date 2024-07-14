@@ -1,7 +1,5 @@
-import 'package:animations/animations.dart';
 import 'package:cave_manager/models/enum_sort_type.dart';
 import 'package:cave_manager/providers/bottles_provider.dart';
-import 'package:cave_manager/screens/add_bottle_dialog.dart';
 import 'package:cave_manager/screens/bottle_details.dart';
 import 'package:cave_manager/screens/settings.dart';
 import 'package:cave_manager/widgets/bottle_list_card.dart';

@@ -1,4 +1,3 @@
-import 'package:animations/animations.dart';
 import 'package:cave_manager/providers/bottles_provider.dart';
 import 'package:cave_manager/screens/settings.dart';
 import 'package:cave_manager/utils/bottle_db_interface.dart';
@@ -9,7 +8,6 @@ import 'package:provider/provider.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../add_bottle_dialog.dart';
 
 class Statistics extends StatefulWidget {
   const Statistics({super.key});
