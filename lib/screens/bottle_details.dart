@@ -7,8 +7,8 @@ import 'package:cave_manager/screens/cellar/move_bottle.dart';
 import 'package:cave_manager/screens/cellar/place_in_cellar.dart';
 import 'package:cave_manager/screens/take_picture.dart';
 import 'package:cave_manager/widgets/bottle_detail_line.dart';
-import 'package:cave_manager/widgets/delete_bottle_dialog.dart';
-import 'package:cave_manager/widgets/dialogs/delete_cover.dart';
+import 'package:cave_manager/widgets/dialogs/dialog_delete_bottle.dart';
+import 'package:cave_manager/widgets/dialogs/dialog_delete_cover.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -16,7 +16,7 @@ import 'package:provider/provider.dart';
 
 import '../models/bottle.dart';
 import '../models/enum_wine_colors.dart';
-import '../widgets/open_bottle_dialog.dart';
+import '../widgets/dialogs/dialog_open_bottle.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

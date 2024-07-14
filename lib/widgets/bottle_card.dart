@@ -2,7 +2,7 @@ import 'package:cave_manager/models/bottle.dart';
 import 'package:cave_manager/models/enum_wine_colors.dart';
 import 'package:cave_manager/screens/bottle_details.dart';
 import 'package:cave_manager/screens/cellar/view_bottle_in_cellar.dart';
-import 'package:cave_manager/widgets/open_bottle_dialog.dart';
+import 'package:cave_manager/widgets/dialogs/dialog_open_bottle.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

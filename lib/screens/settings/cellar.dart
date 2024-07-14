@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../widgets/dialogs/wipe_cellar.dart';
+import '../../widgets/dialogs/dialog_wipe_cellar.dart';
 
 class SettingsCellar extends StatefulWidget {
   const SettingsCellar({super.key});
