@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:animations/animations.dart';
 import 'package:cave_manager/providers/bottles_provider.dart';
 import 'package:cave_manager/providers/clusters_provider.dart';
+import 'package:cave_manager/screens/add_bottle_dialog.dart';
 import 'package:cave_manager/screens/top_screens/bottles.dart';
 import 'package:cave_manager/screens/top_screens/cellar.dart';
 import 'package:cave_manager/screens/top_screens/home.dart';
@@ -139,12 +141,35 @@ class _MyHomePageState extends State<MyHomePage> {
             label: AppLocalizations.of(context)!.statistics,
           ),
           NavigationDestination(
-              selectedIcon: const Icon(Icons.quiz),
-              icon: const Icon(Icons.quiz_outlined),
-              label: AppLocalizations.of(context)!.choose,
+            selectedIcon: const Icon(Icons.quiz),
+            icon: const Icon(Icons.quiz_outlined),
+            label: AppLocalizations.of(context)!.choose,
           ),
         ],
       ),
+      floatingActionButton: (currentPageIndex != 2 && currentPageIndex != 4)
+          ? OpenContainer(
+              closedElevation: 6,
+              closedShape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(15)),
+              ),
+              transitionDuration: const Duration(milliseconds: 400),
+              closedBuilder: (BuildContext context, VoidCallback action) =>
+                  FloatingActionButton(
+                onPressed: () {
+                  /*Navigator.of(context).push(MaterialPageRoute<Bottle>(
+                fullscreenDialog: true,
+                builder: (BuildContext context) => const AddBottleDialog()));*/
+                  action();
+                },
+                tooltip: AppLocalizations.of(context)!.insertBottle,
+                child: const Icon(Icons.add),
+              ),
+              openBuilder: (BuildContext context, VoidCallback action) =>
+                  const AddBottleDialog(),
+              tappable: false,
+            )
+          : null,
     );
   }
 }

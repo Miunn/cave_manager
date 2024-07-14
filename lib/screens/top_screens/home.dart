@@ -93,25 +93,6 @@ class _HomeState extends State<Home> {
           ),
         ),
       ),
-      floatingActionButton: OpenContainer(
-        closedElevation: 6,
-        closedShape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(15)),
-        ),
-        transitionDuration: const Duration(milliseconds: 400),
-        closedBuilder: (BuildContext context, VoidCallback action) => FloatingActionButton(
-          onPressed: () {
-            /*Navigator.of(context).push(MaterialPageRoute<Bottle>(
-                fullscreenDialog: true,
-                builder: (BuildContext context) => const AddBottleDialog()));*/
-            action();
-          },
-          tooltip: AppLocalizations.of(context)!.insertBottle,
-          child: const Icon(Icons.add),
-        ),
-        openBuilder: (BuildContext context, VoidCallback action) => const AddBottleDialog(),
-        tappable: false,
-      ),
     );
   }
 }

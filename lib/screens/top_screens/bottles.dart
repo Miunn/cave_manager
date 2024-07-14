@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:cave_manager/models/enum_sort_type.dart';
 import 'package:cave_manager/providers/bottles_provider.dart';
 import 'package:cave_manager/screens/add_bottle_dialog.dart';
@@ -246,15 +247,6 @@ class _BottlesState extends State<Bottles> {
             ),
           ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute<Bottle>(
-              fullscreenDialog: true,
-              builder: (BuildContext context) => const AddBottleDialog()));
-        },
-        tooltip: AppLocalizations.of(context)!.insertBottle,
-        child: const Icon(Icons.add),
       ),
     );
   }
