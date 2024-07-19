@@ -4,6 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:cave_manager/providers/clusters_provider.dart';
 import 'package:cave_manager/screens/cellar/place_in_cellar.dart';
 import 'package:cave_manager/screens/take_picture.dart';
+import 'package:cave_manager/utils/country_region_service.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
@@ -277,6 +278,8 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
                       onSelect: (Country country) {
                         setState(() {
                           selectedCountry = country;
+                          CountryRegionService.getRegionsByCountry(
+                              context, country);
                         });
                       },
                     );
@@ -308,14 +311,16 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
                       area = textEditingValue.text;
                     });
 
+                    List<String> regionsLabels =
+                        CountryRegionService.getRegionsByCountry(context, selectedCountry);
+
                     if (textEditingValue.text == '') {
-                      return const Iterable<String>.empty();
+                      return regionsLabels;
                     }
-                    return Areas.values
-                        .where((element) => element.label
-                            .toLowerCase()
-                            .contains(textEditingValue.text.toLowerCase()))
-                        .map((e) => e.label);
+
+                    return regionsLabels.where((element) => element
+                        .toLowerCase()
+                        .contains(textEditingValue.text.toLowerCase()));
                   },
                   fieldViewBuilder: (
                     BuildContext context,
@@ -393,7 +398,8 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Offstage(
-            offstage: !context.read<ClustersProvider>().isCellarConfigured || MediaQuery.of(context).viewInsets.bottom != 0.0,
+            offstage: !context.read<ClustersProvider>().isCellarConfigured ||
+                MediaQuery.of(context).viewInsets.bottom != 0.0,
             child: FloatingActionButton.small(
               heroTag: 'save',
               onPressed: () async {
@@ -415,18 +421,20 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
               heroTag: 'placeInCellar',
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
-                  await saveBottle(context, context.read<ClustersProvider>().isCellarConfigured);
+                  await saveBottle(context,
+                      context.read<ClustersProvider>().isCellarConfigured);
                 }
 
                 if (context.mounted) {
                   Navigator.of(context).pop();
                 }
               },
-              icon: Icon((context.read<ClustersProvider>().isCellarConfigured) ? Icons.storefront : Icons.save),
+              icon: Icon((context.read<ClustersProvider>().isCellarConfigured)
+                  ? Icons.storefront
+                  : Icons.save),
               label: Text((context.read<ClustersProvider>().isCellarConfigured)
                   ? AppLocalizations.of(context)!.placeInCellar
-                  : AppLocalizations.of(context)!.saveOutOfCellar
-              ),
+                  : AppLocalizations.of(context)!.saveOutOfCellar),
             ),
           ),
         ],
