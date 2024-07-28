@@ -10,6 +10,7 @@ import 'package:cave_manager/screens/top_screens/cellar.dart';
 import 'package:cave_manager/screens/top_screens/home.dart';
 import 'package:cave_manager/screens/top_screens/take_out_quiz.dart';
 import 'package:cave_manager/screens/top_screens/statistics.dart';
+import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
@@ -98,7 +99,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint(RegionsByCountry.of(context)!.regionsByCountry("France").toString());
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //

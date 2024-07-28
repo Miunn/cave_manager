@@ -229,6 +229,7 @@
 	"uruguay": "Uruguay",
 	"venezuela": "Venezuela",
 	"vietnam": "Vietnam",
+
 	"@__ALBANIA__": "",
 	"berat": "Berat",
 	"korca": "Korça",
@@ -237,6 +238,7 @@
 	"permet": "Përmet",
 	"shkoder": "Shkoder",
 	"tiranaCounty": "Tirana County",
+
 	"@__ALGERIA__": "",
 	"algiers": "Algiers",
 	"bejaia": "Béjaïa",
@@ -246,6 +248,7 @@
 	"medea": "Médéa",
 	"tlemcen": "Tlemcen",
 	"zaccar": "Zaccar",
+
 	"@__argentina__": "",
 	"buenosAiresProvince": "Buenos Aires Province",
 	"buenosAiresProvinceMedanos": "Médanos",
@@ -256,10 +259,12 @@
 	"rioNegroProvince": "Río Negro Province",
 	"saltaProvince": "Salta Province",
 	"sanJuanProvince": "San Juan Province",
+
 	"@__ARMENIA__": "",
 	"araratValley": "Ararat Valley",
 	"areni": "Areni",
 	"ijevan": "Ijevan",
+
 	"@__AUSTRALIA__": "",
 	"canberra": "Canberra",
 	"hallCapitalTerritory": "Hall, Capital Territory",
@@ -290,6 +295,7 @@
 	"southernNewSouthWalesGundagai": "Gundagai",
 	"southernNewSouthWalesHilltops": "Hilltops",
 	"southernNewSouthWalesTumbarumba": "Tumbarumba",
+
 	"@__AUSTRIA__": "",
 	"burgenland": "Burgenland",
 	"kamptal": "Kamptal",
@@ -299,6 +305,7 @@
 	"weinviertel": "Weinviertel",
 	"southernStyria": "Southern Styria",
 	"vienna": "Vienna",
+
 	"@__azerbaijan__": "",
 	"aghdam": "Aghdam",
 	"baku": "Baku",
@@ -306,13 +313,16 @@
 	"shamakhiRayonn": "Shamakhi Rayon",
 	"tovuz": "Tovuz",
 	"shamkir": "Shamkir",
+
 	"@__belgium__": "",
 	"sambreEtMeuse": "Sambre et Meuse",
 	"hageland": "Hageland",
 	"haspengouw": "Haspengouw",
 	"heuvelland": "Heuvelland",
+
 	"@__bolivia__": "",
 	"tarija": "Tarija",
+
 	"@__bosniaAndHerzegovina__": "",
 	"capljina": "Čapljina",
 	"citluk": "Čitluk",
@@ -321,6 +331,7 @@
 	"mostar": "Mostar",
 	"stolac": "Stolac",
 	"trebinje": "Trebinje",
+
 	"@__brazil__": "",
 	"bahia": "Bahia",
 	"bahiaCuraca": "Curaçá",
@@ -334,14 +345,14 @@
 	"minasGeraisPirapora": "Pirapora",
 	"minasGeraisSantaRitaDeCaldas": "Santa Rita de Caldas",
 	"parana": "Paraná",
-	"aranaBandeirantes": "Bandeirantes",
-	"aranaMarialva": "Marialva",
-	"aranaMaringa": "Maringá",
-	"aranaRosarioDoAvai": "Rosário do Avaí",
-	"ernambuco": "Pernambuco",
-	"ernambucoCasaNova": "Casa Nova",
-	"ernambucoPetrolina": "Petrolina",
-	"ernambucoSantaMariaDaBoaVista": "Santa Maria da Boa Vista",
+	"paranaBandeirantes": "Bandeirantes",
+	"paranaMarialva": "Marialva",
+	"paranaMaringa": "Maringá",
+	"paranaRosarioDoAvai": "Rosário do Avaí",
+	"pernambuco": "Pernambuco",
+	"pernambucoCasaNova": "Casa Nova",
+	"pernambucoPetrolina": "Petrolina",
+	"pernambucoSantaMariaDaBoaVista": "Santa Maria da Boa Vista",
 	"rioGrandeDoSul": "Rio Grande do Sul",
 	"rioGrandeDoSulBentoGoncalves": "Bento Gonçalves",
 	"rioGrandeDoSulCaxiasDoSul": "Caxias do Sul",
@@ -357,14 +368,17 @@
 	"saoPaulo": "São Paulo",
 	"saoPauloJundiai": "Jundiaí",
 	"saoPauloSaoRoque": "São Roque",
+
 	"@__bulgaria__": "",
 	"blackSeaRegion": "Black Sea region",
 	"danubianPlain": "Danubian Plain",
 	"roseValley": "Rose Valley",
 	"thrace": "Thrace",
 	"valleyOfTheStrumaRiver": "Valley of the Struma River",
+
 	"@__burma__": "",
 	"shanState": "Shan State",
+
 	"@__canada__": "",
 	"britishColumbia": "British Columbia",
 	"britishColumbiaFraserValley": "Fraser Valley",
@@ -382,8 +396,10 @@
 	"ontarioToronto": "Toronto",
 	"quebec": "Quebec",
 	"quebecEasternTownships": "Eastern Townships",
+
 	"@__capeVerde__": "",
 	"chaDasCaldeiras": "Chã das Caldeiras",
+
 	"@__china__": "",
 	"changan": "Chang'an",
 	"gaochang": "Gaochang",
@@ -395,16 +411,19 @@
 	"yantaiShandong": "Yantai, Shandong",
 	"yibinSichuan": "Yibin, Sichuan",
 	"zhangjiakouHebei": "Zhangjiakou, Hebei",
+
 	"@__colombia__": "",
 	"villaDeLeyva": "Villa de Leyva",
 	"valleDelCauca": "Valle del Cauca",
 	"valleDelCaucaLaUnion": "La Unión",
+
 	"@__costaRica__": "",
 	"valleCentral": "Valle Central",
 	"valleCentralSantaAna": "Santa Ana",
 	"valleCentralLaGarita": "La Garita",
 	"dota": "Dota",
 	"dotaCopeyDeDota": "Copey de Dota",
+
 	"@__chile__": "",
 	"aconcagua": "Aconcagua",
 	"aconcaguaAconcaguaValley": "Aconcagua Valley",
@@ -427,6 +446,7 @@
 	"southernChileItataValley": "Itata Valley",
 	"southernChileMallecoValley": "Malleco Valley",
 	"southernChileBuenoValleyAndRancoLake": "Bueno Valley and Ranco Lake",
+
 	"@__croatia__": "",
 	"moslavina": "Moslavina",
 	"plesivica": "Plešivica",
@@ -440,6 +460,7 @@
 	"srednjaIJuznaDalmacija": "Srednja i Južna Dalmacija",
 	"sjevernaDalmacija": "Sjeverna Dalmacija",
 	"istria": "Istria (Istra)",
+
 	"@__cyprus__": "",
 	"commandaria": "Commandaria",
 	"laonaAkamas": "Laona – Akamas",
@@ -447,6 +468,7 @@
 	"krasochoriaLemesou": "Krasochoria Lemesou",
 	"pitsilia": "Pitsilia",
 	"diarizosValley": "Diarizos Valley",
+
 	"@__czechRepublic__": "",
 	"moravia": "Moravia",
 	"moraviaMikulov": "Mikulov",
@@ -461,6 +483,7 @@
 	"pragueStClares": "St. Clare's",
 	"pragueStWenceslasVineyard": "St. Wenceslas' Vineyard at Prague castle",
 	"pragueSalabka": "Salabka, Troja",
+
 	"@__denmark__": "",
 	"@__france__": "",
 	"alsace": "Alsace",
