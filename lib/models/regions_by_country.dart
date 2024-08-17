@@ -112,9 +112,7 @@ class RegionsByCountry {
           AppLocalizations.of(context)!.heuvelland,
         ];
       case 'BO':
-        return [
-          AppLocalizations.of(context)!.tarija
-        ];
+        return [AppLocalizations.of(context)!.tarija];
       case 'BA':
         return [
           AppLocalizations.of(context)!.capljina,
@@ -217,9 +215,190 @@ class RegionsByCountry {
           AppLocalizations.of(context)!.bohemia,
           AppLocalizations.of(context)!.prague,
         ];
+      case 'FR':
+        return [
+          AppLocalizations.of(context)!.alsace,
+          AppLocalizations.of(context)!.bordeaux,
+          AppLocalizations.of(context)!.bourgogne,
+          AppLocalizations.of(context)!.champagne,
+          AppLocalizations.of(context)!.corsica,
+          AppLocalizations.of(context)!.jura,
+          AppLocalizations.of(context)!.languedocRoussillon,
+          AppLocalizations.of(context)!.loireValley,
+          AppLocalizations.of(context)!.lorraine,
+          AppLocalizations.of(context)!.madiran,
+          AppLocalizations.of(context)!.provence,
+          AppLocalizations.of(context)!.rhone,
+          AppLocalizations.of(context)!.savoy,
+        ];
+      case 'GE':
+        return [
+          AppLocalizations.of(context)!.abkhazia,
+          AppLocalizations.of(context)!.kakheti,
+          AppLocalizations.of(context)!.imereti,
+          AppLocalizations.of(context)!.kartli,
+          AppLocalizations.of(context)!.rachaLechkhumiAndKvemoSvaneti,
+        ];
+      case 'GR':
+        return [
+          AppLocalizations.of(context)!.crete,
+          AppLocalizations.of(context)!.limnos,
+          AppLocalizations.of(context)!.paros,
+          AppLocalizations.of(context)!.rhodes,
+          AppLocalizations.of(context)!.samos,
+          AppLocalizations.of(context)!.santorini,
+          AppLocalizations.of(context)!.attica,
+          AppLocalizations.of(context)!.epirus,
+          AppLocalizations.of(context)!.thessaly,
+          AppLocalizations.of(context)!.kefalonia,
+          AppLocalizations.of(context)!.macedonia,
+          AppLocalizations.of(context)!.peloponnesus,
+        ];
+      case 'HU':
+        return [
+          AppLocalizations.of(context)!.balaton,
+          AppLocalizations.of(context)!.duna,
+          AppLocalizations.of(context)!.eger,
+          AppLocalizations.of(context)!.pannon,
+          AppLocalizations.of(context)!.sopron,
+          AppLocalizations.of(context)!.tokaj,
+        ];
+      case 'IN':
+        return [
+          AppLocalizations.of(context)!.nashikMaharashtra,
+          AppLocalizations.of(context)!.bangaloreKarnataka,
+          AppLocalizations.of(context)!.vijayapuraKarnataka,
+          AppLocalizations.of(context)!.narayangaon,
+          AppLocalizations.of(context)!.puneMaharashtra,
+          AppLocalizations.of(context)!.sangliMaharashtra,
+        ];
+
+      case 'ID':
+        return [
+          AppLocalizations.of(context)!.bali,
+        ];
+      case 'IR':
+        return [
+          AppLocalizations.of(context)!.malayer,
+          AppLocalizations.of(context)!.shiraz,
+          AppLocalizations.of(context)!.takestan,
+          AppLocalizations.of(context)!.urmia,
+          AppLocalizations.of(context)!.qazvin,
+          AppLocalizations.of(context)!.quchan,
+        ];
+      case 'IE':
+        return [
+          AppLocalizations.of(context)!.cork,
+        ];
+      case 'IL':
+        return [
+          AppLocalizations.of(context)!.galilee,
+          AppLocalizations.of(context)!.judeanHills,
+          AppLocalizations.of(context)!.mountCarmel,
+          AppLocalizations.of(context)!.rishonLeZion,
+        ];
+      case 'IT':
+        return [
+          AppLocalizations.of(context)!.apulia,
+          AppLocalizations.of(context)!.calabria,
+          AppLocalizations.of(context)!.campania,
+          AppLocalizations.of(context)!.emiliaRomagna,
+          AppLocalizations.of(context)!.liguria,
+          AppLocalizations.of(context)!.lombardy,
+          AppLocalizations.of(context)!.marche,
+          AppLocalizations.of(context)!.piedmont,
+          AppLocalizations.of(context)!.sardinia,
+          AppLocalizations.of(context)!.sicily,
+          AppLocalizations.of(context)!.trentinoAltoAdige,
+          AppLocalizations.of(context)!.tuscany,
+          AppLocalizations.of(context)!.umbria,
+          AppLocalizations.of(context)!.veneto,
+        ];
+      case 'JP':
+        return [
+          AppLocalizations.of(context)!.hokkaido,
+          AppLocalizations.of(context)!.nagano,
+          AppLocalizations.of(context)!.yamanashi,
+        ];
+      case 'LV':
+        return [
+          AppLocalizations.of(context)!.sabile,
+        ];
+      case 'LB':
+        return [
+          AppLocalizations.of(context)!.bekaaValley,
+          AppLocalizations.of(context)!.mountLebanon,
+          AppLocalizations.of(context)!.chekka,
+          AppLocalizations.of(context)!.ehden,
+          AppLocalizations.of(context)!.koura,
+          AppLocalizations.of(context)!.qadishaValley,
+          AppLocalizations.of(context)!.tripoli,
+          AppLocalizations.of(context)!.zgharta,
+          AppLocalizations.of(context)!.jezzine,
+          AppLocalizations.of(context)!.marjayoun,
+          AppLocalizations.of(context)!.rmaich,
+        ];
+      case 'LT':
+        return [
+          AppLocalizations.of(context)!.anyksciy,
+          AppLocalizations.of(context)!.memelio,
+        ];
+      case 'LU':
+        return [
+          AppLocalizations.of(context)!.moselleValley,
+        ];
+      case 'MX':
+        return [
+          AppLocalizations.of(context)!.aguascalientes,
+          AppLocalizations.of(context)!.bajaCalifornia,
+          AppLocalizations.of(context)!.coahuilaDurangoLaLaguna,
+          AppLocalizations.of(context)!.guanajuato,
+          AppLocalizations.of(context)!.hidalgo,
+          AppLocalizations.of(context)!.nuevoLeon,
+          AppLocalizations.of(context)!.queretaro,
+          AppLocalizations.of(context)!.sonora,
+          AppLocalizations.of(context)!.zacatecas,
+        ];
+      case 'MD':
+        return [
+          AppLocalizations.of(context)!.bardar,
+          AppLocalizations.of(context)!.codri,
+          AppLocalizations.of(context)!.cricova,
+          AppLocalizations.of(context)!.hincesti,
+          AppLocalizations.of(context)!.purcari,
+        ];
+      case 'ME':
+        return [
+          AppLocalizations.of(context)!.crmnica,
+          AppLocalizations.of(context)!.plantaze,
+        ];
+      case 'MA':
+        return [
+          AppLocalizations.of(context)!.atlasMountains,
+          AppLocalizations.of(context)!.benslimane,
+          AppLocalizations.of(context)!.meknes,
+        ];
+      case 'NL':
+        return [
+          AppLocalizations.of(context)!.groesbeek,
+        ];
+      case 'NZ':
+        return [
+          AppLocalizations.of(context)!.auckland,
+          AppLocalizations.of(context)!.canterbury,
+          AppLocalizations.of(context)!.centralOtago,
+          AppLocalizations.of(context)!.gisborne,
+          AppLocalizations.of(context)!.hawkesBay,
+          AppLocalizations.of(context)!.marlborough,
+          AppLocalizations.of(context)!.nelson,
+          AppLocalizations.of(context)!.northland,
+          AppLocalizations.of(context)!.waikato,
+          AppLocalizations.of(context)!.wairarapa,
+          AppLocalizations.of(context)!.waitakiValley,
+        ];
     }
 
-    return [];/*: [
+    return []; /*: [
       'Algiers'
     ],
     'France': [

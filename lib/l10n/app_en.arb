@@ -563,7 +563,8 @@
 	"rhoneStJoseph": "St. Joseph",
 	"rhoneSaintPeray": "Saint-Péray",
 	"rhoneVacqueyras": "Vacqueyras",
-	"savoy": "Savoy",
+	"savoy": "Savoie",
+
 	"@__georgia__": "",
 	"abkhazia": "Abkhazia",
 	"kakheti": "Kakheti",
@@ -572,6 +573,7 @@
 	"kartli": "Kartli",
 	"imereti": "Imereti",
 	"rachaLechkhumiAndKvemoSvaneti": "Racha-Lechkhumi and Kvemo Svaneti",
+
 	"@__greece__": "",
 	"crete": "Crete",
 	"limnos": "Limnos",
@@ -594,6 +596,7 @@
 	"peloponnesusMantineia": "Mantineia",
 	"peloponnesusNemea": "Nemea",
 	"peloponnesusPatras": "Patras",
+
 	"@__hungary__": "",
 	"balaton": "Balaton",
 	"balatonBadacsony": "Badacsony",
@@ -622,6 +625,7 @@
 	"pannonVillany": "Villány",
 	"sopron": "Sopron",
 	"tokaj": "Tokaj",
+
 	"@__india__": "",
 	"nashikMaharashtra": "Nashik, Maharashtra",
 	"bangaloreKarnataka": "Bangalore, Karnataka",
@@ -629,8 +633,10 @@
 	"narayangaon": "Narayangaon",
 	"puneMaharashtra": "Pune, Maharashtra",
 	"sangliMaharashtra": "Sangli, Maharashtra",
+
 	"@__indonesia__": "",
 	"bali": "Bali",
+
 	"@__iran__": "",
 	"malayer": "Malayer",
 	"shiraz": "Shiraz",
@@ -638,8 +644,10 @@
 	"urmia": "Urmia",
 	"qazvin": "Qazvin",
 	"quchan": "Quchan",
+
 	"@__ireland__": "",
 	"cork": "Cork",
+
 	"@__israel__": "",
 	"galilee": "Galilee",
 	"galileeUpperGalilee": "Upper Galilee",
@@ -650,6 +658,7 @@
 	"judeanHillsLatrun": "Latrun",
 	"mountCarmel": "Mount Carmel",
 	"rishonLeZion": "Rishon LeZion",
+
 	"@__italy__": "",
 	"apulia": "Apulia",
 	"apuliaBiancoDiLocorotondoEMartinaFranca": "Bianco di Locorotondo e Martina Franca",
@@ -751,15 +760,19 @@
 	"venetoPiave": "Piave",
 	"venetoProsecco": "Prosecco",
 	"venetoSoave": "Soave",
-	"valdadige": "Valdadige",
+	"venetovaldadige": "Valdadige",
 	"venetoValpolicella": "Valpolicella",
+
 	"@__japan__": "",
 	"yamanashi": "Yamanashi",
 	"hokkaido": "Hokkaido",
 	"nagano": "Nagano",
+
 	"@__kazakhstan__": "",
+
 	"@__latvia__": "",
 	"sabile": "Sabile",
+
 	"@__lebanon__": "",
 	"bekaaValley": "Bekaa Valley",
 	"bekaaValleyAnjar": "Anjar",
@@ -828,6 +841,7 @@
 	"cricova" :  "Cricova",
 	"hincesti" : "Hîncești",
 	"purcari" :  "Purcari",
+
 	"@__montenegro__": "",
 	"crmnica": "Crmnica",
 	"plantaze": "Plantaže",
