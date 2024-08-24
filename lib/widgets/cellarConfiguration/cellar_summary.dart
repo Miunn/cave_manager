@@ -16,7 +16,7 @@ class CellarSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String clusterLabel = AppLocalizations.of(context)!.clusterNameAmount(cellarType);
+    String clusterLabel = AppLocalizations.of(context)!.clusterNameAmount(AppLocalizations.of(context)!.clusterNameDynamicPlural(cellarType.value));
     String cellarWidthLabel = AppLocalizations.of(context)!.clusterRackWidth;
     String cellarHeightLabel = AppLocalizations.of(context)!.clusterRackHeight;
 
