@@ -14,7 +14,7 @@ class BottleDatabaseInterface {
 
   static const String databaseName = "bottles_database.db";
 
-  static const int versionNumber = 21;
+  static const int versionNumber = 22;
 
   static const String tableBottles = 'Bottles';
 
@@ -33,6 +33,7 @@ class BottleDatabaseInterface {
   static const String colIsOpen = "isOpen";
   static const String colClusterId = "clusterId";
   static const String colClusterY = "clusterY";
+  static const String colClusterSubY = "clusterSubY";
   static const String colClusterX = "clusterX";
   static const String colCreatedAt = "createdAt";
   static const String colRegisteredInCellarAt = "registeredInCellarAt";
@@ -82,7 +83,8 @@ class BottleDatabaseInterface {
         " $colIsOpen INTEGER DEFAULT FALSE, "
         " $colClusterId INTEGER, "
         " $colClusterY INTEGER, "
-        " $colClusterX INTEGER, "
+        " $colClusterSubY INTEGER DEFAULT 0, "
+        " $colClusterX REAL, "
         " $colCreatedAt INTEGER, "
         " $colRegisteredInCellarAt INTEGER, "
         " $colOpenedAt INTEGER, "
