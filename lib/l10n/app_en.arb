@@ -905,8 +905,8 @@
 	"limaHuaralDistrict": "Huaral District",
 	"limaCaneteProvince": "Cañete Province",
 	"ica": "Ica",
-	"chincha": "Chincha",
-	"pisco": "Pisco",
+	"icachincha": "Chincha",
+	"icapisco": "Pisco",
 	"icaIcaValleys": "Ica valleys",
 
 	"@__poland__": "",
@@ -1220,8 +1220,10 @@
 	"valencianCommunityCava": "Cava",
 	"valencianCommunityUtielRequena": "Utiel-Requena",
 	"valencianCommunityValencia": "Valencia",
+
 	"@__SWEDEN__": "",
 	"gutevin": "Gutevin",
+
 	"@__SWITZERLAND__": "",
 	"aargau": "Aargau",
 	"bern": "Bern",
@@ -1240,6 +1242,7 @@
 	"laCote": "La Côte",
 	"lavaux": "Lavaux",
 	"zurich": "Zürich",
+
 	"@__SYRIA__": "",
 	"bloudan": "Bloudan",
 	"homsDistrict": "Homs District",
@@ -1248,10 +1251,12 @@
 	"sednaya": "Sednaya",
 	"syrianGolan": "Syrian Golan",
 	"tartous": "Tartous",
+
 	"@__TUNISIA__": "",
 	"arianah": "Arianah",
 	"nabul": "Nabul",
-	"sousse": "Sousse",
+	"sousse": "Sousse"
+
 	"@__TURKEY__": "",
 	"altintas": "Altıntaş",
 	"beylerce": "Beylerce",
@@ -1276,6 +1281,7 @@
 	"kuntra": "Kuntra",
 	"okuzgozu": "Öküzgözü",
 	"papazkarasi": "Papazkarası",
+
 	"@__UKRAINE__": "",
 	"autonomousRepublicOfCrimeaAndSevastopol": "Autonomous Republic of Crimea and Sevastopol",
 	"khersonOblast": "Kherson Oblast",
@@ -1283,11 +1289,13 @@
 	"odesaOblast": "Odesa Oblast",
 	"zakarpattiaOblast": "Zakarpattia Oblast",
 	"zaporizhzhiaOblast": "Zaporizhzhia Oblast",
+
 	"@__UNITED_KINGDOM__": "",
 	"hampshire": "Hampshire",
 	"kent": "Kent",
 	"surrey": "Surrey",
 	"sussex": "Sussex",
+
 	"@__UNITED_STATES__": "",
 	"arizona": "Arizona",
 	"california": "California",
@@ -1323,6 +1331,7 @@
 	"virginia": "Virginia",
 	"washington": "Washington",
 	"washingtonColumbiaValleyAVA": "Columbia Valley AVA",
+
 	"@__URUGUAY__": "",
 	"montevideo": "Montevideo",
 	"canelones": "Canelones",
@@ -1331,8 +1340,10 @@
 	"maldonadoJoseIgnacio": "José Ignacio",
 	"colonia": "Colonia",
 	"sanJose": "San José",
+
 	"@__VENEZUELA__": "",
 	"caroraLaraState": "Carora, Lara State",
+
 	"@__VIETNAM__": "",
 	"dalat": "Da Lat"
 }

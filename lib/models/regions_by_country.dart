@@ -396,6 +396,253 @@ class RegionsByCountry {
           AppLocalizations.of(context)!.wairarapa,
           AppLocalizations.of(context)!.waitakiValley,
         ];
+      case 'MK':
+        return [
+          AppLocalizations.of(context)!.povardarie,
+          AppLocalizations.of(context)!.skopskoVinogorje,
+          AppLocalizations.of(context)!.tikves,
+        ];
+      case 'NO':
+        return [
+          AppLocalizations.of(context)!.viken,
+          AppLocalizations.of(context)!.vestfold,
+          AppLocalizations.of(context)!.sognefjord,
+        ];
+      case 'PS':
+        return [
+          AppLocalizations.of(context)!.beitJala,
+          AppLocalizations.of(context)!.hebron,
+        ];
+      case 'PE':
+        return [
+          AppLocalizations.of(context)!.arequipaValleys,
+          AppLocalizations.of(context)!.lima,
+          AppLocalizations.of(context)!.ica,
+        ];
+      case 'PL':
+        return [
+          AppLocalizations.of(context)!.dolnySlask,
+          AppLocalizations.of(context)!.kazimierzDolny,
+          AppLocalizations.of(context)!.malopolska,
+          AppLocalizations.of(context)!.podkarpacie,
+          AppLocalizations.of(context)!.warka,
+          AppLocalizations.of(context)!.zielonaGora,
+        ];
+      case 'PT':
+        return [
+          AppLocalizations.of(context)!.alentejo,
+          AppLocalizations.of(context)!.bairrada,
+          AppLocalizations.of(context)!.bucelas,
+          AppLocalizations.of(context)!.carcavelos,
+          AppLocalizations.of(context)!.colares,
+          AppLocalizations.of(context)!.dao,
+          AppLocalizations.of(context)!.lagoa,
+          AppLocalizations.of(context)!.lagos,
+          AppLocalizations.of(context)!.madeira,
+          AppLocalizations.of(context)!.portimao,
+          AppLocalizations.of(context)!.portoEDouro,
+          AppLocalizations.of(context)!.setubal,
+          AppLocalizations.of(context)!.tavira,
+          AppLocalizations.of(context)!.vinhosVerdes,
+        ];
+      case 'RO':
+        return [
+          AppLocalizations.of(context)!.banatRomania,
+          AppLocalizations.of(context)!.crisana,
+          AppLocalizations.of(context)!.dobrogea,
+          AppLocalizations.of(context)!.moldavia,
+          AppLocalizations.of(context)!.muntenia,
+          AppLocalizations.of(context)!.oltenia,
+          AppLocalizations.of(context)!.transylvania,
+        ];
+      case 'RU':
+        return [
+          AppLocalizations.of(context)!.caucasus,
+          AppLocalizations.of(context)!.krasnodar,
+          AppLocalizations.of(context)!.stavropol,
+        ];
+      case 'RS':
+        return [
+          AppLocalizations.of(context)!.banatSerbia,
+          AppLocalizations.of(context)!.nisavaSouthMorava,
+          AppLocalizations.of(context)!.pocerina,
+          AppLocalizations.of(context)!.srem,
+          AppLocalizations.of(context)!.suboticaHorgos,
+          AppLocalizations.of(context)!.sumadijaGreatMorava,
+          AppLocalizations.of(context)!.timokValley,
+          AppLocalizations.of(context)!.westMorava,
+        ];
+      case 'SK':
+        return [
+          AppLocalizations.of(context)!.malokarpatska,
+          AppLocalizations.of(context)!.juznoslovenska,
+          AppLocalizations.of(context)!.nitrianska,
+          AppLocalizations.of(context)!.stredoslovenska,
+          AppLocalizations.of(context)!.slovakiaTokaj,
+          AppLocalizations.of(context)!.vychodoslovenska,
+          AppLocalizations.of(context)!.southernSlovakia,
+        ];
+      case 'SI':
+        return [
+          AppLocalizations.of(context)!.podravje,
+          AppLocalizations.of(context)!.posavje,
+          AppLocalizations.of(context)!.primorska,
+        ];
+      case 'ZA':
+        return [
+          AppLocalizations.of(context)!.breedeRiverValley,
+          AppLocalizations.of(context)!.constantia,
+          AppLocalizations.of(context)!.durbanville,
+          AppLocalizations.of(context)!.elgin,
+          AppLocalizations.of(context)!.elim,
+          AppLocalizations.of(context)!.franschhoek,
+          AppLocalizations.of(context)!.littleKaroo,
+          AppLocalizations.of(context)!.orangeRiverValley,
+          AppLocalizations.of(context)!.paarl,
+          AppLocalizations.of(context)!.robertson,
+          AppLocalizations.of(context)!.stellenbosch,
+          AppLocalizations.of(context)!.swartland,
+          AppLocalizations.of(context)!.tulbagh,
+        ];
+      case 'KR':
+        return [
+          AppLocalizations.of(context)!.gyeonggiDo,
+          AppLocalizations.of(context)!.gyeongsangbukDo,
+          AppLocalizations.of(context)!.chungcheongbukDo,
+        ];
+      case 'ES':
+        return [
+          AppLocalizations.of(context)!.andalusia,
+          AppLocalizations.of(context)!.aragon,
+          AppLocalizations.of(context)!.balearicIslands,
+          AppLocalizations.of(context)!.basqueCountry,
+          AppLocalizations.of(context)!.canaryIslands,
+          AppLocalizations.of(context)!.castileAndLeon,
+          AppLocalizations.of(context)!.castileLaMancha,
+          AppLocalizations.of(context)!.catalonia,
+          AppLocalizations.of(context)!.extremadura,
+          AppLocalizations.of(context)!.galicia,
+          AppLocalizations.of(context)!.laRioja,
+          AppLocalizations.of(context)!.communityOfMadrid,
+          AppLocalizations.of(context)!.regionDeMurcia,
+          AppLocalizations.of(context)!.navarre,
+          AppLocalizations.of(context)!.valencianCommunity,
+        ];
+      case 'SE':
+        return [
+          AppLocalizations.of(context)!.gutevin,
+        ];
+      case 'CH':
+        return [
+          AppLocalizations.of(context)!.aargau,
+          AppLocalizations.of(context)!.bern,
+          AppLocalizations.of(context)!.shoresOfLakeBiel,
+          AppLocalizations.of(context)!.shoresOfLakeThun,
+          AppLocalizations.of(context)!.freiburg,
+          AppLocalizations.of(context)!.geneva,
+          AppLocalizations.of(context)!.grisons,
+          AppLocalizations.of(context)!.neuchatel,
+          AppLocalizations.of(context)!.stGallen,
+          AppLocalizations.of(context)!.schaffhausen,
+          AppLocalizations.of(context)!.thurgau,
+          AppLocalizations.of(context)!.ticino,
+          AppLocalizations.of(context)!.valais,
+          AppLocalizations.of(context)!.vaud,
+          AppLocalizations.of(context)!.laCote,
+          AppLocalizations.of(context)!.lavaux,
+          AppLocalizations.of(context)!.zurich,
+        ];
+      case 'SY':
+        return [
+          AppLocalizations.of(context)!.bloudan,
+          AppLocalizations.of(context)!.homsDistrict,
+          AppLocalizations.of(context)!.jabalElDruze,
+          AppLocalizations.of(context)!.latakia,
+          AppLocalizations.of(context)!.sednaya,
+          AppLocalizations.of(context)!.syrianGolan,
+          AppLocalizations.of(context)!.tartous,
+        ];
+      case 'TN':
+        return [
+          AppLocalizations.of(context)!.arianah,
+          AppLocalizations.of(context)!.nabul,
+          AppLocalizations.of(context)!.sousse,
+        ];
+      case 'TR':
+        return [
+          AppLocalizations.of(context)!.altintas,
+          AppLocalizations.of(context)!.beylerce,
+          AppLocalizations.of(context)!.bornovaMisketi,
+          AppLocalizations.of(context)!.emir,
+          AppLocalizations.of(context)!.hasandede,
+          AppLocalizations.of(context)!.narince,
+          AppLocalizations.of(context)!.rumi,
+          AppLocalizations.of(context)!.kabarcik,
+          AppLocalizations.of(context)!.dokulgen,
+          AppLocalizations.of(context)!.sultaniye,
+          AppLocalizations.of(context)!.yapincak,
+          AppLocalizations.of(context)!.adakarasi,
+          AppLocalizations.of(context)!.bogazkere,
+          AppLocalizations.of(context)!.calkarasi,
+          AppLocalizations.of(context)!.dimrit,
+          AppLocalizations.of(context)!.horozkarasi,
+          AppLocalizations.of(context)!.sergikarasi,
+          AppLocalizations.of(context)!.kalecikKarasi,
+          AppLocalizations.of(context)!.karalahna,
+          AppLocalizations.of(context)!.karasakiz,
+          AppLocalizations.of(context)!.kuntra,
+          AppLocalizations.of(context)!.okuzgozu,
+          AppLocalizations.of(context)!.papazkarasi,
+        ];
+      case 'UA':
+        return [
+          AppLocalizations.of(context)!.autonomousRepublicOfCrimeaAndSevastopol,
+          AppLocalizations.of(context)!.khersonOblast,
+          AppLocalizations.of(context)!.mykolaivOblast,
+          AppLocalizations.of(context)!.odesaOblast,
+          AppLocalizations.of(context)!.zakarpattiaOblast,
+          AppLocalizations.of(context)!.zaporizhzhiaOblast,
+        ];
+      case 'GB':
+        return [
+          AppLocalizations.of(context)!.hampshire,
+          AppLocalizations.of(context)!.kent,
+          AppLocalizations.of(context)!.surrey,
+          AppLocalizations.of(context)!.sussex,
+        ];
+      case 'US':
+        return [
+          AppLocalizations.of(context)!.arizona,
+          AppLocalizations.of(context)!.california,
+          AppLocalizations.of(context)!.colorado,
+          AppLocalizations.of(context)!.idaho,
+          AppLocalizations.of(context)!.michigan,
+          AppLocalizations.of(context)!.missouri,
+          AppLocalizations.of(context)!.newJersey,
+          AppLocalizations.of(context)!.newMexico,
+          AppLocalizations.of(context)!.newYork,
+          AppLocalizations.of(context)!.oregon,
+          AppLocalizations.of(context)!.pennsylvania,
+          AppLocalizations.of(context)!.texas,
+          AppLocalizations.of(context)!.virginia,
+          AppLocalizations.of(context)!.washington,
+        ];
+      case 'UY':
+        return [
+          AppLocalizations.of(context)!.montevideo,
+          AppLocalizations.of(context)!.canelones,
+          AppLocalizations.of(context)!.maldonado,
+          AppLocalizations.of(context)!.colonia,
+          AppLocalizations.of(context)!.sanJose,
+        ];
+      case 'VE':
+        return [
+          AppLocalizations.of(context)!.caroraLaraState,
+        ];
+      case 'VN':
+        return [
+          AppLocalizations.of(context)!.dalat,
+        ];
     }
 
     return []; /*: [
