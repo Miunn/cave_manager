@@ -27,7 +27,7 @@ class _CellarClusterSelectorState extends State<CellarClusterSelector> {
       children: [
         Text(AppLocalizations.of(context)!.cellarConfigurationTitle2, style: const TextStyle(fontSize: 15)),
         const SizedBox(height: 70,),
-        Text(AppLocalizations.of(context)!.clusterNameAmount(clusters.cellarType)),
+        Text(AppLocalizations.of(context)!.clusterNameAmount(AppLocalizations.of(context)!.clusterNameDynamicPlural(clusters.cellarType.value))),
         Slider(
           label: widget.clusterValue.round().toString(),
           value: widget.clusterValue,

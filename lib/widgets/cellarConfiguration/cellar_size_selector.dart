@@ -95,7 +95,7 @@ class _CellarSizeSelectorState extends State<CellarSizeSelector> {
             Visibility(
                 visible: widget.totalClusterStep > 1,
                 child:
-                    Text("${clusters.cellarType.label} n°${widget.clusterStep}")),
+                    Text("${AppLocalizations.of(context)!.clusterNameDynamic(clusters.cellarType.value)} n°${widget.clusterStep}")),
             Visibility(
                 visible: widget.totalClusterStep > 1,
                 child: const SizedBox(height: 20)),
@@ -103,7 +103,7 @@ class _CellarSizeSelectorState extends State<CellarSizeSelector> {
               controller: nameController,
               autofocus: true,
               decoration: InputDecoration(
-                labelText: AppLocalizations.of(context)!.clusterTypeName(clusters.cellarType.label),
+                labelText: AppLocalizations.of(context)!.clusterTypeName(AppLocalizations.of(context)!.clusterNameDynamic(clusters.cellarType.value)),
               ),
               onChanged: (value) {
                 widget.clusterConfiguration.name = value;

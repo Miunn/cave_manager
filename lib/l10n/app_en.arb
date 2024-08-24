@@ -69,6 +69,8 @@
 	"clusterNameWineRack": "Wine Rack",
 	"clusterNameFridge": "Fridge",
 	"clusterNameContainers": "Containers",
+	"clusterNameDynamic": "{choice, select, wineRack {Wine Rack} fridge {Fridge} containers {Containers} other {Unknown}}",
+	"clusterNameDynamicPlural": "{choice, select, wineRack {Wine Racks} fridge {Fridges} containers {Containers} other {Unknown}}",
 	"clusterRackWidth": "Column amount",
 	"clusterRackHeight": "Row amount",
 	"clusterFridgeWidth": "Level capacity",
