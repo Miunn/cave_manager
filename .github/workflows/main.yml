@@ -16,10 +16,14 @@ jobs:
             with:
               flutter-version: '3.22.2'
               channel: stable
-          - name: Build apk
+          - name: Analyse
             run: |
               flutter pub get
               flutter analyze
+          - name: Test
+            run: |
               flutter test
+          - name: Build apk
+            run: |
               flutter gen-l10n
               flutter build apk --debug
