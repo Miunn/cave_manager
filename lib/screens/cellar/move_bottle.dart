@@ -36,6 +36,7 @@ class _MoveBottleState extends State<MoveBottle> {
         },
         blinkingBottleId: widget.bottle.id,
         startingClusterId: widget.bottle.clusterId,
+        shouldDisplayNewSubRow: true,
       ),
     );
   }

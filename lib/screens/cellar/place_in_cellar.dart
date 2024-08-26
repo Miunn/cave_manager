@@ -40,6 +40,7 @@ class _PlaceInCellarState extends State<PlaceInCellar> {
             widget.bottle.clusterX = column;
             Navigator.of(context).pop(widget.bottle);
           },
+          shouldDisplayNewSubRow: true,
         ),
       ),
     );
