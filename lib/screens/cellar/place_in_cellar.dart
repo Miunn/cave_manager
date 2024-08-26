@@ -33,10 +33,11 @@ class _PlaceInCellarState extends State<PlaceInCellar> {
       ),
       body: Consumer<ClustersProvider>(
         builder: (context, clusters, child) => CellarLayout(
-            onTapEmptyCallback: (int clusterId, int row, int column) {
+            onTapEmptyCallback: (int clusterId, int row, int subRow, int column) {
               //widget.bottle.cellarPosition = index;
               widget.bottle.clusterId = clusterId;
               widget.bottle.clusterY = row;
+              widget.bottle.clusterSubY = subRow;
               widget.bottle.clusterX = column;
               Navigator.of(context).pop(widget.bottle);
             },

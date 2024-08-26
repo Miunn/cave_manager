@@ -60,7 +60,7 @@ class Bottle {
       'area': area,
       'subArea': subArea,
       'imageUri': imageUri,
-      'isInCellar': (isInCellar != null && isInCellar!) ? 1 : 0,
+      'isInCellar': (isInCellar != null && isInCellar!) || (clusterX != null && clusterY != null && clusterSubY != null) ? 1 : 0,
       'isOpen': (isOpen != null && isOpen!) ? 1 : 0,
       'clusterId': clusterId,
       'clusterY': clusterY,

@@ -22,7 +22,7 @@ class CellarLayout extends StatefulWidget {
       this.startingClusterId,
       this.customize = false});
 
-  final void Function(int clusterId, int row, int column)? onTapEmptyCallback;
+  final void Function(int clusterId, int row, int subRow, int column)? onTapEmptyCallback;
   final int? blinkingBottleId;
   final int? startingClusterId;
   final bool customize;
@@ -86,6 +86,7 @@ class _CellarLayoutState extends State<CellarLayout>
 
   List<Widget> getSubRows(
       int clusterId, int rowId, int width, int maxWidth, int height, List<Bottle> bottles) {
+    debugPrint("Get row $rowId");
     List<Widget> cells = [];
 
     //debugPrint(bottles.toString());
@@ -94,6 +95,12 @@ class _CellarLayoutState extends State<CellarLayout>
     // Build an empty row if there are no sub rows
     if (subY.isEmpty) {
       for (int i = 0; i < width; i++) {
+        void Function() onTap;
+        if (widget.onTapEmptyCallback != null) {
+          onTap = () => widget.onTapEmptyCallback!(clusterId, rowId, 0, i);
+        } else {
+          onTap = () {};
+        }
         cells.add(
           SizedBox(
             width: 35,
@@ -102,7 +109,7 @@ class _CellarLayoutState extends State<CellarLayout>
               padding: const EdgeInsets.all(2.0),
               child: CellarPin(
                 bottle: null,
-                onTap: () {},
+                onTap: onTap,
               ),
             ),
           ),
@@ -120,6 +127,7 @@ class _CellarLayoutState extends State<CellarLayout>
 
         void Function() onTap;
         if (currentBottle != null) {
+          debugPrint("Bottle callback");
           onTap = () {
             if (widget.customize) {
               return;
@@ -135,12 +143,14 @@ class _CellarLayoutState extends State<CellarLayout>
             );
           };
         } else if (widget.onTapEmptyCallback != null) {
-          onTap = () => widget.onTapEmptyCallback!(clusterId, i, j);
+          debugPrint("Empty callback");
+          onTap = () => widget.onTapEmptyCallback!(clusterId, rowId, i, j);
         } else {
+          debugPrint("Null callback");
           onTap = () {};
         }
 
-        if (currentBottle != null && widget.blinkingBottleId == currentBottle.id) {
+        if (widget.blinkingBottleId == currentBottle?.id) {
           cells.add(
             SizedBox(
               width: 35,

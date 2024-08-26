@@ -20,7 +20,7 @@ class _CellarState extends State<Cellar> {
   Widget getCellarLayout(bool cellarConfigured) {
     if (cellarConfigured) {
       return CellarLayout(
-        onTapEmptyCallback: (int clusterId, int row, int col) {},
+        onTapEmptyCallback: (int clusterId, int row, int subRow, int col) {},
       );
     }
 

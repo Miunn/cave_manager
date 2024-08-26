@@ -27,9 +27,10 @@ class _MoveBottleState extends State<MoveBottle> {
             }),
       ),
       body: CellarLayout(
-        onTapEmptyCallback: (int clusterId, int row, int column) {
+        onTapEmptyCallback: (int clusterId, int row, int subRow, int column) {
           widget.bottle.clusterId = clusterId;
           widget.bottle.clusterY = row;
+          widget.bottle.clusterSubY = subRow;
           widget.bottle.clusterX = column;
           Navigator.of(context).pop(widget.bottle);
         },
