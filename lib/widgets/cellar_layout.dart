@@ -112,7 +112,7 @@ class _CellarLayoutState extends State<CellarLayout>
   }
 
   SizedBox getCell(Bottle? bottle, bool forcedOpacity, int clusterId, int rowId,
-      int subRowId, int column, {bool blinking=false}) {
+      int subRowId, int column, {bool blinking=false, bool addIcon=false}) {
     return SizedBox(
       width: 35,
       height: 35,
@@ -126,11 +126,13 @@ class _CellarLayoutState extends State<CellarLayout>
                 child: CellarPin(
                   bottle: bottle,
                   onTap: widget.customize ? null : getBottleCallback(bottle, clusterId, rowId, subRowId, column),
+                  addIcon: addIcon,
                 ),
               )
           : CellarPin(
             bottle: bottle,
             onTap: widget.customize ? null : getBottleCallback(bottle, clusterId, rowId, subRowId, column),
+            addIcon: addIcon,
           ),
         ),
       ),
@@ -160,7 +162,7 @@ class _CellarLayoutState extends State<CellarLayout>
           Bottle? nextBottle = nextSubRowBottles.firstWhereOrNull((bottle) => bottle.clusterX == j);
 
           if (previousBottle != null && nextBottle != null) {
-            rowCells.add(getCell(currentBottle, false, clusterId, rowId, i, j));
+            rowCells.add(getCell(currentBottle, false, clusterId, rowId, i, j, addIcon: true));
             shouldAddRow = true;
           } else {
             rowCells.add(const SizedBox(width: 35, height: 35));
@@ -169,7 +171,7 @@ class _CellarLayoutState extends State<CellarLayout>
           Bottle? nextBottle = nextSubRowBottles.firstWhereOrNull((bottle) => bottle.clusterX == j);
 
           if (nextBottle != null) {
-            rowCells.add(getCell(currentBottle, false, clusterId, rowId, i, j));
+            rowCells.add(getCell(currentBottle, false, clusterId, rowId, i, j, addIcon: true));
             shouldAddRow = true;
           } else {
             rowCells.add(const SizedBox(width: 35, height: 35));
@@ -178,7 +180,7 @@ class _CellarLayoutState extends State<CellarLayout>
           Bottle? previousBottle = nextSubRowBottles.firstWhereOrNull((bottle) => bottle.clusterX == j - 1);
 
           if (previousBottle != null) {
-            rowCells.add(getCell(currentBottle, false, clusterId, rowId, i, j));
+            rowCells.add(getCell(currentBottle, false, clusterId, rowId, i, j, addIcon: true));
             shouldAddRow = true;
           } else {
             rowCells.add(const SizedBox(width: 35, height: 35));
@@ -188,7 +190,7 @@ class _CellarLayoutState extends State<CellarLayout>
           Bottle? nextBottle = nextSubRowBottles.firstWhereOrNull((bottle) => bottle.clusterX == j + 1);
 
           if (previousBottle != null && nextBottle != null) {
-            rowCells.add(getCell(currentBottle, false, clusterId, rowId, i, j));
+            rowCells.add(getCell(currentBottle, false, clusterId, rowId, i, j, addIcon: true));
             shouldAddRow = true;
           } else {
             rowCells.add(const SizedBox(width: 35, height: 35));
@@ -218,6 +220,10 @@ class _CellarLayoutState extends State<CellarLayout>
 
     int maxSubY =
         subY.reduce((value, element) => max(value ?? 0, element ?? 0)) ?? 0;
+
+    if (widget.shouldDisplayNewSubRow) {
+      maxSubY++;
+    }
 
     rowColumnChildren
         .add(getSubRowLayout(clusterId, rowId, maxSubY, width, bottles));

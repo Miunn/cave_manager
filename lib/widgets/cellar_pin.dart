@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import '../models/bottle.dart';
 
 class CellarPin extends StatelessWidget {
-  const CellarPin({super.key, this.bottle, this.onTap});
+  const CellarPin({super.key, this.bottle, this.onTap, this.addIcon=false});
 
   final Bottle? bottle;
   final void Function()? onTap;
+  final bool addIcon;
 
   Color getBottleColor() {
     if (bottle == null) {
@@ -52,6 +53,7 @@ class CellarPin extends StatelessWidget {
             width: 2,
           ),
         ),
+        child: addIcon ? const Icon(Icons.add) : null,
       ),
     );
   }
