@@ -21,6 +21,7 @@ class _CellarState extends State<Cellar> {
     if (cellarConfigured) {
       return CellarLayout(
         onTapEmptyCallback: (int clusterId, int row, int subRow, int col) {},
+        shouldDisplayNewSubRow: true,
       );
     }
 

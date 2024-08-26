@@ -20,12 +20,15 @@ class CellarLayout extends StatefulWidget {
       this.onTapEmptyCallback,
       this.blinkingBottleId,
       this.startingClusterId,
-      this.customize = false});
+      this.customize = false,
+      this.shouldDisplayNewSubRow = false});
 
-  final void Function(int clusterId, int row, int subRow, int column)? onTapEmptyCallback;
+  final void Function(int clusterId, int row, int subRow, int column)?
+      onTapEmptyCallback;
   final int? blinkingBottleId;
   final int? startingClusterId;
   final bool customize;
+  final bool shouldDisplayNewSubRow;
 
   @override
   State<CellarLayout> createState() => _CellarLayoutState();
@@ -84,117 +87,137 @@ class _CellarLayoutState extends State<CellarLayout>
     return tabsContent;
   }
 
-  List<Widget> getSubRows(
-      int clusterId, int rowId, int width, int maxWidth, int height, List<Bottle> bottles) {
-    debugPrint("Get row $rowId");
+  void Function() getBottleCallback(
+      Bottle? bottle, int clusterId, int rowId, int subRowId, int column) {
+    if (bottle != null) {
+      return () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BottleDetails(
+              bottleId: bottle.id!,
+            ),
+          ),
+        );
+      };
+    }
+
+    if (widget.onTapEmptyCallback != null) {
+      return () =>
+          widget.onTapEmptyCallback!(clusterId, rowId, subRowId, column);
+    }
+
+    return () {};
+  }
+
+  List<Widget> getSubRowLayout(
+      int highestSubRowIndex, int width, List<Bottle> bottles) {
     List<Widget> cells = [];
 
-    //debugPrint(bottles.toString());
-    Iterable<int?> subY = bottles.map((bottle) => bottle.clusterSubY);
+    List<Bottle> currentSubRowBottles = bottles
+        .where((element) => element.clusterSubY == highestSubRowIndex)
+        .toList();
+    List<Bottle> nextSubRowBottles = bottles
+        .where((element) => element.clusterSubY == highestSubRowIndex - 1)
+        .toList();
 
-    // Build an empty row if there are no sub rows
-    if (subY.isEmpty) {
-      for (int i = 0; i < width; i++) {
-        void Function() onTap;
-        if (widget.onTapEmptyCallback != null) {
-          onTap = () => widget.onTapEmptyCallback!(clusterId, rowId, 0, i);
-        } else {
-          onTap = () {};
-        }
+    debugPrint("Get sub rows with highest: $highestSubRowIndex");
+    for (int i = highestSubRowIndex; i > 0; i--) {
+      for (int j = 0; j < width; j++) {
         cells.add(
           SizedBox(
             width: 35,
             height: 35,
             child: Padding(
               padding: const EdgeInsets.all(2.0),
-              child: CellarPin(
-                bottle: null,
-                onTap: onTap,
+              child: Opacity(
+                opacity: 0.4,
+                child: CellarPin(
+                  bottle: null,
+                  onTap: () {},
+                ),
               ),
             ),
           ),
         );
       }
-      return cells;
     }
 
-    int maxSubY =
-        subY.reduce((value, element) => max(value ?? 0, element ?? 0)) ?? 0;
+    return cells;
+  }
 
-    for (int i = maxSubY; i >= 0; i--) {
-      for (int j = 0; j < width; j++) {
-        Bottle? currentBottle = bottles.firstWhereOrNull((bottle) => bottle.clusterSubY == i && bottle.clusterX == j);
+  Column getRowLayout(int clusterId, int rowId, int width, int maxWidth,
+      int height, List<Bottle> bottles) {
+    List<Widget> rowColumnChildren = [];
 
-        void Function() onTap;
-        if (currentBottle != null) {
-          debugPrint("Bottle callback");
-          onTap = () {
-            if (widget.customize) {
-              return;
-            }
+    List<int?> subY = bottles.map((bottle) => bottle.clusterSubY).toList();
+    subY.add(0); // This ensure .reduce will always return at least 0
 
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => BottleDetails(
-                  bottleId: currentBottle.id!,
-                ),
-              ),
-            );
-          };
-        } else if (widget.onTapEmptyCallback != null) {
-          debugPrint("Empty callback");
-          onTap = () => widget.onTapEmptyCallback!(clusterId, rowId, i, j);
-        } else {
-          debugPrint("Null callback");
-          onTap = () {};
-        }
+    int maxSubY = subY.reduce((value, element) => max(value ?? 0, element ?? 0)) ?? 0;
 
-        if (widget.blinkingBottleId == currentBottle?.id) {
-          cells.add(
-            SizedBox(
-              width: 35,
-              height: 35,
-              child: Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: BlinkingWidget(
-                  duration: const Duration(milliseconds: 700),
-                  child: CellarPin(
-                    bottle: currentBottle,
-                    onTap: onTap,
-                  ),
-                ),
-              ),
-            ),
-          );
-        } else  {
-          cells.add(
-            SizedBox(
-              width: 35,
-              height: 35,
-              child: Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: CellarPin(
-                  bottle: currentBottle,
-                  onTap: onTap,
-                ),
-              ),
-            ),
-          );
-        }
-      }
+    rowColumnChildren.add(Row(
+      children: getSubRowLayout(maxSubY, width, bottles),
+    ));
 
-      // Add some empty cells to fill the row
-      for (int j = width; j < maxWidth; j++) {
-        cells.add(
-          const SizedBox(
+    List<Widget> mainRowCells = [];
+    for (int i = 0; i < width; i++) {
+      Bottle? currentBottle = bottles.firstWhereOrNull(
+          (bottle) => bottle.clusterSubY == 0 && bottle.clusterX == i);
+
+      if (currentBottle != null &&
+          widget.blinkingBottleId == currentBottle.id) {
+        mainRowCells.add(
+          SizedBox(
             width: 35,
             height: 35,
+            child: Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: BlinkingWidget(
+                duration: const Duration(milliseconds: 700),
+                child: CellarPin(
+                  bottle: currentBottle,
+                  onTap: widget.customize
+                      ? null
+                      : getBottleCallback(
+                          currentBottle, clusterId, rowId, 0, i),
+                ),
+              ),
+            ),
+          ),
+        );
+      } else {
+        mainRowCells.add(
+          SizedBox(
+            width: 35,
+            height: 35,
+            child: Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: CellarPin(
+                bottle: currentBottle,
+                onTap: widget.customize
+                    ? null
+                    : getBottleCallback(currentBottle, clusterId, rowId, 0, i),
+              ),
+            ),
           ),
         );
       }
     }
-    return cells;
+
+    // Add some empty cells to fill the row
+    for (int j = width; j < maxWidth; j++) {
+      rowColumnChildren.add(
+        const SizedBox(
+          width: 35,
+          height: 35,
+        ),
+      );
+    }
+
+    rowColumnChildren.add(Row(children: mainRowCells));
+    return Column(
+      children: rowColumnChildren,
+    );
   }
 
   List<Widget> getClusterLayout(
@@ -246,7 +269,13 @@ class _CellarLayoutState extends State<CellarLayout>
         )
       ];
 
-      rowChildren.addAll(getSubRows(cluster.id!, i, width, clustersRowConfiguration[cluster.id!]![i], height, clusterBottlesByRow[i] ?? []));
+      rowChildren.add(getRowLayout(
+          cluster.id!,
+          i,
+          width,
+          clustersRowConfiguration[cluster.id!]![i],
+          height,
+          clusterBottlesByRow[i] ?? []));
 
       if (widget.customize) {
         rows.add(Stack(
@@ -299,6 +328,7 @@ class _CellarLayoutState extends State<CellarLayout>
             ]));
       } else {
         rows.add(Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: rowChildren,
         ));
       }

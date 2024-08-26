@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/bottle.dart';
 
 class CellarPin extends StatelessWidget {
-  const CellarPin({super.key, this.bottle, required this.onTap});
+  const CellarPin({super.key, this.bottle, this.onTap});
 
   final Bottle? bottle;
   final void Function()? onTap;
