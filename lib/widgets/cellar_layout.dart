@@ -6,6 +6,7 @@ import 'package:cave_manager/providers/bottles_provider.dart';
 import 'package:cave_manager/providers/clusters_provider.dart';
 import 'package:cave_manager/widgets/blinking.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -110,9 +111,35 @@ class _CellarLayoutState extends State<CellarLayout>
     return () {};
   }
 
-  List<Widget> getSubRowLayout(
-      int highestSubRowIndex, int width, List<Bottle> bottles) {
-    List<Widget> cells = [];
+  SizedBox getCell(Bottle? bottle, bool forcedOpacity, int clusterId, int rowId,
+      int subRowId, int column, {bool blinking=false}) {
+    return SizedBox(
+      width: 35,
+      height: 35,
+      child: Padding(
+        padding: const EdgeInsets.all(2.0),
+        child: Opacity(
+          opacity: (bottle != null || forcedOpacity) ? 1 : 0.4,
+          child: blinking ?
+              BlinkingWidget(
+                duration: const Duration(milliseconds: 700),
+                child: CellarPin(
+                  bottle: bottle,
+                  onTap: widget.customize ? null : getBottleCallback(bottle, clusterId, rowId, subRowId, column),
+                ),
+              )
+          : CellarPin(
+            bottle: bottle,
+            onTap: widget.customize ? null : getBottleCallback(bottle, clusterId, rowId, subRowId, column),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget getSubRowLayout(int clusterId, int rowId, int highestSubRowIndex,
+      int width, List<Bottle> bottles) {
+    List<Row> subRows = [];
 
     List<Bottle> currentSubRowBottles = bottles
         .where((element) => element.clusterSubY == highestSubRowIndex)
@@ -121,29 +148,65 @@ class _CellarLayoutState extends State<CellarLayout>
         .where((element) => element.clusterSubY == highestSubRowIndex - 1)
         .toList();
 
-    debugPrint("Get sub rows with highest: $highestSubRowIndex");
     for (int i = highestSubRowIndex; i > 0; i--) {
-      for (int j = 0; j < width; j++) {
-        cells.add(
-          SizedBox(
-            width: 35,
-            height: 35,
-            child: Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: Opacity(
-                opacity: 0.4,
-                child: CellarPin(
-                  bottle: null,
-                  onTap: () {},
-                ),
-              ),
-            ),
-          ),
-        );
+      List<Widget> rowCells = [];
+      bool shouldAddRow = false;    // To decide if we display the subRow (should have at least one interactive pin)
+      for (int j = 0; j < width - (i % 2); j++) {
+        Bottle? currentBottle = currentSubRowBottles.firstWhereOrNull((bottle) => bottle.clusterX == j);
+
+        if (i % 2 == 0 && j > 0 && j < width - (i % 2) - 1) {
+          // Check if previous and next are filled
+          Bottle? previousBottle = nextSubRowBottles.firstWhereOrNull((bottle) => bottle.clusterX == j - 1);
+          Bottle? nextBottle = nextSubRowBottles.firstWhereOrNull((bottle) => bottle.clusterX == j);
+
+          if (previousBottle != null && nextBottle != null) {
+            rowCells.add(getCell(currentBottle, false, clusterId, rowId, i, j));
+            shouldAddRow = true;
+          } else {
+            rowCells.add(const SizedBox(width: 35, height: 35));
+          }
+        } else if (i % 2 == 0 && j == 0) {
+          Bottle? nextBottle = nextSubRowBottles.firstWhereOrNull((bottle) => bottle.clusterX == j);
+
+          if (nextBottle != null) {
+            rowCells.add(getCell(currentBottle, false, clusterId, rowId, i, j));
+            shouldAddRow = true;
+          } else {
+            rowCells.add(const SizedBox(width: 35, height: 35));
+          }
+        } else if (i % 2 == 0 && j == width - (i % 2) - 1) {
+          Bottle? previousBottle = nextSubRowBottles.firstWhereOrNull((bottle) => bottle.clusterX == j - 1);
+
+          if (previousBottle != null) {
+            rowCells.add(getCell(currentBottle, false, clusterId, rowId, i, j));
+            shouldAddRow = true;
+          } else {
+            rowCells.add(const SizedBox(width: 35, height: 35));
+          }
+        } else if (i % 2 == 1) {
+          Bottle? previousBottle = nextSubRowBottles.firstWhereOrNull((bottle) => bottle.clusterX == j);
+          Bottle? nextBottle = nextSubRowBottles.firstWhereOrNull((bottle) => bottle.clusterX == j + 1);
+
+          if (previousBottle != null && nextBottle != null) {
+            rowCells.add(getCell(currentBottle, false, clusterId, rowId, i, j));
+            shouldAddRow = true;
+          } else {
+            rowCells.add(const SizedBox(width: 35, height: 35));
+          }
+        }
+      }
+
+      if (shouldAddRow) {
+        subRows.add(Row(
+          children: rowCells,
+        ));
       }
     }
 
-    return cells;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: subRows,
+    );
   }
 
   Column getRowLayout(int clusterId, int rowId, int width, int maxWidth,
@@ -153,55 +216,26 @@ class _CellarLayoutState extends State<CellarLayout>
     List<int?> subY = bottles.map((bottle) => bottle.clusterSubY).toList();
     subY.add(0); // This ensure .reduce will always return at least 0
 
-    int maxSubY = subY.reduce((value, element) => max(value ?? 0, element ?? 0)) ?? 0;
+    int maxSubY =
+        subY.reduce((value, element) => max(value ?? 0, element ?? 0)) ?? 0;
 
-    rowColumnChildren.add(Row(
-      children: getSubRowLayout(maxSubY, width, bottles),
-    ));
+    rowColumnChildren
+        .add(getSubRowLayout(clusterId, rowId, maxSubY, width, bottles));
 
     List<Widget> mainRowCells = [];
     for (int i = 0; i < width; i++) {
       Bottle? currentBottle = bottles.firstWhereOrNull(
           (bottle) => bottle.clusterSubY == 0 && bottle.clusterX == i);
 
-      if (currentBottle != null &&
-          widget.blinkingBottleId == currentBottle.id) {
-        mainRowCells.add(
-          SizedBox(
-            width: 35,
-            height: 35,
-            child: Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: BlinkingWidget(
-                duration: const Duration(milliseconds: 700),
-                child: CellarPin(
-                  bottle: currentBottle,
-                  onTap: widget.customize
-                      ? null
-                      : getBottleCallback(
-                          currentBottle, clusterId, rowId, 0, i),
-                ),
-              ),
-            ),
-          ),
-        );
-      } else {
-        mainRowCells.add(
-          SizedBox(
-            width: 35,
-            height: 35,
-            child: Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: CellarPin(
-                bottle: currentBottle,
-                onTap: widget.customize
-                    ? null
-                    : getBottleCallback(currentBottle, clusterId, rowId, 0, i),
-              ),
-            ),
-          ),
-        );
-      }
+      mainRowCells.add(getCell(
+          currentBottle,
+          true,
+          clusterId,
+          rowId,
+          0,
+          i,
+          blinking: currentBottle != null && widget.blinkingBottleId == currentBottle.id)
+      );
     }
 
     // Add some empty cells to fill the row
