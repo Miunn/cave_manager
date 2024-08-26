@@ -19,12 +19,9 @@ class _CellarState extends State<Cellar> {
 
   Widget getCellarLayout(bool cellarConfigured) {
     if (cellarConfigured) {
-      return CellarLayout(
-        onTapEmptyCallback: (int clusterId, int row, int subRow, int col) {},
-        shouldDisplayNewSubRow: true,
-      );
+      return const CellarLayout();
     }
-
+g
     return Center(
       child: SingleChildScrollView(
         child: Column(
