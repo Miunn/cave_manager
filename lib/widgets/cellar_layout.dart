@@ -162,7 +162,7 @@ class _CellarLayoutState extends State<CellarLayout>
           Bottle? nextBottle = nextSubRowBottles.firstWhereOrNull((bottle) => bottle.clusterX == j);
 
           if (previousBottle != null && nextBottle != null) {
-            rowCells.add(getCell(currentBottle, false, clusterId, rowId, i, j, addIcon: true));
+            rowCells.add(getCell(currentBottle, false, clusterId, rowId, i, j, addIcon: currentBottle == null));
             shouldAddRow = true;
           } else {
             rowCells.add(const SizedBox(width: 35, height: 35));
@@ -171,7 +171,7 @@ class _CellarLayoutState extends State<CellarLayout>
           Bottle? nextBottle = nextSubRowBottles.firstWhereOrNull((bottle) => bottle.clusterX == j);
 
           if (nextBottle != null) {
-            rowCells.add(getCell(currentBottle, false, clusterId, rowId, i, j, addIcon: true));
+            rowCells.add(getCell(currentBottle, false, clusterId, rowId, i, j, addIcon: currentBottle == null));
             shouldAddRow = true;
           } else {
             rowCells.add(const SizedBox(width: 35, height: 35));
@@ -180,7 +180,7 @@ class _CellarLayoutState extends State<CellarLayout>
           Bottle? previousBottle = nextSubRowBottles.firstWhereOrNull((bottle) => bottle.clusterX == j - 1);
 
           if (previousBottle != null) {
-            rowCells.add(getCell(currentBottle, false, clusterId, rowId, i, j, addIcon: true));
+            rowCells.add(getCell(currentBottle, false, clusterId, rowId, i, j, addIcon: currentBottle == null));
             shouldAddRow = true;
           } else {
             rowCells.add(const SizedBox(width: 35, height: 35));
@@ -190,7 +190,7 @@ class _CellarLayoutState extends State<CellarLayout>
           Bottle? nextBottle = nextSubRowBottles.firstWhereOrNull((bottle) => bottle.clusterX == j + 1);
 
           if (previousBottle != null && nextBottle != null) {
-            rowCells.add(getCell(currentBottle, false, clusterId, rowId, i, j, addIcon: true));
+            rowCells.add(getCell(currentBottle, false, clusterId, rowId, i, j, addIcon: currentBottle == null));
             shouldAddRow = true;
           } else {
             rowCells.add(const SizedBox(width: 35, height: 35));
