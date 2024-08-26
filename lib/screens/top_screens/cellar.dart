@@ -21,7 +21,7 @@ class _CellarState extends State<Cellar> {
     if (cellarConfigured) {
       return const CellarLayout();
     }
-g
+
     return Center(
       child: SingleChildScrollView(
         child: Column(
