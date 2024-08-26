@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:path_provider/path_provider.dart';
 
 class Bottle {
@@ -17,6 +18,7 @@ class Bottle {
   String? imageUri;
   int? clusterId;
   int? clusterY;
+  int? clusterSubY;
   int? clusterX;
   bool? isInCellar;
   bool? isOpen;
@@ -39,6 +41,7 @@ class Bottle {
       this.imageUri,
       this.clusterId,
       this.clusterY,
+      this.clusterSubY,
       this.clusterX,
       this.registeredInCellarAt,
       this.openedAt,
@@ -61,6 +64,7 @@ class Bottle {
       'isOpen': (isOpen != null && isOpen!) ? 1 : 0,
       'clusterId': clusterId,
       'clusterY': clusterY,
+      'clusterSubY': clusterSubY ?? 0,
       'clusterX': clusterX,
       'createdAt': createdAt?.millisecondsSinceEpoch,
       'registeredInCellarAt': registeredInCellarAt?.millisecondsSinceEpoch,
@@ -70,6 +74,7 @@ class Bottle {
   }
 
   Bottle.fromMap(Map<String, dynamic> map) {
+    debugPrint("Map: $map");
     id = map['id'];
     name = map['name'];
     signature = map['signature'];
@@ -85,6 +90,8 @@ class Bottle {
     isOpen = map['isOpen'] == 1 ? true : false;
     clusterId = map['clusterId'];
     clusterY = map['clusterY'];
+    clusterSubY = map['clusterSubY'];
+    debugPrint(map['clusterX'].toString());
     clusterX = map['clusterX'];
     createdAt = DateTime.fromMillisecondsSinceEpoch(map['createdAt']);
     registeredInCellarAt = (map['registeredInCellarAt'] != null)
@@ -94,6 +101,10 @@ class Bottle {
         ? DateTime.fromMillisecondsSinceEpoch(map['openedAt'])
         : null;
     tastingNote = map['tastingNote'];
+  }
+
+  static empty() {
+    return null;
   }
 
   @override
@@ -114,6 +125,7 @@ class Bottle {
         'isOpen: $isOpen, '
         'clusterId: $clusterId, '
         'clusterY: $clusterY, '
+        'clusterSubY: $clusterSubY, '
         'clusterX: $clusterX, '
         'createdAt: $createdAt, '
         'registeredInCellarAt: $registeredInCellarAt, '

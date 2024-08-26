@@ -9,19 +9,23 @@ import '../utils/bottle_db_interface.dart';
 class BottlesProvider extends ChangeNotifier {
   BottleDatabaseInterface bottleDatabase = BottleDatabaseInterface.instance;
   List<Bottle> _bottles = [];
-  final Map<int, List<Bottle>> _bottlesByClusterId = {};
+  final Map<int, Map<int, List<Bottle>>> _bottlesByClusterIdByRow = {};
   UnmodifiableListView<Bottle> get bottles => UnmodifiableListView(_bottles);
   UnmodifiableListView<Bottle> get closedBottles => UnmodifiableListView(_bottles.where((bottle) => !(bottle.isOpen ?? false)));
   UnmodifiableListView<Bottle> get openedBottles => UnmodifiableListView(_bottles.where((bottle) => (bottle.isOpen ?? true)));
   UnmodifiableListView<Bottle> get lastBottles => UnmodifiableListView(closedBottles.take(5).toList().reversed);
-  UnmodifiableMapView<int, UnmodifiableListView<Bottle>> get sortedBottlesByCluster {
-    Map<int, UnmodifiableListView<Bottle>> unmodifiableBottlesByClusterId = {};
+  UnmodifiableMapView<int, Map<int, List<Bottle>>> get sortedBottlesByClusterByRow {
+    Map<int, Map<int, List<Bottle>>> bottlesByClusterIdByRow = {};
 
-    for (int clusterId in _bottlesByClusterId.keys) {
-      unmodifiableBottlesByClusterId[clusterId] = UnmodifiableListView(_bottlesByClusterId[clusterId]!);
+    for (int clusterId in _bottlesByClusterIdByRow.keys) {
+      bottlesByClusterIdByRow[clusterId] = {};
+
+      for (int row in _bottlesByClusterIdByRow[clusterId]!.keys) {
+        bottlesByClusterIdByRow[clusterId]![row] = _bottlesByClusterIdByRow[clusterId]![row]!;
+      }
     }
 
-    return UnmodifiableMapView(unmodifiableBottlesByClusterId);
+    return UnmodifiableMapView(bottlesByClusterIdByRow);
   }
 
   int get bottleCount => _bottles.length;
@@ -39,28 +43,34 @@ class BottlesProvider extends ChangeNotifier {
 
   Future<void> loadBottles() async {
     _bottles = await bottleDatabase.getAll();
-    _bottlesByClusterId.clear();
+    debugPrint("Bottles: $_bottles");
+    _bottlesByClusterIdByRow.clear();
     for (Bottle bottle in closedBottles) {
       if (bottle.clusterId == null) {
         continue;
       }
 
-      if (_bottlesByClusterId[bottle.clusterId!] == null) {
-        _bottlesByClusterId[bottle.clusterId!] = [];
+      if (_bottlesByClusterIdByRow[bottle.clusterId!] == null) {
+        _bottlesByClusterIdByRow[bottle.clusterId!] = {};
       }
 
-      _bottlesByClusterId[bottle.clusterId!]!.add(bottle);
+      if (_bottlesByClusterIdByRow[bottle.clusterId!]![bottle.clusterY!] == null) {
+        _bottlesByClusterIdByRow[bottle.clusterId!]![bottle.clusterY!] = [];
+      }
+      _bottlesByClusterIdByRow[bottle.clusterId!]![bottle.clusterY]!.add(bottle);
     }
 
     // Sorting bottles to displayed all of them correctly
-    for (int clusterId in _bottlesByClusterId.keys) {
-      _bottlesByClusterId[clusterId]!.sort((bottle1, bottle2) {
-        if (bottle1.clusterY == bottle2.clusterY) {
-          return bottle1.clusterX!.compareTo(bottle2.clusterX!);
-        }
+    for (int clusterId in _bottlesByClusterIdByRow.keys) {
+      for (int row in _bottlesByClusterIdByRow[clusterId]!.keys) {
+        _bottlesByClusterIdByRow[clusterId]![row]!.sort((bottle1, bottle2) {
+          if (bottle1.clusterY == bottle2.clusterY) {
+            return bottle1.clusterX!.compareTo(bottle2.clusterX!);
+          }
 
-        return bottle1.clusterY!.compareTo(bottle2.clusterY!);
-      });
+          return bottle1.clusterY!.compareTo(bottle2.clusterY!);
+        });
+      }
     }
 
     notifyListeners();

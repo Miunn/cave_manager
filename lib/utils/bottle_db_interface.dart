@@ -14,7 +14,7 @@ class BottleDatabaseInterface {
 
   static const String databaseName = "bottles_database.db";
 
-  static const int versionNumber = 22;
+  static const int versionNumber = 23;
 
   static const String tableBottles = 'Bottles';
 
@@ -84,7 +84,7 @@ class BottleDatabaseInterface {
         " $colClusterId INTEGER, "
         " $colClusterY INTEGER, "
         " $colClusterSubY INTEGER DEFAULT 0, "
-        " $colClusterX REAL, "
+        " $colClusterX INTEGER, "
         " $colCreatedAt INTEGER, "
         " $colRegisteredInCellarAt INTEGER, "
         " $colOpenedAt INTEGER, "

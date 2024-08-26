@@ -1,9 +1,11 @@
 import 'dart:collection';
+import 'dart:math';
 
 import 'package:cave_manager/models/cluster.dart';
 import 'package:cave_manager/providers/bottles_provider.dart';
 import 'package:cave_manager/providers/clusters_provider.dart';
 import 'package:cave_manager/widgets/blinking.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -29,7 +31,8 @@ class CellarLayout extends StatefulWidget {
   State<CellarLayout> createState() => _CellarLayoutState();
 }
 
-class _CellarLayoutState extends State<CellarLayout> with SingleTickerProviderStateMixin {
+class _CellarLayoutState extends State<CellarLayout>
+    with SingleTickerProviderStateMixin {
   (int, List<Tab>) getTabs(UnmodifiableListView<CellarCluster> clusters) {
     int initialIndex = 0;
     List<Tab> tabList = [];
@@ -49,7 +52,7 @@ class _CellarLayoutState extends State<CellarLayout> with SingleTickerProviderSt
   List<Widget> getTabsContent(
       CellarType cellarType,
       UnmodifiableListView<CellarCluster> clusters,
-      UnmodifiableMapView<int, UnmodifiableListView<Bottle>> bottlesByCluster,
+      UnmodifiableMapView<int, Map<int, List<Bottle>>> bottlesByClusterByRow,
       Map<int, List<int>> clustersRowConfiguration) {
     List<Widget> tabsContent = [];
 
@@ -57,12 +60,8 @@ class _CellarLayoutState extends State<CellarLayout> with SingleTickerProviderSt
       int currentWidth = cluster.width ?? 0;
       int currentHeight = cluster.height ?? 0;
 
-      List<Widget> rows = getClusterLayout(
-          currentWidth, currentHeight,
-          cluster,
-          bottlesByCluster[cluster.id] ?? UnmodifiableListView([]),
-          clustersRowConfiguration
-      );
+      List<Widget> rows = getClusterLayout(currentWidth, currentHeight, cluster,
+          bottlesByClusterByRow[cluster.id] ?? {}, clustersRowConfiguration);
 
       tabsContent.add(
         SingleChildScrollView(
@@ -85,19 +84,120 @@ class _CellarLayoutState extends State<CellarLayout> with SingleTickerProviderSt
     return tabsContent;
   }
 
-  List<Widget> getClusterLayout(
-      int width, int height,
-      CellarCluster cluster,
-      UnmodifiableListView<Bottle> bottles,
-      Map<int, List<int>> clustersRowConfiguration) {
+  List<Widget> getSubRows(
+      int clusterId, int rowId, int width, int maxWidth, int height, List<Bottle> bottles) {
+    List<Widget> cells = [];
 
+    //debugPrint(bottles.toString());
+    Iterable<int?> subY = bottles.map((bottle) => bottle.clusterSubY);
+
+    // Build an empty row if there are no sub rows
+    if (subY.isEmpty) {
+      for (int i = 0; i < width; i++) {
+        cells.add(
+          SizedBox(
+            width: 35,
+            height: 35,
+            child: Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: CellarPin(
+                bottle: null,
+                onTap: () {},
+              ),
+            ),
+          ),
+        );
+      }
+      return cells;
+    }
+
+    int maxSubY =
+        subY.reduce((value, element) => max(value ?? 0, element ?? 0)) ?? 0;
+
+    for (int i = maxSubY; i >= 0; i--) {
+      for (int j = 0; j < width; j++) {
+        Bottle? currentBottle = bottles.firstWhereOrNull((bottle) => bottle.clusterSubY == i && bottle.clusterX == j);
+
+        void Function() onTap;
+        if (currentBottle != null) {
+          onTap = () {
+            if (widget.customize) {
+              return;
+            }
+
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => BottleDetails(
+                  bottleId: currentBottle.id!,
+                ),
+              ),
+            );
+          };
+        } else if (widget.onTapEmptyCallback != null) {
+          onTap = () => widget.onTapEmptyCallback!(clusterId, i, j);
+        } else {
+          onTap = () {};
+        }
+
+        if (currentBottle != null && widget.blinkingBottleId == currentBottle.id) {
+          cells.add(
+            SizedBox(
+              width: 35,
+              height: 35,
+              child: Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: BlinkingWidget(
+                  duration: const Duration(milliseconds: 700),
+                  child: CellarPin(
+                    bottle: currentBottle,
+                    onTap: onTap,
+                  ),
+                ),
+              ),
+            ),
+          );
+        } else  {
+          cells.add(
+            SizedBox(
+              width: 35,
+              height: 35,
+              child: Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: CellarPin(
+                  bottle: currentBottle,
+                  onTap: onTap,
+                ),
+              ),
+            ),
+          );
+        }
+      }
+
+      // Add some empty cells to fill the row
+      for (int j = width; j < maxWidth; j++) {
+        cells.add(
+          const SizedBox(
+            width: 35,
+            height: 35,
+          ),
+        );
+      }
+    }
+    return cells;
+  }
+
+  List<Widget> getClusterLayout(
+      int width,
+      int height,
+      CellarCluster cluster,
+      Map<int, List<Bottle>> clusterBottlesByRow,
+      Map<int, List<int>> clustersRowConfiguration) {
     if (cluster.id == null) {
       return [];
     }
 
     List<Widget> rows = [];
-    int bottleListIndex = 0;
-    bool displayBottle = false;
 
     List<Widget> firstRow = [
       const SizedBox(
@@ -135,139 +235,62 @@ class _CellarLayoutState extends State<CellarLayout> with SingleTickerProviderSt
           ),
         )
       ];
-      for (int j = 0; j < width; j++) {
-        // Add and empty spot if custom width is lower than the cluster width
-        if (j >= clustersRowConfiguration[cluster.id!]![i]) {
-          rowChildren.add(
-            const SizedBox(
-              width: 35,
-              height: 35,
-            ),
-          );
-          continue;
-        }
 
-        Bottle? currentBottle =
-            (bottles.isNotEmpty && bottleListIndex < bottles.length)
-                ? bottles[bottleListIndex]
-                : null;
-
-        void Function() onTap;
-        if (currentBottle != null &&
-            currentBottle.clusterY == i &&
-            currentBottle.clusterX == j) {
-          onTap = () {
-            if (widget.customize) {
-              return;
-            }
-
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => BottleDetails(
-                  bottleId: currentBottle.id!,
-                ),
-              ),
-            );
-          };
-          displayBottle = true;
-        } else if (widget.onTapEmptyCallback != null) {
-          onTap = () => widget.onTapEmptyCallback!(cluster.id!, i, j);
-        } else {
-          onTap = () {};
-        }
-
-        if (displayBottle &&
-            currentBottle != null &&
-            widget.blinkingBottleId == currentBottle.id) {
-          rowChildren.add(
-            SizedBox(
-              width: 35,
-              height: 35,
-              child: Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: BlinkingWidget(
-                  duration: const Duration(milliseconds: 700),
-                  child: CellarPin(
-                    bottle: currentBottle,
-                    onTap: onTap,
-                  ),
-                ),
-              ),
-            ),
-          );
-        } else {
-          rowChildren.add(
-            SizedBox(
-              width: 35,
-              height: 35,
-              child: Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: CellarPin(
-                  bottle: (displayBottle) ? currentBottle : null,
-                  onTap: onTap,
-                ),
-              ),
-            ),
-          );
-        }
-
-        if (displayBottle) {
-          bottleListIndex++;
-          displayBottle = false;
-        }
-      }
+      rowChildren.addAll(getSubRows(cluster.id!, i, width, clustersRowConfiguration[cluster.id!]![i], height, clusterBottlesByRow[i] ?? []));
 
       if (widget.customize) {
         rows.add(Stack(
-          alignment: AlignmentGeometry.lerp(Alignment.topLeft, Alignment.bottomRight, 0.5)!,
+            alignment: AlignmentGeometry.lerp(
+                Alignment.topLeft, Alignment.bottomRight, 0.5)!,
             children: [
-          Opacity(
-            opacity: 0.2,
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              children: rowChildren,
-            ),
-          ),
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              FilledButton.tonal(
-                  onPressed: () {
-                    if (clustersRowConfiguration[cluster.id!]![i] <= 1) {
-                      return;
-                    }
-                    context.read<ClustersProvider>().updateClustersRowConfiguration(cluster.id!, i, clustersRowConfiguration[cluster.id!]![i]-1);
-                  },
-                  child: const Icon(Icons.remove),
+              Opacity(
+                opacity: 0.2,
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: rowChildren,
+                ),
               ),
-              const SizedBox(width: 10),
-              Text("${clustersRowConfiguration[cluster.id!]![i]}",
-                style: const TextStyle(fontWeight: FontWeight.bold),
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  FilledButton.tonal(
+                    onPressed: () {
+                      if (clustersRowConfiguration[cluster.id!]![i] <= 1) {
+                        return;
+                      }
+                      context
+                          .read<ClustersProvider>()
+                          .updateClustersRowConfiguration(cluster.id!, i,
+                              clustersRowConfiguration[cluster.id!]![i] - 1);
+                    },
+                    child: const Icon(Icons.remove),
+                  ),
+                  const SizedBox(width: 10),
+                  Text(
+                    "${clustersRowConfiguration[cluster.id!]![i]}",
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(width: 10),
+                  FilledButton.tonal(
+                    onPressed: () {
+                      if (clustersRowConfiguration[cluster.id!]![i] >=
+                          cluster.width!) {
+                        return;
+                      }
+                      context
+                          .read<ClustersProvider>()
+                          .updateClustersRowConfiguration(cluster.id!, i,
+                              clustersRowConfiguration[cluster.id!]![i] + 1);
+                    },
+                    child: const Icon(Icons.add),
+                  ),
+                ],
               ),
-              const SizedBox(width: 10),
-              FilledButton.tonal(
-                  onPressed: () {
-                    if (clustersRowConfiguration[cluster.id!]![i] >= cluster.width!) {
-                      return;
-                    }
-                    context.read<ClustersProvider>().updateClustersRowConfiguration(cluster.id!, i, clustersRowConfiguration[cluster.id!]![i]+1);
-                  },
-                  child: const Icon(Icons.add),
-              ),
-            ],
-          ),
-        ]));
+            ]));
       } else {
         rows.add(Row(
           children: rowChildren,
         ));
-      }
-
-      // Go to the next bottle index in the next row
-      while (bottleListIndex < bottles.length &&
-          bottles[bottleListIndex].clusterY == i) {
-        bottleListIndex++;
       }
     }
     return rows;
@@ -278,8 +301,8 @@ class _CellarLayoutState extends State<CellarLayout> with SingleTickerProviderSt
     CellarType cellarType = context.read<ClustersProvider>().cellarType;
     UnmodifiableListView<CellarCluster> clusters =
         context.read<ClustersProvider>().clusters;
-    UnmodifiableMapView<int, UnmodifiableListView<Bottle>> bottlesByCluster =
-        context.watch<BottlesProvider>().sortedBottlesByCluster;
+    UnmodifiableMapView<int, Map<int, List<Bottle>>> bottlesByClusterByRow =
+        context.watch<BottlesProvider>().sortedBottlesByClusterByRow;
     Map<int, List<int>> clustersRowConfiguration =
         context.watch<ClustersProvider>().clustersRowConfiguration;
 
@@ -289,19 +312,19 @@ class _CellarLayoutState extends State<CellarLayout> with SingleTickerProviderSt
       return DefaultTabController(
         length: clusters.length,
         child: Column(
-            children: [
-              SizedBox(
-                height: 48,
-                child: TabBar(
-                  tabs: tabs.$2,
-                ),
+          children: [
+            SizedBox(
+              height: 48,
+              child: TabBar(
+                tabs: tabs.$2,
               ),
-              Expanded(
-                  child: TabBarView(
-                      children: getTabsContent(
-                          cellarType, clusters, bottlesByCluster, clustersRowConfiguration))),
-            ],
-          ),
+            ),
+            Expanded(
+                child: TabBarView(
+                    children: getTabsContent(cellarType, clusters,
+                        bottlesByClusterByRow, clustersRowConfiguration))),
+          ],
+        ),
       );
     }
 
@@ -321,9 +344,8 @@ class _CellarLayoutState extends State<CellarLayout> with SingleTickerProviderSt
                 clusters[0].width ?? 0,
                 clusters[0].height ?? 0,
                 clusters[0],
-                bottlesByCluster[clusters[0].id!]!,
-                clustersRowConfiguration
-            ),
+                bottlesByClusterByRow[clusters[0].id!]!,
+                clustersRowConfiguration),
           ]),
         ),
       ),
