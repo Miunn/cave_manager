@@ -1,4 +1,3 @@
-
 import 'package:cave_manager/screens/settings.dart';
 import 'package:cave_manager/widgets/bottle_card.dart';
 import 'package:flutter/material.dart';
@@ -81,7 +80,7 @@ class _HomeState extends State<Home> {
                         itemCount: bottles.lastBottles.length,
                         itemBuilder: (BuildContext context, int index) {
                           return BottleCard(
-                              bottleId: bottles.lastBottles[index].id!);
+                              bottleId: bottles.lastBottles[index].id ?? 0);
                         },
                       ),
                     ),

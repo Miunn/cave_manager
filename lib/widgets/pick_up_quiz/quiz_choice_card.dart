@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
 class QuizChoiceCard extends StatelessWidget {
-  const QuizChoiceCard({super.key, required this.onTap, required this.icon, required this.label});
+  const QuizChoiceCard(
+      {super.key,
+      required this.onTap,
+      required this.icon,
+      required this.label});
 
   final void Function() onTap;
   final Icon icon;
@@ -19,13 +23,13 @@ class QuizChoiceCard extends StatelessWidget {
           height: 140,
           child: Padding(
             padding: const EdgeInsets.all(22.0),
-            child: Column(children: <Widget>[
-              SizedBox(
-                height: 60,
-                child: icon,
-              ),
-              Text(label),
-            ]),
+            child: Center(
+              child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                icon,
+                const SizedBox(height: 10),
+                Text(label),
+              ]),
+            ),
           ),
         ),
       ),
