@@ -6,12 +6,15 @@
 // tree, read text, and verify that the values of widget properties are correct.
 import 'dart:io';
 
+import 'package:cave_manager/models/enum_wine_colors.dart';
+import 'package:cave_manager/screens/add_bottle_dialog.dart';
+import 'package:cave_manager/screens/bottle_details.dart';
 import 'package:cave_manager/screens/top_screens/bottles.dart';
 import 'package:cave_manager/screens/top_screens/cellar.dart';
 import 'package:cave_manager/screens/top_screens/home.dart';
 import 'package:cave_manager/screens/top_screens/statistics.dart';
 import 'package:cave_manager/screens/top_screens/take_out_quiz.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
@@ -71,6 +74,30 @@ void main() {
 
       // Build our app and trigger a frame.
       await tester.pumpWidget(const ProviderInjector(child: LocalizationsInjector(child: TakeOutQuiz(key: testKey))));
+
+      expect(find.byKey(testKey), findsAny);
+    });
+  });
+  
+  group('Test add bottle dialog', () {
+    testWidgets('Display add bottle dialog', (WidgetTester tester) async {
+      const testKey = Key('add_bottle');
+
+      // Build our app and trigger a frame.
+      await tester.pumpWidget(const ProviderInjector(child: LocalizationsInjector(child: AddBottleDialog(key: testKey))));
+
+      expect(find.byKey(testKey), findsAny);
+      expect(find.byType(SegmentedButton<WineColors>), findsOneWidget);
+      expect(find.byType(TextFormField), findsNWidgets(7));
+    });
+  });
+
+  group('Test display bottle details', () {
+    testWidgets('Display bottle details', (WidgetTester tester) async {
+      const testKey = Key('bottle_details');
+
+      // Build our app and trigger a frame.
+      await tester.pumpWidget(const ProviderInjector(child: LocalizationsInjector(child: BottleDetails(key: testKey, bottleId: 0))));
 
       expect(find.byKey(testKey), findsAny);
     });

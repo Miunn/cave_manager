@@ -9,6 +9,7 @@ import 'package:cave_manager/screens/take_picture.dart';
 import 'package:cave_manager/widgets/bottle_detail_line.dart';
 import 'package:cave_manager/widgets/dialogs/dialog_delete_bottle.dart';
 import 'package:cave_manager/widgets/dialogs/dialog_delete_cover.dart';
+import 'package:collection/collection.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -101,11 +102,11 @@ class _BottleDetailState extends State<BottleDetails> {
     String? colorText;
     Country? bottleCountry =
         (bottle.country == null) ? null : Country.tryParse(bottle.country!);
-    String cellarPositionFormatted = (bottle.clusterId == null)
+    String cellarPositionFormatted = (bottle.clusterId == null || bottle.clusterX == null || bottle.clusterY == null)
         ? AppLocalizations.of(context)!.unknown
         : "${AppLocalizations.of(context)!.row} ${bottle.clusterY! + 1} ${AppLocalizations.of(context)!.column} ${bottle.clusterX! + 1}";
 
-    switch (WineColors.values.firstWhere((e) => e.value == bottle.color)) {
+    switch (WineColors.values.firstWhereOrNull((e) => e.value == bottle.color)) {
       case WineColors.red:
         colorText =
             AppLocalizations.of(context)!.wineColors(WineColors.red.value);
@@ -131,17 +132,20 @@ class _BottleDetailState extends State<BottleDetails> {
     }
 
     String inCellarString = "";
-    Duration inCellarSince = DateTime.now().difference(bottle.createdAt!);
-    int years = inCellarSince.inDays ~/ 365;
-    int extraDaysInYears = inCellarSince.inDays % 365;
 
-    if (inCellarSince.inDays == 0) {
-      inCellarString = AppLocalizations.of(context)!.today;
-    } else if (inCellarSince.inDays == 1) {
-      inCellarString = AppLocalizations.of(context)!.yesterday;
-    } else {
-      inCellarString =
-          AppLocalizations.of(context)!.xYearsXDays(extraDaysInYears, years);
+    if (bottle.createdAt != null && bottle.isInCellar != null && bottle.isInCellar!) {
+      Duration inCellarSince = DateTime.now().difference(bottle.createdAt!);
+      int years = inCellarSince.inDays ~/ 365;
+      int extraDaysInYears = inCellarSince.inDays % 365;
+
+      if (inCellarSince.inDays == 0) {
+        inCellarString = AppLocalizations.of(context)!.today;
+      } else if (inCellarSince.inDays == 1) {
+        inCellarString = AppLocalizations.of(context)!.yesterday;
+      } else {
+        inCellarString =
+            AppLocalizations.of(context)!.xYearsXDays(extraDaysInYears, years);
+      }
     }
 
     registerNewPicture() async {
@@ -382,7 +386,7 @@ class _BottleDetailState extends State<BottleDetails> {
                 height: 15,
               ),
               Offstage(
-                offstage: bottle.isOpen!,
+                offstage: bottle.isOpen == null || bottle.isOpen!,
                 child: SizedBox(
                   width: double.infinity,
                   child: Row(
@@ -451,7 +455,7 @@ class _BottleDetailState extends State<BottleDetails> {
                 ),
               ),
               Offstage(
-                offstage: bottle.isOpen!,
+                offstage: bottle.isOpen == null || bottle.isOpen!,
                 child: const SizedBox(
                   height: 15,
                 ),
@@ -584,7 +588,7 @@ class _BottleDetailState extends State<BottleDetails> {
                       );
                     }),
                     Offstage(
-                      offstage: bottle.isOpen! || bottle.clusterId == null,
+                      offstage: bottle.isOpen == null || bottle.isOpen! || bottle.clusterId == null,
                       child: BottleDetailLine(
                         leftSideText: AppLocalizations.of(context)!.location,
                         rightSideText: cellarPositionFormatted,
@@ -605,14 +609,14 @@ class _BottleDetailState extends State<BottleDetails> {
                       ),
                     ),
                     Offstage(
-                      offstage: !bottle.isOpen!,
+                      offstage: bottle.isOpen != null && !bottle.isOpen!,
                       child: const Divider(
                         height: 1,
                         color: Color.fromARGB(255, 220, 220, 220),
                       ),
                     ),
                     Offstage(
-                      offstage: !bottle.isOpen!,
+                      offstage: bottle.isOpen != null && !bottle.isOpen!,
                       child: BottleDetailLine(
                         leftSideText:
                             AppLocalizations.of(context)!.takenOutDate,
@@ -687,12 +691,12 @@ class _BottleDetailState extends State<BottleDetails> {
                 height: 20,
               ),
               Visibility(
-                  visible: bottle.isOpen! ||
+                  visible: (bottle.isOpen != null && bottle.isOpen!) ||
                       (bottle.tastingNote != null &&
                           bottle.tastingNote!.isNotEmpty),
                   child: Text(AppLocalizations.of(context)!.tasting)),
               Visibility(
-                visible: bottle.isOpen! ||
+                visible: (bottle.isOpen != null && bottle.isOpen!) ||
                     (bottle.tastingNote != null &&
                         bottle.tastingNote!.isNotEmpty),
                 child: Container(
