@@ -31,8 +31,11 @@ class BottleCard extends StatelessWidget {
         onPressed: () {
           bottle.isOpen = false;
           bottle.tastingNote = null;
-          scaffoldKey.currentContext?.read<BottlesProvider>().updateBottle(bottle);
-          ScaffoldMessenger.of(scaffoldKey.currentContext ?? context).showSnackBar(SnackBar(
+          scaffoldKey.currentContext
+              ?.read<BottlesProvider>()
+              .updateBottle(bottle);
+          ScaffoldMessenger.of(scaffoldKey.currentContext ?? context)
+              .showSnackBar(SnackBar(
             content: Text(AppLocalizations.of(context)!.takenOutCanceled),
           ));
         },
@@ -44,7 +47,8 @@ class BottleCard extends StatelessWidget {
   Widget build(BuildContext context) {
     String? colorText;
 
-    switch (WineColors.values.firstWhereOrNull((e) => e.value == bottle.color)) {
+    switch (
+        WineColors.values.firstWhereOrNull((e) => e.value == bottle.color)) {
       case WineColors.red:
         colorText = AppLocalizations.of(context)!.redWine;
         break;
@@ -68,7 +72,8 @@ class BottleCard extends StatelessWidget {
     return Card(
       clipBehavior: Clip.hardEdge,
       child: OpenContainer(
-        closedBuilder: (BuildContext context, void Function() action) => InkWell(
+        closedBuilder: (BuildContext context, void Function() action) =>
+            InkWell(
           splashColor: Colors.blue.withAlpha(30),
           onTap: action,
           child: Column(
@@ -88,34 +93,55 @@ class BottleCard extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ViewBottleInCellar(bottle: bottle),
-                          ),
-                        );
-                      },
-                      child: Text(AppLocalizations.of(context)!.seeInCellar)),
-                  TextButton(
-                      child: Text(AppLocalizations.of(context)!.takeOutBottle),
-                      onPressed: () async {
-                        bool? open = await showDialog<bool>(
-                          context: context,
-                          builder: (BuildContext context) =>
-                              OpenBottleDialog(bottle: bottle),
-                        );
-                        if (open != null && open && context.mounted) {
-                          openBottle(context);
-                        }
-                      }),
+                  Visibility(
+                    visible: bottle.isInCellar ?? false,
+                    child: TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  ViewBottleInCellar(bottle: bottle),
+                            ),
+                          );
+                        },
+                        child: Text(AppLocalizations.of(context)!.seeInCellar)),
+                  ),
+                  Visibility(
+                    visible: !(bottle.isOpen ?? true),
+                    child: TextButton(
+                        child: Text((bottle.isInCellar ?? false)
+                            ? AppLocalizations.of(context)!.takeOutBottle
+                            : AppLocalizations.of(context)!.openBottle),
+                        onPressed: () async {
+                          bool? open = await showDialog<bool>(
+                            context: context,
+                            builder: (BuildContext context) =>
+                                OpenBottleDialog(bottle: bottle),
+                          );
+                          if (open != null && open && context.mounted) {
+                            openBottle(context);
+                          }
+                        }),
+                  ),
+                  Visibility(
+                    visible: !(bottle.isInCellar ?? true),
+                    child: TextButton(
+                        onPressed: () {
+                          bottle.isInCellar = true;
+                          context.read<BottlesProvider>().updateBottle(bottle);
+                        },
+                        child:
+                            Text(AppLocalizations.of(context)!.placeInCellar)),
+                  ),
                 ],
               )
             ],
           ),
         ),
-        openBuilder: (BuildContext context, void Function({Object? returnValue}) action) => BottleDetails(bottleId: bottle.id!),
+        openBuilder: (BuildContext context,
+                void Function({Object? returnValue}) action) =>
+            BottleDetails(bottleId: bottle.id!),
         tappable: false,
       ),
     );

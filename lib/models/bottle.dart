@@ -104,7 +104,7 @@ class Bottle {
   }
 
   static empty() {
-    return null;
+    return Bottle(null, null, null);
   }
 
   @override

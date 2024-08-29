@@ -6,6 +6,7 @@
 // tree, read text, and verify that the values of widget properties are correct.
 import 'dart:io';
 
+import 'package:cave_manager/models/bottle.dart';
 import 'package:cave_manager/models/enum_wine_colors.dart';
 import 'package:cave_manager/screens/add_bottle_dialog.dart';
 import 'package:cave_manager/screens/bottle_details.dart';
@@ -112,15 +113,66 @@ void main() {
   });
 
   group('Test components', () {
-    testWidgets('Test bottle card', (WidgetTester tester) async {
+    testWidgets('Test bottle card without data', (WidgetTester tester) async {
       const testKey = Key('bottle_card');
 
       // Build our app and trigger a frame.
-      await tester.pumpWidget(const ProviderInjector(
+      await tester.pumpWidget(ProviderInjector(
           child: LocalizationsInjector(
-              child: BottleCard(key: testKey, bottleId: 0))));
+              child: BottleCard(key: testKey, bottle: Bottle.empty()))));
 
       expect(find.byKey(testKey), findsAny);
+      expect(find.text('See in cellar'), findsNothing);
+      expect(find.text('Take out bottle'), findsNothing);
+      expect(find.text('Place in cellar'), findsNothing);
+      expect(find.text('Open bottle'), findsNothing);
+    });
+
+    testWidgets('Test bottle card with bottle outside of cellar', (WidgetTester tester) async {
+      await tester.pumpWidget(ProviderInjector(child: LocalizationsInjector(child: BottleCard(bottle: Bottle(
+        'name',
+        DateTime.now(),
+        false,
+        color: WineColors.red.value,
+        isInCellar: false,
+      )))));
+
+      expect(find.text('See in cellar'), findsNothing);
+      expect(find.text('Take out bottle'), findsNothing);
+      expect(find.text('Place in cellar'), findsOneWidget);
+      expect(find.text('Open bottle'), findsOneWidget);
+    });
+
+    testWidgets('Test bottle card with bottle inside of cellar', (WidgetTester tester) async {
+      await tester.pumpWidget(ProviderInjector(child: LocalizationsInjector(child: BottleCard(bottle: Bottle(
+        'name',
+        DateTime.now(),
+        false,
+        color: WineColors.red.value,
+        clusterId: 0,
+        clusterX: 0,
+        clusterY: 0,
+        isInCellar: true,
+      )))));
+      
+      expect(find.text('See in cellar'), findsOneWidget);
+      expect(find.text('Take out bottle'), findsOneWidget);
+      expect(find.text('Place in cellar'), findsNothing);
+      expect(find.text('Open bottle'), findsNothing);
+    });
+
+    testWidgets('Test bottle card with opened bottle', (WidgetTester tester) async {
+      await tester.pumpWidget(ProviderInjector(child: LocalizationsInjector(child: BottleCard(bottle: Bottle(
+        'name',
+        DateTime.now(),
+        true,
+        color: WineColors.red.value,
+      )))));
+
+      expect(find.text('See in cellar'), findsNothing);
+      expect(find.text('Take out bottle'), findsNothing);
+      expect(find.text('Place in cellar'), findsNothing);
+      expect(find.text('Open bottle'), findsNothing);
     });
   });
 }
