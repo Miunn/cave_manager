@@ -79,8 +79,7 @@ class _HomeState extends State<Home> {
                       child: ListView.builder(
                         itemCount: bottles.lastBottles.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return BottleCard(
-                              bottleId: bottles.lastBottles[index].id ?? 0);
+                          return BottleCard(bottle: bottles.lastBottles[index]);
                         },
                       ),
                     ),

@@ -14,6 +14,7 @@ import 'package:cave_manager/screens/top_screens/cellar.dart';
 import 'package:cave_manager/screens/top_screens/home.dart';
 import 'package:cave_manager/screens/top_screens/statistics.dart';
 import 'package:cave_manager/screens/top_screens/take_out_quiz.dart';
+import 'package:cave_manager/widgets/bottle_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
@@ -22,7 +23,6 @@ import 'injectors/LocalizationsInjector.dart';
 import 'injectors/ProviderInjector.dart';
 
 void main() {
-
   setUpAll(() {
     if (Platform.isWindows || Platform.isLinux) {
       // Initialize FFI
@@ -37,16 +37,18 @@ void main() {
       const testKey = Key('home');
 
       // Build our app and trigger a frame.
-      await tester.pumpWidget(const ProviderInjector(child: LocalizationsInjector(child: Home(key: testKey))));
+      await tester.pumpWidget(const ProviderInjector(
+          child: LocalizationsInjector(child: Home(key: testKey))));
 
       expect(find.byKey(testKey), findsAny);
     });
-    
+
     testWidgets('Display bottles page', (WidgetTester tester) async {
       const testKey = Key('bottles');
 
       // Build our app and trigger a frame.
-      await tester.pumpWidget(const ProviderInjector(child: LocalizationsInjector(child: Bottles(key: testKey))));
+      await tester.pumpWidget(const ProviderInjector(
+          child: LocalizationsInjector(child: Bottles(key: testKey))));
 
       expect(find.byKey(testKey), findsAny);
     });
@@ -55,7 +57,8 @@ void main() {
       const testKey = Key('cellar');
 
       // Build our app and trigger a frame.
-      await tester.pumpWidget(const ProviderInjector(child: LocalizationsInjector(child: Cellar(key: testKey))));
+      await tester.pumpWidget(const ProviderInjector(
+          child: LocalizationsInjector(child: Cellar(key: testKey))));
 
       expect(find.byKey(testKey), findsAny);
     });
@@ -64,7 +67,8 @@ void main() {
       const testKey = Key('statistics');
 
       // Build our app and trigger a frame.
-      await tester.pumpWidget(const ProviderInjector(child: LocalizationsInjector(child: Statistics(key: testKey))));
+      await tester.pumpWidget(const ProviderInjector(
+          child: LocalizationsInjector(child: Statistics(key: testKey))));
 
       expect(find.byKey(testKey), findsAny);
     });
@@ -73,18 +77,20 @@ void main() {
       const testKey = Key('choose');
 
       // Build our app and trigger a frame.
-      await tester.pumpWidget(const ProviderInjector(child: LocalizationsInjector(child: TakeOutQuiz(key: testKey))));
+      await tester.pumpWidget(const ProviderInjector(
+          child: LocalizationsInjector(child: TakeOutQuiz(key: testKey))));
 
       expect(find.byKey(testKey), findsAny);
     });
   });
-  
+
   group('Test add bottle dialog', () {
     testWidgets('Display add bottle dialog', (WidgetTester tester) async {
       const testKey = Key('add_bottle');
 
       // Build our app and trigger a frame.
-      await tester.pumpWidget(const ProviderInjector(child: LocalizationsInjector(child: AddBottleDialog(key: testKey))));
+      await tester.pumpWidget(const ProviderInjector(
+          child: LocalizationsInjector(child: AddBottleDialog(key: testKey))));
 
       expect(find.byKey(testKey), findsAny);
       expect(find.byType(SegmentedButton<WineColors>), findsOneWidget);
@@ -97,7 +103,22 @@ void main() {
       const testKey = Key('bottle_details');
 
       // Build our app and trigger a frame.
-      await tester.pumpWidget(const ProviderInjector(child: LocalizationsInjector(child: BottleDetails(key: testKey, bottleId: 0))));
+      await tester.pumpWidget(const ProviderInjector(
+          child: LocalizationsInjector(
+              child: BottleDetails(key: testKey, bottleId: 0))));
+
+      expect(find.byKey(testKey), findsAny);
+    });
+  });
+
+  group('Test components', () {
+    testWidgets('Test bottle card', (WidgetTester tester) async {
+      const testKey = Key('bottle_card');
+
+      // Build our app and trigger a frame.
+      await tester.pumpWidget(const ProviderInjector(
+          child: LocalizationsInjector(
+              child: BottleCard(key: testKey, bottleId: 0))));
 
       expect(find.byKey(testKey), findsAny);
     });

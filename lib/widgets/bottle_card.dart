@@ -4,6 +4,7 @@ import 'package:cave_manager/models/enum_wine_colors.dart';
 import 'package:cave_manager/screens/bottle_details.dart';
 import 'package:cave_manager/screens/cellar/view_bottle_in_cellar.dart';
 import 'package:cave_manager/widgets/dialogs/dialog_open_bottle.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,12 +13,11 @@ import '../providers/bottles_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class BottleCard extends StatelessWidget {
-  const BottleCard({super.key, required this.bottleId});
+  const BottleCard({super.key, required this.bottle});
 
-  final int bottleId;
+  final Bottle bottle;
 
   openBottle(BuildContext context) {
-    Bottle bottle = context.read<BottlesProvider>().getBottleById(bottleId);
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
     bottle.isOpen = true;
@@ -42,10 +42,9 @@ class BottleCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Bottle bottle = context.read<BottlesProvider>().getBottleById(bottleId);
     String? colorText;
 
-    switch (WineColors.values.firstWhere((e) => e.value == bottle.color)) {
+    switch (WineColors.values.firstWhereOrNull((e) => e.value == bottle.color)) {
       case WineColors.red:
         colorText = AppLocalizations.of(context)!.redWine;
         break;
