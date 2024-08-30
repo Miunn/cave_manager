@@ -144,7 +144,7 @@ class _BottlesState extends State<Bottles> {
                           Navigator.of(context).push(
                             MaterialPageRoute<Bottle>(
                               builder: (BuildContext context) =>
-                                  BottleDetails(bottleId: item.id!),
+                                  BottleDetails(bottle: item),
                             ),
                           );
                         },

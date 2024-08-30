@@ -163,7 +163,7 @@ class _BottleListCardState extends State<BottleListCard> {
             ),
           ),
         ),
-        openBuilder: (BuildContext context, void Function({Object? returnValue}) action) => BottleDetails(bottleId: bottle.id!),
+        openBuilder: (BuildContext context, void Function({Object? returnValue}) action) => BottleDetails(bottle: bottle),
         tappable: false,
       ),
     );

@@ -104,16 +104,16 @@ void main() {
       const testKey = Key('bottle_details');
 
       // Build our app and trigger a frame.
-      await tester.pumpWidget(const ProviderInjector(
+      await tester.pumpWidget(ProviderInjector(
           child: LocalizationsInjector(
-              child: BottleDetails(key: testKey, bottleId: 0))));
+              child: BottleDetails(key: testKey, bottle: Bottle.empty()))));
 
       expect(find.byKey(testKey), findsAny);
     });
   });
 
-  group('Test components', () {
-    testWidgets('Test bottle card without data', (WidgetTester tester) async {
+  group('Test bottle card', () {
+    testWidgets('Without data', (WidgetTester tester) async {
       const testKey = Key('bottle_card');
 
       // Build our app and trigger a frame.
@@ -128,7 +128,7 @@ void main() {
       expect(find.text('Open bottle'), findsNothing);
     });
 
-    testWidgets('Test bottle card with bottle outside of cellar', (WidgetTester tester) async {
+    testWidgets('With bottle outside of cellar', (WidgetTester tester) async {
       await tester.pumpWidget(ProviderInjector(child: LocalizationsInjector(child: BottleCard(bottle: Bottle(
         'name',
         DateTime.now(),
@@ -143,7 +143,7 @@ void main() {
       expect(find.text('Open bottle'), findsOneWidget);
     });
 
-    testWidgets('Test bottle card with bottle inside of cellar', (WidgetTester tester) async {
+    testWidgets('With bottle inside of cellar', (WidgetTester tester) async {
       await tester.pumpWidget(ProviderInjector(child: LocalizationsInjector(child: BottleCard(bottle: Bottle(
         'name',
         DateTime.now(),
@@ -161,7 +161,7 @@ void main() {
       expect(find.text('Open bottle'), findsNothing);
     });
 
-    testWidgets('Test bottle card with opened bottle', (WidgetTester tester) async {
+    testWidgets('With opened bottle', (WidgetTester tester) async {
       await tester.pumpWidget(ProviderInjector(child: LocalizationsInjector(child: BottleCard(bottle: Bottle(
         'name',
         DateTime.now(),
