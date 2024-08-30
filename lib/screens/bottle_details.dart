@@ -214,7 +214,7 @@ class _BottleDetailState extends State<BottleDetails> {
                           ? IconButton(
                               padding: const EdgeInsets.all(8.0),
                               icon: Image.asset(
-                                'assets/wine-widget.bottle.png',
+                                'assets/wine-bottle.png',
                                 width: 70,
                                 height: 70,
                               ),
