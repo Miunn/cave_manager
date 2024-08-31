@@ -25,7 +25,6 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    return CellarLayout(clusters: context.read<ClustersProvider>().clusters);
     return Scaffold(
       appBar: AppBar(
         // TRY THIS: Try changing the color here to a specific color (to
