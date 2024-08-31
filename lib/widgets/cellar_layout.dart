@@ -14,16 +14,21 @@ import '../screens/bottle_details.dart';
 import 'cellar_pin.dart';
 
 class CellarLayout extends StatefulWidget {
-  const CellarLayout(
+  final UnmodifiableListView<CellarCluster> clusters;
+
+  CellarLayout(
       {super.key,
+      this.cellarType = CellarType.none,
+      UnmodifiableListView<CellarCluster>? clusters,
       this.onTapEmptyCallback,
       this.blinkingBottleId,
       this.startingClusterId,
       this.customize = false,
-      this.shouldDisplayNewSubRow = false});
+      this.shouldDisplayNewSubRow = false})
+      : clusters = clusters ?? UnmodifiableListView([]);
 
-  final void Function(int clusterId, int row, int subRow, int column)?
-      onTapEmptyCallback;
+  final CellarType cellarType;
+  final void Function(int clusterId, int row, int subRow, int column)? onTapEmptyCallback;
   final int? blinkingBottleId;
   final int? startingClusterId;
   final bool customize;
@@ -33,8 +38,7 @@ class CellarLayout extends StatefulWidget {
   State<CellarLayout> createState() => _CellarLayoutState();
 }
 
-class _CellarLayoutState extends State<CellarLayout>
-    with SingleTickerProviderStateMixin {
+class _CellarLayoutState extends State<CellarLayout> with SingleTickerProviderStateMixin {
   (int, List<Tab>) getTabs(UnmodifiableListView<CellarCluster> clusters) {
     int initialIndex = 0;
     List<Tab> tabList = [];
@@ -51,19 +55,15 @@ class _CellarLayoutState extends State<CellarLayout>
     return (initialIndex, tabList);
   }
 
-  List<Widget> getTabsContent(
-      CellarType cellarType,
-      UnmodifiableListView<CellarCluster> clusters,
-      UnmodifiableMapView<int, Map<int, List<Bottle>>> bottlesByClusterByRow,
-      Map<int, List<int>> clustersRowConfiguration) {
+  List<Widget> getTabsContent(CellarType cellarType, UnmodifiableListView<CellarCluster> clusters,
+      UnmodifiableMapView<int, Map<int, List<Bottle>>> bottlesByClusterByRow, Map<int, List<int>> clustersRowConfiguration) {
     List<Widget> tabsContent = [];
 
     for (CellarCluster cluster in clusters) {
       int currentWidth = cluster.width ?? 0;
       int currentHeight = cluster.height ?? 0;
 
-      List<Widget> rows = getClusterLayout(currentWidth, currentHeight, cluster,
-          bottlesByClusterByRow[cluster.id] ?? {}, clustersRowConfiguration);
+      List<Widget> rows = getClusterLayout(currentWidth, currentHeight, cluster, bottlesByClusterByRow[cluster.id] ?? {}, clustersRowConfiguration);
 
       tabsContent.add(
         SingleChildScrollView(
@@ -86,8 +86,7 @@ class _CellarLayoutState extends State<CellarLayout>
     return tabsContent;
   }
 
-  void Function() getBottleCallback(
-      Bottle? bottle, int clusterId, int rowId, int subRowId, int column) {
+  void Function() getBottleCallback(Bottle? bottle, int clusterId, int rowId, int subRowId, int column) {
     if (bottle != null) {
       return () {
         Navigator.push(
@@ -103,15 +102,14 @@ class _CellarLayoutState extends State<CellarLayout>
     }
 
     if (widget.onTapEmptyCallback != null) {
-      return () =>
-          widget.onTapEmptyCallback!(clusterId, rowId, subRowId, column);
+      return () => widget.onTapEmptyCallback!(clusterId, rowId, subRowId, column);
     }
 
     return () {};
   }
 
-  SizedBox getCell(Bottle? bottle, bool forcedOpacity, int clusterId, int rowId,
-      int subRowId, int column, {bool blinking=false, bool addIcon=false}) {
+  SizedBox getCell(Bottle? bottle, bool forcedOpacity, int clusterId, int rowId, int subRowId, int column,
+      {bool blinking = false, bool addIcon = false}) {
     return SizedBox(
       width: 35,
       height: 35,
@@ -119,39 +117,34 @@ class _CellarLayoutState extends State<CellarLayout>
         padding: const EdgeInsets.all(2.0),
         child: Opacity(
           opacity: (bottle != null || forcedOpacity) ? 1 : 0.4,
-          child: blinking ?
-              BlinkingWidget(
-                duration: const Duration(milliseconds: 700),
-                child: CellarPin(
+          child: blinking
+              ? BlinkingWidget(
+                  duration: const Duration(milliseconds: 700),
+                  child: CellarPin(
+                    bottle: bottle,
+                    onTap: widget.customize ? null : getBottleCallback(bottle, clusterId, rowId, subRowId, column),
+                    addIcon: addIcon,
+                  ),
+                )
+              : CellarPin(
                   bottle: bottle,
                   onTap: widget.customize ? null : getBottleCallback(bottle, clusterId, rowId, subRowId, column),
                   addIcon: addIcon,
                 ),
-              )
-          : CellarPin(
-            bottle: bottle,
-            onTap: widget.customize ? null : getBottleCallback(bottle, clusterId, rowId, subRowId, column),
-            addIcon: addIcon,
-          ),
         ),
       ),
     );
   }
 
-  Widget getSubRowLayout(int clusterId, int rowId, int highestSubRowIndex,
-      int width, List<Bottle> bottles) {
+  Widget getSubRowLayout(int clusterId, int rowId, int highestSubRowIndex, int width, List<Bottle> bottles) {
     List<Row> subRows = [];
 
-    List<Bottle> currentSubRowBottles = bottles
-        .where((element) => element.clusterSubY == highestSubRowIndex)
-        .toList();
-    List<Bottle> nextSubRowBottles = bottles
-        .where((element) => element.clusterSubY == highestSubRowIndex - 1)
-        .toList();
+    List<Bottle> currentSubRowBottles = bottles.where((element) => element.clusterSubY == highestSubRowIndex).toList();
+    List<Bottle> nextSubRowBottles = bottles.where((element) => element.clusterSubY == highestSubRowIndex - 1).toList();
 
     for (int i = highestSubRowIndex; i > 0; i--) {
       List<Widget> rowCells = [];
-      bool shouldAddRow = false;    // To decide if we display the subRow (should have at least one interactive pin)
+      bool shouldAddRow = false; // To decide if we display the subRow (should have at least one interactive pin)
       for (int j = 0; j < width - (i % 2); j++) {
         Bottle? currentBottle = currentSubRowBottles.firstWhereOrNull((bottle) => bottle.clusterX == j);
 
@@ -210,37 +203,26 @@ class _CellarLayoutState extends State<CellarLayout>
     );
   }
 
-  Column getRowLayout(int clusterId, int rowId, int width, int maxWidth,
-      int height, List<Bottle> bottles) {
+  Column getRowLayout(int clusterId, int rowId, int width, int maxWidth, int height, List<Bottle> bottles) {
     List<Widget> rowColumnChildren = [];
 
     List<int?> subY = bottles.map((bottle) => bottle.clusterSubY).toList();
     subY.add(0); // This ensure .reduce will always return at least 0
 
-    int maxSubY =
-        subY.reduce((value, element) => max(value ?? 0, element ?? 0)) ?? 0;
+    int maxSubY = subY.reduce((value, element) => max(value ?? 0, element ?? 0)) ?? 0;
 
     if (widget.shouldDisplayNewSubRow) {
       maxSubY++;
     }
 
-    rowColumnChildren
-        .add(getSubRowLayout(clusterId, rowId, maxSubY, width, bottles));
+    rowColumnChildren.add(getSubRowLayout(clusterId, rowId, maxSubY, width, bottles));
 
     List<Widget> mainRowCells = [];
     for (int i = 0; i < width; i++) {
-      Bottle? currentBottle = bottles.firstWhereOrNull(
-          (bottle) => bottle.clusterSubY == 0 && bottle.clusterX == i);
+      Bottle? currentBottle = bottles.firstWhereOrNull((bottle) => bottle.clusterSubY == 0 && bottle.clusterX == i);
 
-      mainRowCells.add(getCell(
-          currentBottle,
-          true,
-          clusterId,
-          rowId,
-          0,
-          i,
-          blinking: currentBottle != null && widget.blinkingBottleId == currentBottle.id)
-      );
+      mainRowCells
+          .add(getCell(currentBottle, true, clusterId, rowId, 0, i, blinking: currentBottle != null && widget.blinkingBottleId == currentBottle.id));
     }
 
     // Add some empty cells to fill the row
@@ -260,23 +242,14 @@ class _CellarLayoutState extends State<CellarLayout>
   }
 
   List<Widget> getClusterLayout(
-      int width,
-      int height,
-      CellarCluster cluster,
-      Map<int, List<Bottle>> clusterBottlesByRow,
-      Map<int, List<int>> clustersRowConfiguration) {
+      int width, int height, CellarCluster cluster, Map<int, List<Bottle>> clusterBottlesByRow, Map<int, List<int>> clustersRowConfiguration) {
     if (cluster.id == null) {
       return [];
     }
 
     List<Widget> rows = [];
 
-    List<Widget> firstRow = [
-      const SizedBox(
-          width: 35,
-          height: 35,
-          child: Center(child: Icon(Icons.wine_bar_outlined)))
-    ];
+    List<Widget> firstRow = [const SizedBox(width: 35, height: 35, child: Center(child: Icon(Icons.wine_bar_outlined)))];
     for (int i = 0; i < width; i++) {
       firstRow.add(SizedBox(
         width: 35,
@@ -308,63 +281,47 @@ class _CellarLayoutState extends State<CellarLayout>
         )
       ];
 
-      rowChildren.add(getRowLayout(
-          cluster.id!,
-          i,
-          width,
-          clustersRowConfiguration[cluster.id!]![i],
-          height,
-          clusterBottlesByRow[i] ?? []));
+      rowChildren.add(getRowLayout(cluster.id!, i, width, clustersRowConfiguration[cluster.id!]![i], height, clusterBottlesByRow[i] ?? []));
 
       if (widget.customize) {
-        rows.add(Stack(
-            alignment: AlignmentGeometry.lerp(
-                Alignment.topLeft, Alignment.bottomRight, 0.5)!,
+        rows.add(Stack(alignment: AlignmentGeometry.lerp(Alignment.topLeft, Alignment.bottomRight, 0.5)!, children: [
+          Opacity(
+            opacity: 0.2,
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              children: rowChildren,
+            ),
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.max,
             children: [
-              Opacity(
-                opacity: 0.2,
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: rowChildren,
-                ),
+              FilledButton.tonal(
+                onPressed: () {
+                  if (clustersRowConfiguration[cluster.id!]![i] <= 1) {
+                    return;
+                  }
+                  context.read<ClustersProvider>().updateClustersRowConfiguration(cluster.id!, i, clustersRowConfiguration[cluster.id!]![i] - 1);
+                },
+                child: const Icon(Icons.remove),
               ),
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  FilledButton.tonal(
-                    onPressed: () {
-                      if (clustersRowConfiguration[cluster.id!]![i] <= 1) {
-                        return;
-                      }
-                      context
-                          .read<ClustersProvider>()
-                          .updateClustersRowConfiguration(cluster.id!, i,
-                              clustersRowConfiguration[cluster.id!]![i] - 1);
-                    },
-                    child: const Icon(Icons.remove),
-                  ),
-                  const SizedBox(width: 10),
-                  Text(
-                    "${clustersRowConfiguration[cluster.id!]![i]}",
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(width: 10),
-                  FilledButton.tonal(
-                    onPressed: () {
-                      if (clustersRowConfiguration[cluster.id!]![i] >=
-                          cluster.width!) {
-                        return;
-                      }
-                      context
-                          .read<ClustersProvider>()
-                          .updateClustersRowConfiguration(cluster.id!, i,
-                              clustersRowConfiguration[cluster.id!]![i] + 1);
-                    },
-                    child: const Icon(Icons.add),
-                  ),
-                ],
+              const SizedBox(width: 10),
+              Text(
+                "${clustersRowConfiguration[cluster.id!]![i]}",
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
-            ]));
+              const SizedBox(width: 10),
+              FilledButton.tonal(
+                onPressed: () {
+                  if (clustersRowConfiguration[cluster.id!]![i] >= cluster.width!) {
+                    return;
+                  }
+                  context.read<ClustersProvider>().updateClustersRowConfiguration(cluster.id!, i, clustersRowConfiguration[cluster.id!]![i] + 1);
+                },
+                child: const Icon(Icons.add),
+              ),
+            ],
+          ),
+        ]));
       } else {
         rows.add(Row(
           crossAxisAlignment: CrossAxisAlignment.end,
@@ -377,19 +334,18 @@ class _CellarLayoutState extends State<CellarLayout>
 
   @override
   Widget build(BuildContext context) {
-    CellarType cellarType = context.read<ClustersProvider>().cellarType;
-    UnmodifiableListView<CellarCluster> clusters =
-        context.read<ClustersProvider>().clusters;
-    UnmodifiableMapView<int, Map<int, List<Bottle>>> bottlesByClusterByRow =
-        context.watch<BottlesProvider>().sortedBottlesByClusterByRow;
-    Map<int, List<int>> clustersRowConfiguration =
-        context.watch<ClustersProvider>().clustersRowConfiguration;
+    UnmodifiableMapView<int, Map<int, List<Bottle>>> bottlesByClusterByRow = context.watch<BottlesProvider>().sortedBottlesByClusterByRow;
+    Map<int, List<int>> clustersRowConfiguration = context.watch<ClustersProvider>().clustersRowConfiguration;
 
-    if (clusters.length > 1) {
-      (int, List<Tab>) tabs = getTabs(clusters);
+    if (widget.clusters.isEmpty) {
+      return const Text("Bad clusters configuration");
+    }
+
+    if (widget.clusters.length > 1) {
+      (int, List<Tab>) tabs = getTabs(widget.clusters);
 
       return DefaultTabController(
-        length: clusters.length,
+        length: widget.clusters.length,
         child: Column(
           children: [
             SizedBox(
@@ -399,9 +355,7 @@ class _CellarLayoutState extends State<CellarLayout>
               ),
             ),
             Expanded(
-                child: TabBarView(
-                    children: getTabsContent(cellarType, clusters,
-                        bottlesByClusterByRow, clustersRowConfiguration))),
+                child: TabBarView(children: getTabsContent(widget.cellarType, widget.clusters, bottlesByClusterByRow, clustersRowConfiguration))),
           ],
         ),
       );
@@ -413,18 +367,13 @@ class _CellarLayoutState extends State<CellarLayout>
         scrollDirection: Axis.horizontal,
         child: Padding(
           padding: const EdgeInsets.all(12.0),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(
-              clusters[0].name ?? cellarType.label,
+              widget.clusters[0].name ?? widget.cellarType.label,
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
-            ...getClusterLayout(
-                clusters[0].width ?? 0,
-                clusters[0].height ?? 0,
-                clusters[0],
-                bottlesByClusterByRow[clusters[0].id!]!,
-                clustersRowConfiguration),
+            ...getClusterLayout(widget.clusters[0].width ?? 0, widget.clusters[0].height ?? 0, widget.clusters[0],
+                bottlesByClusterByRow[widget.clusters[0].id!]!, clustersRowConfiguration),
           ]),
         ),
       ),

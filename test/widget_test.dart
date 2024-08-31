@@ -16,6 +16,7 @@ import 'package:cave_manager/screens/top_screens/home.dart';
 import 'package:cave_manager/screens/top_screens/statistics.dart';
 import 'package:cave_manager/screens/top_screens/take_out_quiz.dart';
 import 'package:cave_manager/widgets/bottle_card.dart';
+import 'package:cave_manager/widgets/cellar_layout.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -275,6 +276,23 @@ void main() {
       expect(find.text('Take out bottle'), findsNothing);
       expect(find.text('Place in cellar'), findsNothing);
       expect(find.text('Open bottle'), findsNothing);
+    });
+  });
+
+  group('Test cellar layout', () {
+    testWidgets('Pump no clusters cellar', (WidgetTester tester) async {
+      const testKey = Key('cellar');
+
+      // Build our app and trigger a frame.
+      await tester.pumpWidget(
+          ProviderInjector(
+              child: LocalizationsInjector(
+                  child: CellarLayout(key: testKey)
+              )
+          )
+      );
+
+      expect(find.byKey(testKey), findsAny);
     });
   });
 }

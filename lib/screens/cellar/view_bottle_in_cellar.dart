@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/bottle.dart';
+import '../../providers/clusters_provider.dart';
 import '../../widgets/cellar_layout.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -29,6 +31,7 @@ class _ViewBottleInCellarState extends State<ViewBottleInCellar> {
       body: CellarLayout(
         blinkingBottleId: widget.bottle.id,
         startingClusterId: widget.bottle.clusterId,
+        clusters: context.read<ClustersProvider>().clusters,
       ),
     );
   }

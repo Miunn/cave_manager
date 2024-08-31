@@ -1,6 +1,8 @@
+import 'package:cave_manager/providers/clusters_provider.dart';
 import 'package:cave_manager/screens/bottle_details.dart';
 import 'package:cave_manager/screens/settings.dart';
 import 'package:cave_manager/widgets/bottle_card.dart';
+import 'package:cave_manager/widgets/cellar_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -10,6 +12,8 @@ import '../../providers/bottles_provider.dart';
 import '../../widgets/cellar_fillng.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'cellar.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -21,19 +25,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    return BottleDetails(bottle: Bottle(
-      'name',
-      DateTime.now(),
-      false,
-      signature: 'estate',
-      color: WineColors.red.value,
-      alcoholLevel: 12.5,
-      grapeVariety: 'grape',
-      country: 'fr',
-      area: 'region',
-      subArea: 'sub region',
-      vintageYear: 1990,
-    ), isCellarConfigured: true);
+    return CellarLayout(clusters: context.read<ClustersProvider>().clusters);
     return Scaffold(
       appBar: AppBar(
         // TRY THIS: Try changing the color here to a specific color (to

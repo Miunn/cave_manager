@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/bottle.dart';
+import '../../providers/clusters_provider.dart';
 import '../../widgets/cellar_layout.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -37,6 +39,7 @@ class _MoveBottleState extends State<MoveBottle> {
         blinkingBottleId: widget.bottle.id,
         startingClusterId: widget.bottle.clusterId,
         shouldDisplayNewSubRow: true,
+        clusters: context.read<ClustersProvider>().clusters,
       ),
     );
   }

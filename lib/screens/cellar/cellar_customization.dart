@@ -2,6 +2,9 @@ import 'package:cave_manager/widgets/cellar_layout.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
+
+import '../../providers/clusters_provider.dart';
 
 class CellarCustomization extends StatefulWidget {
   const CellarCustomization({super.key});
@@ -22,8 +25,9 @@ class _CellarCustomizationState extends State<CellarCustomization> {
               Navigator.of(context).pop();
             }),
       ),
-      body: const CellarLayout(
+      body: CellarLayout(
         customize: true,
+        clusters: context.read<ClustersProvider>().clusters,
       ),
     );
   }
