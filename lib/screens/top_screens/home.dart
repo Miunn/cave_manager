@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/bottle.dart';
+import '../../models/enum_wine_colors.dart';
 import '../../providers/bottles_provider.dart';
 import '../../widgets/cellar_fillng.dart';
 
@@ -20,6 +21,19 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
+    return BottleDetails(bottle: Bottle(
+      'name',
+      DateTime.now(),
+      false,
+      signature: 'estate',
+      color: WineColors.red.value,
+      alcoholLevel: 12.5,
+      grapeVariety: 'grape',
+      country: 'fr',
+      area: 'region',
+      subArea: 'sub region',
+      vintageYear: 1990,
+    ), isCellarConfigured: true);
     return Scaffold(
       appBar: AppBar(
         // TRY THIS: Try changing the color here to a specific color (to

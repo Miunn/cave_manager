@@ -92,7 +92,7 @@ class _BottleDetailState extends State<BottleDetails> {
   @override
   Widget build(BuildContext context) {
     String? colorText;
-    Country? bottleCountry = (widget.bottle.country == null) ? null : Country.tryParse(widget.bottle.country!);
+    Country? bottleCountry = Country.tryParse(widget.bottle.country ?? "");
     String cellarPositionFormatted = (widget.bottle.clusterId == null || widget.bottle.clusterX == null || widget.bottle.clusterY == null)
         ? AppLocalizations.of(context)!.unknown
         : "${AppLocalizations.of(context)!.row} ${widget.bottle.clusterY! + 1} ${AppLocalizations.of(context)!.column} ${widget.bottle.clusterX! + 1}";
@@ -530,10 +530,10 @@ class _BottleDetailState extends State<BottleDetails> {
                   children: <Widget>[
                     BottleDetailLine(
                       leftSideText: AppLocalizations.of(context)!.country,
-                      rightSideText: widget.bottle.country == null
+                      rightSideText: bottleCountry == null
                           ? AppLocalizations.of(context)!.unknown
-                          : "${bottleCountry?.flagEmoji} ${bottleCountry?.displayNameNoCountryCode}",
-                      rightSideTextStyle: TextStyle(fontStyle: widget.bottle.country == null ? FontStyle.italic : FontStyle.normal),
+                          : "${bottleCountry.flagEmoji} ${bottleCountry.name}",
+                      rightSideTextStyle: TextStyle(fontStyle: bottleCountry == null ? FontStyle.italic : FontStyle.normal),
                     ),
                     const Divider(height: 1, color: Color.fromARGB(255, 220, 220, 220)),
                     BottleDetailLine(

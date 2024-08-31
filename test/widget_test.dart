@@ -16,8 +16,10 @@ import 'package:cave_manager/screens/top_screens/home.dart';
 import 'package:cave_manager/screens/top_screens/statistics.dart';
 import 'package:cave_manager/screens/top_screens/take_out_quiz.dart';
 import 'package:cave_manager/widgets/bottle_card.dart';
+import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/intl.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import 'injectors/LocalizationsInjector.dart';
@@ -140,7 +142,66 @@ void main() {
       expect(find.text('Unknown'), findsNWidgets(7));
       expect(find.text('Configure your cellar to register this bottle'), findsOneWidget);
 
+      expect(find.byType(OutlinedButton), findsNothing);
       expect(find.byType(FilledButton), findsOneWidget);
+    });
+
+    testWidgets('Without data, with cellar', (WidgetTester tester) async {
+      const testKey = Key('bottle_details');
+
+      // Build our app and trigger a frame.
+      await tester.pumpWidget(ProviderInjector(
+          child: LocalizationsInjector(
+              child: BottleDetails(
+                  key: testKey,
+                  bottle: Bottle.empty(),
+                  isCellarConfigured: true))));
+
+      expect(find.byKey(testKey), findsAny);
+      expect(find.text('No name'), findsNWidgets(2));
+      expect(find.text('No estate'), findsOneWidget);
+      expect(find.text('No vintage'), findsOneWidget);
+      expect(find.text('Color'), findsOneWidget);
+      expect(find.text('Alcohol level'), findsOneWidget);
+      expect(find.text('Grape'), findsOneWidget);
+      expect(find.text('Bottle created at'), findsOneWidget);
+      expect(find.text('Country'), findsOneWidget);
+      expect(find.text('Region'), findsOneWidget);
+      expect(find.text('Sub region'), findsOneWidget);
+
+      expect(find.text('Unknown'), findsNWidgets(7));
+      expect(find.text('This bottle is not in the cellar'), findsOneWidget);
+
+      expect(find.byType(OutlinedButton), findsOneWidget);
+      expect(find.byType(FilledButton), findsOneWidget);
+    });
+
+    testWidgets('With data', (WidgetTester tester) async {
+      Country country = Country.parse('fr');
+      await tester.pumpWidget(ProviderInjector(child: LocalizationsInjector(child: BottleDetails(bottle: Bottle(
+        'name',
+        DateTime.now(),
+        false,
+        signature: 'estate',
+        color: WineColors.red.value,
+        alcoholLevel: 12.5,
+        grapeVariety: 'grape',
+        country: country.countryCode,
+        area: 'region',
+        subArea: 'sub region',
+        vintageYear: 1990,
+      ), isCellarConfigured: true))));
+
+      expect(find.text('name'), findsNWidgets(2));
+      expect(find.text('estate'), findsOneWidget);
+      expect(find.text('1990'), findsOneWidget);
+      expect(find.text('Red'), findsOneWidget);
+      expect(find.text('12.5 %'), findsOneWidget);
+      expect(find.text('grape'), findsOneWidget);
+      expect(find.text(DateFormat.yMMMd().format(DateTime.now())), findsOneWidget);
+      expect(find.text("${country.flagEmoji} ${country.name}"), findsOneWidget);
+      expect(find.text('region'), findsOneWidget);
+      expect(find.text('sub region'), findsOneWidget);
     });
   });
 
