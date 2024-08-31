@@ -100,15 +100,47 @@ void main() {
   });
 
   group('Test display bottle details', () {
-    testWidgets('Display bottle details', (WidgetTester tester) async {
+    testWidgets('Pump widget', (WidgetTester tester) async {
       const testKey = Key('bottle_details');
 
       // Build our app and trigger a frame.
       await tester.pumpWidget(ProviderInjector(
           child: LocalizationsInjector(
-              child: BottleDetails(key: testKey, bottle: Bottle.empty()))));
+              child: BottleDetails(
+                  key: testKey,
+                  bottle: Bottle.empty(),
+                  isCellarConfigured: false))));
 
       expect(find.byKey(testKey), findsAny);
+    });
+
+    testWidgets('Without data, without cellar', (WidgetTester tester) async {
+      const testKey = Key('bottle_details');
+
+      // Build our app and trigger a frame.
+      await tester.pumpWidget(ProviderInjector(
+          child: LocalizationsInjector(
+              child: BottleDetails(
+                  key: testKey,
+                  bottle: Bottle.empty(),
+                  isCellarConfigured: false))));
+
+      expect(find.byKey(testKey), findsAny);
+      expect(find.text('No name'), findsNWidgets(2));
+      expect(find.text('No estate'), findsOneWidget);
+      expect(find.text('No vintage'), findsOneWidget);
+      expect(find.text('Color'), findsOneWidget);
+      expect(find.text('Alcohol level'), findsOneWidget);
+      expect(find.text('Grape'), findsOneWidget);
+      expect(find.text('Bottle created at'), findsOneWidget);
+      expect(find.text('Country'), findsOneWidget);
+      expect(find.text('Region'), findsOneWidget);
+      expect(find.text('Sub region'), findsOneWidget);
+
+      expect(find.text('Unknown'), findsNWidgets(7));
+      expect(find.text('Configure your cellar to register this bottle'), findsOneWidget);
+
+      expect(find.byType(FilledButton), findsOneWidget);
     });
   });
 
@@ -129,7 +161,10 @@ void main() {
     });
 
     testWidgets('With bottle outside of cellar', (WidgetTester tester) async {
-      await tester.pumpWidget(ProviderInjector(child: LocalizationsInjector(child: BottleCard(bottle: Bottle(
+      await tester.pumpWidget(ProviderInjector(
+          child: LocalizationsInjector(
+              child: BottleCard(
+                  bottle: Bottle(
         'name',
         DateTime.now(),
         false,
@@ -144,7 +179,10 @@ void main() {
     });
 
     testWidgets('With bottle inside of cellar', (WidgetTester tester) async {
-      await tester.pumpWidget(ProviderInjector(child: LocalizationsInjector(child: BottleCard(bottle: Bottle(
+      await tester.pumpWidget(ProviderInjector(
+          child: LocalizationsInjector(
+              child: BottleCard(
+                  bottle: Bottle(
         'name',
         DateTime.now(),
         false,
@@ -154,7 +192,7 @@ void main() {
         clusterY: 0,
         isInCellar: true,
       )))));
-      
+
       expect(find.text('See in cellar'), findsOneWidget);
       expect(find.text('Take out bottle'), findsOneWidget);
       expect(find.text('Place in cellar'), findsNothing);
@@ -162,7 +200,10 @@ void main() {
     });
 
     testWidgets('With opened bottle', (WidgetTester tester) async {
-      await tester.pumpWidget(ProviderInjector(child: LocalizationsInjector(child: BottleCard(bottle: Bottle(
+      await tester.pumpWidget(ProviderInjector(
+          child: LocalizationsInjector(
+              child: BottleCard(
+                  bottle: Bottle(
         'name',
         DateTime.now(),
         true,

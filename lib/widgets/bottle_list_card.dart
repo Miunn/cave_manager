@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../models/bottle.dart';
 import '../providers/bottles_provider.dart';
+import '../providers/clusters_provider.dart';
 import '../screens/bottle_details.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -163,7 +164,7 @@ class _BottleListCardState extends State<BottleListCard> {
             ),
           ),
         ),
-        openBuilder: (BuildContext context, void Function({Object? returnValue}) action) => BottleDetails(bottle: bottle),
+        openBuilder: (BuildContext context, void Function({Object? returnValue}) action) => BottleDetails(bottle: bottle, isCellarConfigured: context.read<ClustersProvider>().isCellarConfigured),
         tappable: false,
       ),
     );

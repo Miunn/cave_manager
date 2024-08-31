@@ -95,6 +95,7 @@ class _CellarLayoutState extends State<CellarLayout>
           MaterialPageRoute(
             builder: (context) => BottleDetails(
               bottle: bottle,
+              isCellarConfigured: context.read<ClustersProvider>().isCellarConfigured,
             ),
           ),
         );

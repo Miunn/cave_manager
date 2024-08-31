@@ -1,6 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:cave_manager/models/bottle.dart';
 import 'package:cave_manager/models/enum_wine_colors.dart';
+import 'package:cave_manager/providers/clusters_provider.dart';
 import 'package:cave_manager/screens/bottle_details.dart';
 import 'package:cave_manager/screens/cellar/view_bottle_in_cellar.dart';
 import 'package:cave_manager/widgets/dialogs/dialog_open_bottle.dart';
@@ -139,7 +140,7 @@ class BottleCard extends StatelessWidget {
             ],
           ),
         ),
-        openBuilder: (BuildContext context, void Function({Object? returnValue}) action) => BottleDetails(bottle: bottle),
+        openBuilder: (BuildContext context, void Function({Object? returnValue}) action) => BottleDetails(bottle: bottle, isCellarConfigured: context.read<ClustersProvider>().isCellarConfigured),
         tappable: false,
       ),
     );

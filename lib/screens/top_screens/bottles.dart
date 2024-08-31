@@ -1,5 +1,6 @@
 import 'package:cave_manager/models/enum_sort_type.dart';
 import 'package:cave_manager/providers/bottles_provider.dart';
+import 'package:cave_manager/providers/clusters_provider.dart';
 import 'package:cave_manager/screens/bottle_details.dart';
 import 'package:cave_manager/screens/settings.dart';
 import 'package:cave_manager/widgets/bottle_list_card.dart';
@@ -144,7 +145,7 @@ class _BottlesState extends State<Bottles> {
                           Navigator.of(context).push(
                             MaterialPageRoute<Bottle>(
                               builder: (BuildContext context) =>
-                                  BottleDetails(bottle: item),
+                                  BottleDetails(bottle: item, isCellarConfigured: context.read<ClustersProvider>().isCellarConfigured),
                             ),
                           );
                         },
