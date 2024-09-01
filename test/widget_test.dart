@@ -17,6 +17,7 @@ import 'package:cave_manager/screens/top_screens/statistics.dart';
 import 'package:cave_manager/screens/top_screens/take_out_quiz.dart';
 import 'package:cave_manager/widgets/bottle_card.dart';
 import 'package:cave_manager/widgets/cellar_layout.dart';
+import 'package:cave_manager/widgets/cellar_pin.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -276,6 +277,79 @@ void main() {
       expect(find.text('Take out bottle'), findsNothing);
       expect(find.text('Place in cellar'), findsNothing);
       expect(find.text('Open bottle'), findsNothing);
+    });
+  });
+  
+  group('Test cellar pin', () {
+    testWidgets('Without bottle', (WidgetTester tester) async {
+      const testKey = Key('cellar_pin');
+
+      await tester.pumpWidget(
+        const ProviderInjector(
+          child: LocalizationsInjector(
+            child: CellarPin(key: testKey)
+          )
+        )
+      );
+
+      expect(find.byKey(testKey), findsOneWidget);
+    });
+    
+    testWidgets('With red bottle', (WidgetTester tester) async {
+      const testKey = Key('cellar_pin');
+      
+      await tester.pumpWidget(
+        ProviderInjector(
+          child: LocalizationsInjector(
+            child: CellarPin(
+              key: testKey,
+              bottle: Bottle(null, null, null, color: WineColors.red.value)
+            )
+          )
+        )
+      );
+      
+      expect(find.byKey(testKey), findsOneWidget);
+      expect(((tester.firstWidget(find.byType(Container)) as Container).decoration
+      as BoxDecoration).color, Colors.red);
+    });
+
+    testWidgets('With rosé bottle', (WidgetTester tester) async {
+      const testKey = Key('cellar_pin');
+
+      await tester.pumpWidget(
+          ProviderInjector(
+              child: LocalizationsInjector(
+                  child: CellarPin(
+                      key: testKey,
+                      bottle: Bottle(null, null, null, color: WineColors.pink.value)
+                  )
+              )
+          )
+      );
+
+      expect(find.byKey(testKey), findsOneWidget);
+      expect(((tester.firstWidget(find.byType(Container)) as Container).decoration
+      as BoxDecoration).color, Colors.pink);
+    });
+
+    testWidgets('With white bottle', (WidgetTester tester) async {
+      const testKey = Key('cellar_pin');
+
+      await tester.pumpWidget(
+          ProviderInjector(
+              child: LocalizationsInjector(
+                  child: CellarPin(
+                      key: testKey,
+                      bottle: Bottle(null, null, null, color: WineColors.white.value)
+                  )
+              )
+          )
+      );
+
+      expect(find.byKey(testKey), findsOneWidget);
+      expect(((tester.firstWidget(find.byType(Container)) as Container).decoration
+      as BoxDecoration).color, const Color.fromARGB(255, 220, 220, 220));
     });
   });
 

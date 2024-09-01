@@ -19,7 +19,7 @@ class LocalizationsInjector extends StatelessWidget {
       supportedLocales: const [
         Locale('en', ''),
       ],
-      home: child,
+      home: Scaffold(body: child),
     );
   }
 }

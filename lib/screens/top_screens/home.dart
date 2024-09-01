@@ -1,19 +1,12 @@
-import 'package:cave_manager/providers/clusters_provider.dart';
-import 'package:cave_manager/screens/bottle_details.dart';
 import 'package:cave_manager/screens/settings.dart';
 import 'package:cave_manager/widgets/bottle_card.dart';
-import 'package:cave_manager/widgets/cellar_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/bottle.dart';
-import '../../models/enum_wine_colors.dart';
 import '../../providers/bottles_provider.dart';
 import '../../widgets/cellar_fillng.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-import 'cellar.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
