@@ -346,6 +346,7 @@ class _CellarLayoutState extends State<CellarLayout> with SingleTickerProviderSt
 
       return DefaultTabController(
         length: widget.clusters.length,
+        initialIndex: tabs.$1,
         child: Column(
           children: [
             SizedBox(

@@ -414,5 +414,70 @@ void main() {
       expect(find.byType(Tab), findsNothing);
       expect(find.text('Cluster 1'), findsOneWidget);
     });
+
+    testWidgets('Multiple clusters and default selected', (WidgetTester tester) async {
+      const testKey = Key('cellar');
+
+      await tester.pumpWidget(
+          ProviderInjector(
+              child: LocalizationsInjector(
+                  child: CellarLayout(
+                      key: testKey,
+                      clusters: UnmodifiableListView([
+                        CellarCluster(
+                            id: 0,
+                            width: 10,
+                            height: 10,
+                            name: "Cluster 1"
+                        ),
+                        CellarCluster(
+                            id: 1,
+                            width: 8,
+                            height: 9,
+                            name: "Cluster 2"
+                        )
+                      ]),
+                      bottlesByClusterByRow: UnmodifiableMapView({
+                        0: {
+                          0: [],
+                          1: [],
+                          2: [],
+                          3: [],
+                          4: [],
+                          5: [],
+                          6: [],
+                          7: [],
+                          8: [],
+                          9: [],
+                        },
+                        1: {
+                          0: [],
+                          1: [],
+                          2: [],
+                          3: [],
+                          4: [],
+                          5: [],
+                          6: [],
+                          7: [],
+                          8: [],
+                          9: [],
+                        }
+                      }),
+                      clustersRowConfiguration: const {
+                        0: [10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+                        1: [8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+                      },
+                    startingClusterId: 1,
+                  )
+              )
+          )
+      );
+
+      expect(find.byKey(testKey), findsOneWidget);
+      expect(find.byType(CellarPin), findsNWidgets(72));
+      expect(find.byType(Tab), findsNWidgets(2));
+      expect(find.text('Cluster 1'), findsOneWidget);
+      expect(find.text('Cluster 2'), findsOneWidget);
+    });
   });
 }
