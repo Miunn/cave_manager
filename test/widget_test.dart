@@ -4,9 +4,11 @@
 // utility in the flutter_test package. For example, you can send tap and scroll
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
+import 'dart:collection';
 import 'dart:io';
 
 import 'package:cave_manager/models/bottle.dart';
+import 'package:cave_manager/models/cluster.dart';
 import 'package:cave_manager/models/enum_wine_colors.dart';
 import 'package:cave_manager/screens/add_bottle_dialog.dart';
 import 'package:cave_manager/screens/bottle_details.dart';
@@ -361,12 +363,56 @@ void main() {
       await tester.pumpWidget(
           ProviderInjector(
               child: LocalizationsInjector(
-                  child: CellarLayout(key: testKey)
+                  child: CellarLayout(key: testKey, clusters: UnmodifiableListView([]), bottlesByClusterByRow: UnmodifiableMapView({}), clustersRowConfiguration: const {})
               )
           )
       );
 
       expect(find.byKey(testKey), findsAny);
+    });
+
+    testWidgets('Count cellar configuration', (WidgetTester tester) async {
+      const testKey = Key('cellar');
+
+      await tester.pumpWidget(
+          ProviderInjector(
+              child: LocalizationsInjector(
+                  child: CellarLayout(
+                      key: testKey,
+                    clusters: UnmodifiableListView([
+                      CellarCluster(
+                        id: 0,
+                        width: 10,
+                        height: 10,
+                        name: "Cluster 1"
+                      )
+                    ]),
+                    bottlesByClusterByRow: UnmodifiableMapView({
+                      0: {
+                        0: [],
+                        1: [],
+                        2: [],
+                        3: [],
+                        4: [],
+                        5: [],
+                        6: [],
+                        7: [],
+                        8: [],
+                        9: [],
+                      }
+                    }),
+                    clustersRowConfiguration: const {
+                      0: [10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+                    }
+                  )
+              )
+          )
+      );
+
+      expect(find.byKey(testKey), findsOneWidget);
+      expect(find.byType(CellarPin), findsNWidgets(100));
+      expect(find.byType(Tab), findsNothing);
+      expect(find.text('Cluster 1'), findsOneWidget);
     });
   });
 }

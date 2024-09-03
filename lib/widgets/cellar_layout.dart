@@ -14,20 +14,22 @@ import '../screens/bottle_details.dart';
 import 'cellar_pin.dart';
 
 class CellarLayout extends StatefulWidget {
-  final UnmodifiableListView<CellarCluster> clusters;
-
-  CellarLayout(
+  const CellarLayout(
       {super.key,
       this.cellarType = CellarType.none,
-      UnmodifiableListView<CellarCluster>? clusters,
+      required this.clusters,
+      required this.bottlesByClusterByRow,
+      required this.clustersRowConfiguration,
       this.onTapEmptyCallback,
       this.blinkingBottleId,
       this.startingClusterId,
       this.customize = false,
-      this.shouldDisplayNewSubRow = false})
-      : clusters = clusters ?? UnmodifiableListView([]);
+      this.shouldDisplayNewSubRow = false});
 
   final CellarType cellarType;
+  final UnmodifiableListView<CellarCluster> clusters;
+  final UnmodifiableMapView<int, Map<int, List<Bottle>>> bottlesByClusterByRow;
+  final Map<int, List<int>> clustersRowConfiguration;
   final void Function(int clusterId, int row, int subRow, int column)? onTapEmptyCallback;
   final int? blinkingBottleId;
   final int? startingClusterId;
@@ -334,8 +336,6 @@ class _CellarLayoutState extends State<CellarLayout> with SingleTickerProviderSt
 
   @override
   Widget build(BuildContext context) {
-    UnmodifiableMapView<int, Map<int, List<Bottle>>> bottlesByClusterByRow = context.watch<BottlesProvider>().sortedBottlesByClusterByRow;
-    Map<int, List<int>> clustersRowConfiguration = context.watch<ClustersProvider>().clustersRowConfiguration;
 
     if (widget.clusters.isEmpty) {
       return const Text("Bad clusters configuration");
@@ -355,7 +355,8 @@ class _CellarLayoutState extends State<CellarLayout> with SingleTickerProviderSt
               ),
             ),
             Expanded(
-                child: TabBarView(children: getTabsContent(widget.cellarType, widget.clusters, bottlesByClusterByRow, clustersRowConfiguration))),
+                child: TabBarView(children: getTabsContent(widget.cellarType, widget.clusters, widget.bottlesByClusterByRow,
+                    widget.clustersRowConfiguration))),
           ],
         ),
       );
@@ -373,7 +374,7 @@ class _CellarLayoutState extends State<CellarLayout> with SingleTickerProviderSt
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             ...getClusterLayout(widget.clusters[0].width ?? 0, widget.clusters[0].height ?? 0, widget.clusters[0],
-                bottlesByClusterByRow[widget.clusters[0].id!]!, clustersRowConfiguration),
+                widget.bottlesByClusterByRow[widget.clusters[0].id!]!, widget.clustersRowConfiguration),
           ]),
         ),
       ),

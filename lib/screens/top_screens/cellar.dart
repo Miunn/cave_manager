@@ -1,11 +1,13 @@
 import 'dart:collection';
 
+import 'package:cave_manager/providers/bottles_provider.dart';
 import 'package:cave_manager/screens/cellar/cellar_customization.dart';
 import 'package:cave_manager/screens/settings.dart';
 import 'package:cave_manager/widgets/cellar_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../models/bottle.dart';
 import '../../models/cluster.dart';
 import '../../providers/clusters_provider.dart';
 import '../../widgets/cellar_configuration.dart';
@@ -20,9 +22,13 @@ class Cellar extends StatefulWidget {
 class _CellarState extends State<Cellar> {
   bool isCellarBeingConfigured = false;
 
-  Widget getCellarLayout(bool cellarConfigured, UnmodifiableListView<CellarCluster> clusters) {
+  Widget getCellarLayout(
+      bool cellarConfigured,
+      UnmodifiableListView<CellarCluster> clusters,
+      UnmodifiableMapView<int, Map<int, List<Bottle>>> bottlesByClusterByRow,
+      Map<int, List<int>> clustersRowConfiguration) {
     if (cellarConfigured) {
-      return CellarLayout(clusters: clusters);
+      return CellarLayout(clusters: clusters, bottlesByClusterByRow: bottlesByClusterByRow, clustersRowConfiguration: clustersRowConfiguration);
     }
 
     return Center(
@@ -93,7 +99,8 @@ class _CellarState extends State<Cellar> {
         title: const Text("Cave"),
         actions: getActionsList(clusters.isCellarConfigured),
       ),
-      body: getCellarLayout(clusters.isCellarConfigured, clusters.clusters),
+      body: getCellarLayout(clusters.isCellarConfigured, clusters.clusters, context.read<BottlesProvider>().sortedBottlesByClusterByRow, clusters
+          .clustersRowConfiguration),
     );
   }
 }

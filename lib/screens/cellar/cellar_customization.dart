@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
+import '../../providers/bottles_provider.dart';
 import '../../providers/clusters_provider.dart';
 
 class CellarCustomization extends StatefulWidget {
@@ -28,6 +29,8 @@ class _CellarCustomizationState extends State<CellarCustomization> {
       body: CellarLayout(
         customize: true,
         clusters: context.read<ClustersProvider>().clusters,
+        bottlesByClusterByRow: context.read<BottlesProvider>().sortedBottlesByClusterByRow,
+        clustersRowConfiguration: context.read<ClustersProvider>().clustersRowConfiguration,
       ),
     );
   }

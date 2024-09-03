@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/bottle.dart';
+import '../../providers/bottles_provider.dart';
 import '../../providers/clusters_provider.dart';
 import '../../widgets/cellar_layout.dart';
 
@@ -32,6 +33,8 @@ class _ViewBottleInCellarState extends State<ViewBottleInCellar> {
         blinkingBottleId: widget.bottle.id,
         startingClusterId: widget.bottle.clusterId,
         clusters: context.read<ClustersProvider>().clusters,
+        bottlesByClusterByRow: context.read<BottlesProvider>().sortedBottlesByClusterByRow,
+        clustersRowConfiguration: context.read<ClustersProvider>().clustersRowConfiguration,
       ),
     );
   }

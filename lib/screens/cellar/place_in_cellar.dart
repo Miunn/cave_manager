@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/bottle.dart';
+import '../../providers/bottles_provider.dart';
 import '../../widgets/cellar_layout.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -41,6 +42,9 @@ class _PlaceInCellarState extends State<PlaceInCellar> {
             Navigator.of(context).pop(widget.bottle);
           },
           shouldDisplayNewSubRow: true,
+          clusters: context.read<ClustersProvider>().clusters,
+          bottlesByClusterByRow: context.read<BottlesProvider>().sortedBottlesByClusterByRow,
+          clustersRowConfiguration: context.read<ClustersProvider>().clustersRowConfiguration,
         ),
       ),
     );

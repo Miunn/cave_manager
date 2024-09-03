@@ -1,3 +1,4 @@
+import 'package:cave_manager/providers/bottles_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -40,6 +41,8 @@ class _MoveBottleState extends State<MoveBottle> {
         startingClusterId: widget.bottle.clusterId,
         shouldDisplayNewSubRow: true,
         clusters: context.read<ClustersProvider>().clusters,
+        bottlesByClusterByRow: context.read<BottlesProvider>().sortedBottlesByClusterByRow,
+        clustersRowConfiguration: context.read<ClustersProvider>().clustersRowConfiguration,
       ),
     );
   }
