@@ -402,7 +402,7 @@ void main() {
                       }
                     }),
                     clustersRowConfiguration: const {
-                      0: [10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+                      0: [10, 10, 9, 10, 10, 5, 10, 10, 10, 10],
                     }
                   )
               )
@@ -410,7 +410,7 @@ void main() {
       );
 
       expect(find.byKey(testKey), findsOneWidget);
-      expect(find.byType(CellarPin), findsNWidgets(100));
+      expect(find.byType(CellarPin), findsNWidgets(94));
       expect(find.byType(Tab), findsNothing);
       expect(find.text('Cluster 1'), findsOneWidget);
     });
@@ -465,7 +465,7 @@ void main() {
                       }),
                       clustersRowConfiguration: const {
                         0: [10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
-                        1: [8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+                        1: [8, 8, 8, 8, 7, 8, 8, 8, 8, 8],
                       },
                     startingClusterId: 1,
                   )
@@ -474,7 +474,7 @@ void main() {
       );
 
       expect(find.byKey(testKey), findsOneWidget);
-      expect(find.byType(CellarPin), findsNWidgets(72));
+      expect(find.byType(CellarPin), findsNWidgets(71));
       expect(find.byType(Tab), findsNWidgets(2));
       expect(find.text('Cluster 1'), findsOneWidget);
       expect(find.text('Cluster 2'), findsOneWidget);

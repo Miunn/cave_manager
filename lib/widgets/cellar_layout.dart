@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:cave_manager/models/cluster.dart';
-import 'package:cave_manager/providers/bottles_provider.dart';
 import 'package:cave_manager/providers/clusters_provider.dart';
 import 'package:cave_manager/widgets/blinking.dart';
 import 'package:collection/collection.dart';
@@ -229,7 +228,7 @@ class _CellarLayoutState extends State<CellarLayout> with SingleTickerProviderSt
 
     // Add some empty cells to fill the row
     for (int j = width; j < maxWidth; j++) {
-      rowColumnChildren.add(
+      mainRowCells.add(
         const SizedBox(
           width: 35,
           height: 35,
@@ -283,7 +282,7 @@ class _CellarLayoutState extends State<CellarLayout> with SingleTickerProviderSt
         )
       ];
 
-      rowChildren.add(getRowLayout(cluster.id!, i, width, clustersRowConfiguration[cluster.id!]![i], height, clusterBottlesByRow[i] ?? []));
+      rowChildren.add(getRowLayout(cluster.id!, i, clustersRowConfiguration[cluster.id!]![i], width, height, clusterBottlesByRow[i] ?? []));
 
       if (widget.customize) {
         rows.add(Stack(alignment: AlignmentGeometry.lerp(Alignment.topLeft, Alignment.bottomRight, 0.5)!, children: [

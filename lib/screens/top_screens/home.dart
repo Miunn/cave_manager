@@ -65,10 +65,10 @@ class _HomeState extends State<Home> {
         }
       }),
       clustersRowConfiguration: const {
-        0: [10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+        0: [10, 10, 9, 10, 10, 5, 10, 10, 10, 10],
         1: [8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
       },
-      startingClusterId: 1,
+      startingClusterId: 0,
     );
     return Scaffold(
       appBar: AppBar(
