@@ -2,7 +2,7 @@ import 'dart:collection';
 
 import 'package:cave_manager/providers/bottles_provider.dart';
 import 'package:cave_manager/screens/cellar/cellar_customization.dart';
-import 'package:cave_manager/screens/settings.dart';
+import 'package:cave_manager/screens/appBarNavigation/settings.dart';
 import 'package:cave_manager/widgets/cellar_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

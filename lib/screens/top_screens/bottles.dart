@@ -2,7 +2,7 @@ import 'package:cave_manager/models/enum_sort_type.dart';
 import 'package:cave_manager/providers/bottles_provider.dart';
 import 'package:cave_manager/providers/clusters_provider.dart';
 import 'package:cave_manager/screens/bottle_details.dart';
-import 'package:cave_manager/screens/settings.dart';
+import 'package:cave_manager/screens/appBarNavigation/settings.dart';
 import 'package:cave_manager/widgets/bottle_list_card.dart';
 import 'package:cave_manager/widgets/dropdown_chip.dart';
 import 'package:flutter/material.dart';

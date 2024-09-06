@@ -298,7 +298,9 @@ class _BottleDetailState extends State<BottleDetails> {
                               TextStyle(fontStyle: (widget.bottle.name == null || widget.bottle.name!.isEmpty) ? FontStyle.italic : FontStyle.normal),
                         ),
                         Text(
-                          widget.bottle.signature ?? AppLocalizations.of(context)!.noEstate,
+                          (widget.bottle.signature != null && widget.bottle.signature!.isNotEmpty)
+                              ? widget.bottle.signature!
+                              : AppLocalizations.of(context)!.noEstate,
                           style: TextStyle(
                               fontStyle: (widget.bottle.signature == null || widget.bottle.signature!.isEmpty) ? FontStyle.italic : FontStyle.normal),
                         ),
@@ -310,7 +312,7 @@ class _BottleDetailState extends State<BottleDetails> {
                               style: TextStyle(fontStyle: (widget.bottle.vintageYear == null) ? FontStyle.italic : FontStyle.normal),
                             ),
                             const Spacer(),
-                            const Text("75cl")
+                            Text("${widget.bottle.capacity ?? 0}cl")
                           ],
                         ),
                       ],
@@ -425,7 +427,9 @@ class _BottleDetailState extends State<BottleDetails> {
                     ),
                     BottleDetailLine(
                       leftSideText: AppLocalizations.of(context)!.grapeVariety,
-                      rightSideText: widget.bottle.grapeVariety ?? AppLocalizations.of(context)!.unknown,
+                      rightSideText: (widget.bottle.grapeVariety != null && widget.bottle.grapeVariety!.isNotEmpty)
+                          ? (widget.bottle.grapeVariety)
+                          : AppLocalizations.of(context)!.unknown,
                       rightSideTextStyle: TextStyle(
                           fontStyle:
                               (widget.bottle.grapeVariety == null || widget.bottle.grapeVariety!.isEmpty) ? FontStyle.italic : FontStyle.normal),
@@ -530,9 +534,8 @@ class _BottleDetailState extends State<BottleDetails> {
                   children: <Widget>[
                     BottleDetailLine(
                       leftSideText: AppLocalizations.of(context)!.country,
-                      rightSideText: bottleCountry == null
-                          ? AppLocalizations.of(context)!.unknown
-                          : "${bottleCountry.flagEmoji} ${bottleCountry.name}",
+                      rightSideText:
+                          bottleCountry == null ? AppLocalizations.of(context)!.unknown : "${bottleCountry.flagEmoji} ${bottleCountry.name}",
                       rightSideTextStyle: TextStyle(fontStyle: bottleCountry == null ? FontStyle.italic : FontStyle.normal),
                     ),
                     const Divider(height: 1, color: Color.fromARGB(255, 220, 220, 220)),

@@ -10,16 +10,18 @@ class BottleDatabaseInterface {
   static final BottleDatabaseInterface instance = BottleDatabaseInterface._internal();
 
   static Database? _database;
+
   BottleDatabaseInterface._internal();
 
   static const String databaseName = "bottles_database.db";
 
-  static const int versionNumber = 23;
+  static const int versionNumber = 24;
 
   static const String tableBottles = 'Bottles';
 
   static const String colId = 'id';
   static const String colName = 'name';
+  static const String colCapacity = 'capacity';
   static const String colSignature = 'signature';
   static const String colVintageYear = 'vintageYear';
   static const String colColor = 'color';
@@ -70,6 +72,7 @@ class BottleDatabaseInterface {
     await db.execute("CREATE TABLE IF NOT EXISTS $tableBottles ("
         " $colId INTEGER PRIMARY KEY AUTOINCREMENT, "
         " $colName TEXT NOT NULL, "
+        " $colCapacity INTEGER DEFAULT 0, "
         " $colSignature TEXT, "
         " $colVintageYear INTEGER, "
         " $colColor TEXT, "
@@ -112,11 +115,7 @@ class BottleDatabaseInterface {
   Future<Map<int, List<Bottle>>> getByClusters() async {
     final db = await database;
 
-    final result = await db.query(
-        tableBottles,
-        where: '$colIsOpen = FALSE AND $colClusterId IS NOT NULL',
-        orderBy: '$colId ASC'
-    );
+    final result = await db.query(tableBottles, where: '$colIsOpen = FALSE AND $colClusterId IS NOT NULL', orderBy: '$colId ASC');
 
     List<Bottle> rawList = result.map((json) => Bottle.fromMap(json)).toList();
 
@@ -133,12 +132,7 @@ class BottleDatabaseInterface {
   Future<List<Bottle>> getInCluster(CellarCluster cluster) async {
     final db = await database;
 
-    final result = await db.query(
-        tableBottles,
-        where: '$colClusterId = ?',
-        whereArgs: [cluster.id],
-        orderBy: '$colId ASC'
-    );
+    final result = await db.query(tableBottles, where: '$colClusterId = ?', whereArgs: [cluster.id], orderBy: '$colId ASC');
 
     return result.map((json) => Bottle.fromMap(json)).toList();
   }
@@ -146,11 +140,7 @@ class BottleDatabaseInterface {
   Future<List<Bottle>> getClosed() async {
     final db = await database;
 
-    final result = await db.query(
-        tableBottles,
-        where: '$colIsOpen = FALSE',
-        orderBy: '$colId ASC'
-    );
+    final result = await db.query(tableBottles, where: '$colIsOpen = FALSE', orderBy: '$colId ASC');
 
     return result.map((json) => Bottle.fromMap(json)).toList();
   }
@@ -158,11 +148,7 @@ class BottleDatabaseInterface {
   Future<List<Bottle>> getOpened() async {
     final db = await database;
 
-    final result = await db.query(
-        tableBottles,
-        where: '$colIsOpen = TRUE',
-        orderBy: '$colId ASC'
-    );
+    final result = await db.query(tableBottles, where: '$colIsOpen = TRUE', orderBy: '$colId ASC');
 
     return result.map((json) => Bottle.fromMap(json)).toList();
   }
@@ -190,8 +176,7 @@ class BottleDatabaseInterface {
     // `conflictAlgorithm` to use in case the same Note is inserted twice.
     //
     // In this case, replace any previous data.
-    return await db.insert(tableBottles, bottle.toMap(),
-        conflictAlgorithm: ConflictAlgorithm.replace);
+    return await db.insert(tableBottles, bottle.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   // Define a function to update a note
@@ -247,30 +232,21 @@ class BottleDatabaseInterface {
 
   Future<int> getRedCount() async {
     final db = await database;
-    final maps = await db.query(
-        tableBottles,
-        where: "$colColor = 'red'"
-    );
+    final maps = await db.query(tableBottles, where: "$colColor = 'red'");
 
     return maps.length;
   }
 
   Future<int> getPinkCount() async {
     final db = await database;
-    final maps = await db.query(
-        tableBottles,
-        where: "$colColor = 'pink'"
-    );
+    final maps = await db.query(tableBottles, where: "$colColor = 'pink'");
 
     return maps.length;
   }
 
   Future<int> getWhiteCount() async {
     final db = await database;
-    final maps = await db.query(
-        tableBottles,
-        where: "$colColor = 'white'"
-    );
+    final maps = await db.query(tableBottles, where: "$colColor = 'white'");
 
     return maps.length;
   }
@@ -280,12 +256,7 @@ class BottleDatabaseInterface {
     final db = await database;
 
     // Query the table for all Bottles. {SELECT * FROM Bottles ORDER BY Id ASC}
-    final result = await db.query(
-        tableBottles,
-        where: '$colIsOpen = false',
-        orderBy: '$colId DESC',
-        limit: 5
-    );
+    final result = await db.query(tableBottles, where: '$colIsOpen = false', orderBy: '$colId DESC', limit: 5);
 
     // Convert the List<Map<String, dynamic> into a List<Bottle>.
     return result.map((json) => Bottle.fromMap(json)).toList();

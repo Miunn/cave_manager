@@ -7,6 +7,7 @@ import 'package:path_provider/path_provider.dart';
 class Bottle {
   int? id;
   String? name;
+  int? capacity;
   String? signature;
   int? vintageYear;
   String? color;
@@ -29,6 +30,7 @@ class Bottle {
 
   Bottle(this.name, this.createdAt, this.isOpen,
       {this.id,
+      this.capacity,
       this.isInCellar,
       this.signature,
       this.vintageYear,
@@ -51,6 +53,7 @@ class Bottle {
     return {
       'id': id,
       'name': name,
+      'capacity': capacity,
       'signature': signature,
       'vintageYear': vintageYear,
       'color': color,
@@ -77,6 +80,7 @@ class Bottle {
     debugPrint("Map: $map");
     id = map['id'];
     name = map['name'];
+    capacity = map['capacity'];
     signature = map['signature'];
     vintageYear = map['vintageYear'];
     color = map['color'];
@@ -94,12 +98,8 @@ class Bottle {
     debugPrint(map['clusterX'].toString());
     clusterX = map['clusterX'];
     createdAt = DateTime.fromMillisecondsSinceEpoch(map['createdAt']);
-    registeredInCellarAt = (map['registeredInCellarAt'] != null)
-        ? DateTime.fromMillisecondsSinceEpoch(map['registeredInCellarAt'])
-        : null;
-    openedAt = (map['openedAt'] != null)
-        ? DateTime.fromMillisecondsSinceEpoch(map['openedAt'])
-        : null;
+    registeredInCellarAt = (map['registeredInCellarAt'] != null) ? DateTime.fromMillisecondsSinceEpoch(map['registeredInCellarAt']) : null;
+    openedAt = (map['openedAt'] != null) ? DateTime.fromMillisecondsSinceEpoch(map['openedAt']) : null;
     tastingNote = map['tastingNote'];
   }
 
@@ -112,6 +112,7 @@ class Bottle {
     return 'Bottle{'
         'id: $id, '
         'name: $name, '
+        'capacity: $capacity, '
         'signature: $signature, '
         'vintageYear: $vintageYear, '
         'color: $color, '

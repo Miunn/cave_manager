@@ -1,5 +1,5 @@
 import 'package:cave_manager/providers/bottles_provider.dart';
-import 'package:cave_manager/screens/settings.dart';
+import 'package:cave_manager/screens/appBarNavigation/settings.dart';
 import 'package:cave_manager/utils/bottle_db_interface.dart';
 import 'package:cave_manager/widgets/cellar_filling_short.dart';
 import 'package:cave_manager/widgets/statistic_card.dart';
