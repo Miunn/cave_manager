@@ -14,6 +14,8 @@ import '../../models/enum_wine_colors.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../appBarNavigation/history.dart';
+
 class Bottles extends StatefulWidget {
   const Bottles({super.key});
 
@@ -95,6 +97,14 @@ class _BottlesState extends State<Bottles> {
         // the App.build method, and use it to set our appbar title.
         title: Text(AppLocalizations.of(context)!.bottles),
         actions: <Widget>[
+          IconButton(
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const CellarHistory()
+                  )
+              ),
+              icon: const Icon(Icons.history)),
           IconButton(
               onPressed: () => Navigator.push(
                     context,

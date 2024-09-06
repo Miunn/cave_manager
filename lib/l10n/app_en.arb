@@ -83,7 +83,7 @@
 	"cellarConfigurationTitle1": "Sélectionnez la topologie de votre cave",
 	"cellarConfigurationTitle2": "Define your cellar size",
 	"searchBottle": "Search bottle",
-	"wineColors": "{choice, select, red {Red} pink {Pink} white {White} other {Unknown}}",
+	"wineColors": "{choice, select, red {Red} pink {Rosé} white {White} other {Unknown}}",
 	"@wineColors": {
 		"placeholders": {
 			"choice": {}
@@ -110,6 +110,7 @@
 	"specifications": "Specifications",
 	"appellation": "Appellation",
 	"estate": "Estate",
+	"capacity": "Capacity",
 	"vintage": "Vintage",
 	"color": "Color",
 	"alcoholLevel": "Alcohol level",

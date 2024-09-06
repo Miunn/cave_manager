@@ -2,6 +2,7 @@ import 'package:cave_manager/widgets/pick_up_quiz/quiz_choice_card.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
+import '../appBarNavigation/history.dart';
 import '../appBarNavigation/settings.dart';
 
 class TakeOutQuiz extends StatefulWidget {
@@ -26,6 +27,14 @@ class _TakeOutQuizState extends State<TakeOutQuiz> {
         // the App.build method, and use it to set our appbar title.
         title: const Text("Choisir une bouteille"),
         actions: <Widget>[
+          IconButton(
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const CellarHistory()
+                  )
+              ),
+              icon: const Icon(Icons.history)),
           IconButton(
               onPressed: () => Navigator.push(
                     context,

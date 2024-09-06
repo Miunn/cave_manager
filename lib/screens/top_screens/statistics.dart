@@ -8,6 +8,8 @@ import 'package:provider/provider.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../appBarNavigation/history.dart';
+
 
 class Statistics extends StatefulWidget {
   const Statistics({super.key});
@@ -59,6 +61,14 @@ class _StatisticsState extends State<Statistics> {
         // the App.build method, and use it to set our appbar title.
         title: Text(AppLocalizations.of(context)!.statistics),
         actions: <Widget>[
+          IconButton(
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const CellarHistory()
+                  )
+              ),
+              icon: const Icon(Icons.history)),
           IconButton(
               onPressed: () => Navigator.push(
                     context,

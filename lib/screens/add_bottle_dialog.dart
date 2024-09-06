@@ -32,6 +32,7 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
   String? bottleImageUri;
   final TextEditingController nameController = TextEditingController();
   final TextEditingController signatureController = TextEditingController();
+  final TextEditingController capacityController = TextEditingController();
   final TextEditingController vintageYearController = TextEditingController();
   final TextEditingController alcoholLevelController = TextEditingController();
 
@@ -116,6 +117,7 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
     // Clean up the controller when the widget is disposed.
     nameController.dispose();
     signatureController.dispose();
+    capacityController.dispose();
     vintageYearController.dispose();
     alcoholLevelController.dispose();
     grapeVarietyController.dispose();
@@ -178,9 +180,7 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
                     ]),
                   ),
                 ),
-                const SizedBox(
-                  height: 30,
-                ),
+                const SizedBox(height: 30),
                 SegmentedButton(
                   segments: <ButtonSegment<WineColors>>[
                     ButtonSegment<WineColors>(
@@ -209,9 +209,7 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
                     });
                   },
                 ),
-                const SizedBox(
-                  height: 30,
-                ),
+                const SizedBox(height: 30),
                 TextFormField(
                   controller: nameController,
                   /*autofocus: true,*/
@@ -229,12 +227,31 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
                 const SizedBox(
                   height: 30,
                 ),
-                TextFormField(
-                  controller: signatureController,
-                  decoration: InputDecoration(
-                    labelText: AppLocalizations.of(context)!.estate,
-                    border: const OutlineInputBorder(),
-                  ),
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: TextFormField(
+                        controller: signatureController,
+                        decoration: InputDecoration(
+                          labelText: AppLocalizations.of(context)!.estate,
+                          border: const OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 30),
+                    Expanded(
+                      flex: 1,
+                      child: TextFormField(
+                        controller: capacityController,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          labelText: AppLocalizations.of(context)!.capacity,
+                          border: const OutlineInputBorder(),
+                        ),
+                      ),
+                    )
+                  ],
                 ),
                 const SizedBox(
                   height: 30,
@@ -243,6 +260,7 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
                   mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
                     Expanded(
+                      flex: 2,
                       child: TextFormField(
                         controller: vintageYearController,
                         keyboardType: TextInputType.number,
@@ -252,10 +270,9 @@ class _AddBottleDialogState extends State<AddBottleDialog> {
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      width: 30,
-                    ),
+                    const SizedBox(width: 30),
                     Expanded(
+                      flex: 1,
                       child: TextFormField(
                         controller: alcoholLevelController,
                         keyboardType: TextInputType.number,
