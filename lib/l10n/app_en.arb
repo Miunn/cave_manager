@@ -160,6 +160,9 @@
 	"deleteBottleCoverConfirmation": "Cover deleted",
 	"wipeCellarConfirmationTitle": "Wipe cellar ?",
 	"wipeCellarConfirmationMessage": "Bottles won't be deleted, but the cellar configuration will be reset. This action is irreversible.",
+
+	"history": "History",
+
 	"@__COUNTRIES__": "",
 	"albania": "Albania",
 	"algeria": "Algeria",

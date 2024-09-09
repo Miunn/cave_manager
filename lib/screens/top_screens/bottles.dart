@@ -14,7 +14,7 @@ import '../../models/enum_wine_colors.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../appBarNavigation/history.dart';
+import '../appBarNavigation/global_history.dart';
 
 class Bottles extends StatefulWidget {
   const Bottles({super.key});
@@ -101,7 +101,7 @@ class _BottlesState extends State<Bottles> {
               onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const CellarHistory()
+                      builder: (context) => const GlobalHistory()
                   )
               ),
               icon: const Icon(Icons.history)),

@@ -169,6 +169,8 @@
 	"wipeCellarConfirmationTitle": "Réinitialiser la cave ?",
 	"wipeCellarConfirmationMessage": "Êtes-vous sûr de vouloir réinitialiser votre cave ? Vos bouteilles ne seront pas supprimées, mais leur emplacement sera perdu. Cette action est irréversible",
 
+	"history": "Historique",
+
 	"@__COUNTRIES__": "",
 	"albania": "Albanie",
 	"algeria": "Algérie",

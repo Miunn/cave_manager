@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../appBarNavigation/history.dart';
+import '../appBarNavigation/global_history.dart';
 
 
 class Statistics extends StatefulWidget {
@@ -65,7 +65,7 @@ class _StatisticsState extends State<Statistics> {
               onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const CellarHistory()
+                      builder: (context) => const GlobalHistory()
                   )
               ),
               icon: const Icon(Icons.history)),

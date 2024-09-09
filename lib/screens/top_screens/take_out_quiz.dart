@@ -2,7 +2,7 @@ import 'package:cave_manager/widgets/pick_up_quiz/quiz_choice_card.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-import '../appBarNavigation/history.dart';
+import '../appBarNavigation/global_history.dart';
 import '../appBarNavigation/settings.dart';
 
 class TakeOutQuiz extends StatefulWidget {
@@ -31,7 +31,7 @@ class _TakeOutQuizState extends State<TakeOutQuiz> {
               onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const CellarHistory()
+                      builder: (context) => const GlobalHistory()
                   )
               ),
               icon: const Icon(Icons.history)),

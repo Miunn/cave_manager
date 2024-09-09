@@ -1,13 +1,16 @@
+import 'package:cave_manager/models/history.dart';
+import 'package:cave_manager/providers/history_provider.dart';
 import 'package:cave_manager/widgets/history/history_entry.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/bottle.dart';
 import 'settings.dart';
 
-class CellarHistory extends StatelessWidget {
-  const CellarHistory({super.key});
+class GlobalHistory extends StatelessWidget {
+  const GlobalHistory({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +22,7 @@ class CellarHistory extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(AppLocalizations.of(context)!.home),
+        title: Text(AppLocalizations.of(context)!.history),
         actions: <Widget>[
           IconButton(
               onPressed: () => Navigator.push(
@@ -31,12 +34,25 @@ class CellarHistory extends StatelessWidget {
               icon: const Icon(Icons.settings))
         ],
       ),
-      body: ListView(
-        children: [
-          HistoryEntry(bottle: Bottle.empty(), isIncoming: true, entryDate: DateTime(2024)),
-          const Divider(height: 0),
-          HistoryEntry(bottle: Bottle.empty(), isIncoming: false, entryDate: DateTime(2024)),
-        ],
+      body: Consumer<HistoryProvider>(
+        builder: (BuildContext context, HistoryProvider history, Widget? child) {
+          List<History> entries = history.history;
+          return ListView.builder(
+            itemCount: entries.length,
+            prototypeItem: HistoryEntry(
+              bottle: Bottle.empty(),
+              isIncoming: true,
+              entryDate: DateTime(2024),
+            ),
+            itemBuilder: (context, index) {
+              return HistoryEntry(
+                bottle: entries[index].bottleId ?? Bottle.empty(),
+                isIncoming: entries[index].isIncoming ?? false,
+                entryDate: entries[index].createdAt ?? DateTime.now(),
+              );
+            }
+          );
+        },
       ),
     );
   }

@@ -1,5 +1,5 @@
 import 'package:cave_manager/screens/appBarNavigation/settings.dart';
-import 'package:cave_manager/screens/appBarNavigation/history.dart';
+import 'package:cave_manager/screens/appBarNavigation/global_history.dart';
 import 'package:cave_manager/widgets/bottle_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -33,7 +33,7 @@ class _HomeState extends State<Home> {
               onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const CellarHistory()
+                  builder: (context) => const GlobalHistory()
                 )
               ),
               icon: const Icon(Icons.history)),

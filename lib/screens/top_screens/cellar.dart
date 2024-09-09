@@ -11,7 +11,7 @@ import '../../models/bottle.dart';
 import '../../models/cluster.dart';
 import '../../providers/clusters_provider.dart';
 import '../../widgets/cellar_configuration.dart';
-import '../appBarNavigation/history.dart';
+import '../appBarNavigation/global_history.dart';
 
 class Cellar extends StatefulWidget {
   const Cellar({super.key});
@@ -78,7 +78,7 @@ class _CellarState extends State<Cellar> {
         onPressed: () => Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => const CellarHistory()
+                builder: (context) => const GlobalHistory()
             )
         ),
         icon: const Icon(Icons.history)));

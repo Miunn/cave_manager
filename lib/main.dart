@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:animations/animations.dart';
 import 'package:cave_manager/providers/bottles_provider.dart';
 import 'package:cave_manager/providers/clusters_provider.dart';
+import 'package:cave_manager/providers/history_provider.dart';
 import 'package:cave_manager/screens/add_bottle_dialog.dart';
 import 'package:cave_manager/screens/top_screens/bottles.dart';
 import 'package:cave_manager/screens/top_screens/cellar.dart';
@@ -29,6 +30,7 @@ void main() async {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) => BottlesProvider()),
     ChangeNotifierProvider(create: (context) => ClustersProvider()),
+    ChangeNotifierProvider(create: (context) => HistoryProvider())
   ], child: const MyApp()));
 }
 
