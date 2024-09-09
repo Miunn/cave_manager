@@ -101,7 +101,7 @@ void main() {
 
       expect(find.byKey(testKey), findsAny);
       expect(find.byType(SegmentedButton<WineColors>), findsOneWidget);
-      expect(find.byType(TextFormField), findsNWidgets(7));
+      expect(find.byType(TextFormField), findsNWidgets(8));
     });
   });
 
